@@ -1,0 +1,913 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MT CCTV Installation Site Assessment</title><style>
+:root {
+  --navy: #0b2545;
+  --blue: #143f73;
+  --blue-soft: #eaf2fa;
+  --teal: #0f766e;
+  --teal-dark: #0b5e58;
+  --background: #eaf1f7;
+  --surface: #ffffff;
+  --surface-alt: #f7fafd;
+  --border: #c8d6e6;
+  --border-dark: #9fb3c8;
+  --text: #172536;
+  --muted: #5f7185;
+  --danger: #a33a3a;
+  --warning-bg: #fff9e8;
+  --success-bg: #edf8f2;
+  --danger-bg: #fff0f0;
+  --toolbar-height: 58px;
+  --radius: 10px;
+  --shadow: 0 3px 12px rgba(11, 37, 69, 0.07);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--background);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  font-family: Calibri, "Segoe UI", Arial, sans-serif;
+  color: var(--text);
+  background: var(--background);
+  line-height: 1.35;
+  -webkit-font-smoothing: antialiased;
+}
+
+header {
+  padding: 28px 32px 23px;
+  color: #fff;
+  background: linear-gradient(125deg, var(--navy) 0%, var(--blue) 58%, var(--teal) 100%);
+}
+
+header h1 {
+  margin: 0 0 6px;
+  font-size: clamp(24px, 2.3vw, 34px);
+  line-height: 1.1;
+  letter-spacing: 0.1px;
+}
+
+header p {
+  margin: 0;
+  max-width: 1100px;
+  color: #dceaf5;
+  font-size: 15px;
+}
+
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-height: var(--toolbar-height);
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.98);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 2px 9px rgba(11, 37, 69, 0.09);
+  backdrop-filter: blur(8px);
+}
+
+button,
+.file-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font: 600 13px/1.2 Calibri, "Segoe UI", Arial, sans-serif;
+  text-decoration: none;
+  white-space: nowrap;
+  color: #fff;
+  background: var(--navy);
+  transition: filter 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+button:hover,
+.file-button:hover {
+  filter: brightness(1.06);
+  box-shadow: 0 2px 6px rgba(11, 37, 69, 0.16);
+}
+
+button:active,
+.file-button:active {
+  transform: translateY(1px);
+}
+
+button:focus-visible,
+.file-button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+  outline: 3px solid rgba(15, 118, 110, 0.25);
+  outline-offset: 1px;
+}
+
+button.secondary,
+.file-button.secondary {
+  background: var(--teal);
+}
+
+button.light,
+.file-button.light {
+  color: var(--navy);
+  background: #edf3f8;
+  border-color: var(--border);
+}
+
+button.danger,
+.remove-row {
+  background: var(--danger);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  box-shadow: none;
+}
+
+.file-button input {
+  display: none;
+}
+
+.search {
+  flex: 1 1 260px;
+  min-width: 210px;
+  max-width: 520px;
+  height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  background: #fff;
+  color: var(--text);
+  font: 13px Calibri, "Segoe UI", Arial, sans-serif;
+}
+
+.progress-wrap {
+  display: flex;
+  flex: 0 1 220px;
+  align-items: center;
+  gap: 8px;
+  min-width: 185px;
+  color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.progress {
+  flex: 1;
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #dce6f0;
+}
+
+.progress span {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--teal);
+  transition: width 0.2s ease;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(235px, 280px) minmax(0, 1fr);
+  align-items: start;
+  width: 100%;
+  max-width: 1780px;
+  margin: 0 auto;
+}
+
+nav {
+  position: sticky;
+  top: var(--toolbar-height);
+  height: calc(100vh - var(--toolbar-height));
+  overflow: auto;
+  padding: 15px;
+  background: var(--surface-alt);
+  border-right: 1px solid var(--border);
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-dark) transparent;
+}
+
+nav h3 {
+  margin: 4px 7px 10px;
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 0.75px;
+  text-transform: uppercase;
+}
+
+nav a {
+  display: block;
+  margin-bottom: 2px;
+  padding: 7px 8px;
+  border-radius: 5px;
+  color: var(--blue);
+  text-decoration: none;
+  font-size: 13px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+nav a:hover {
+  background: #e4edf6;
+}
+
+main {
+  min-width: 0;
+  padding: 20px;
+}
+
+.card {
+  margin-bottom: 18px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  scroll-margin-top: calc(var(--toolbar-height) + 14px);
+}
+
+.card-body {
+  padding: 18px;
+}
+
+.card-title {
+  margin: 0 0 13px;
+  color: var(--navy);
+  font-size: 21px;
+  line-height: 1.2;
+}
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+label.field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 5px;
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+input,
+select,
+textarea {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  border: 1px solid #b5c6d9;
+  border-radius: 5px;
+  padding: 7px 8px;
+  background: #fff;
+  color: var(--text);
+  font: 13px/1.3 Calibri, "Segoe UI", Arial, sans-serif;
+}
+
+input,
+select {
+  min-height: 34px;
+}
+
+textarea {
+  min-height: 54px;
+  resize: vertical;
+  overflow: auto;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #8795a5;
+  opacity: 1;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.12);
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 15px 17px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(90deg, #f1f6fb 0%, #fff 100%);
+}
+
+.section-head > div:first-child {
+  min-width: 0;
+}
+
+.section-head h2 {
+  margin: 0 0 4px;
+  color: var(--navy);
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.section-head p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.section-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+  padding: 0 11px 11px;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-dark) #edf3f8;
+}
+
+.table-wrap::-webkit-scrollbar {
+  height: 11px;
+}
+
+.table-wrap::-webkit-scrollbar-track {
+  background: #edf3f8;
+}
+
+.table-wrap::-webkit-scrollbar-thumb {
+  border: 2px solid #edf3f8;
+  border-radius: 999px;
+  background: var(--border-dark);
+}
+
+table {
+  width: 100%;
+  min-width: 1180px;
+  border-spacing: 0;
+  border-collapse: separate;
+  table-layout: fixed;
+}
+
+th,
+td {
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+th:first-child,
+td:first-child {
+  border-left: 1px solid var(--border);
+}
+
+thead tr:first-child th {
+  border-top: 1px solid #2d527b;
+}
+
+th {
+  padding: 8px;
+  background: var(--navy);
+  color: #fff;
+  text-align: left;
+  font-size: 12px;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+td {
+  padding: 6px;
+  background: #fff;
+}
+
+tbody tr:nth-child(even) td {
+  background: #f9fbfd;
+}
+
+tbody tr:hover td {
+  background: #f1f7fc;
+}
+
+td.item {
+  width: 20%;
+  color: var(--blue);
+  font-size: 12.5px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+td.status { width: 13%; }
+td.value { width: 21%; }
+td.notes { width: 25%; }
+td.owner { width: 11%; }
+td.date { width: 10%; }
+
+.status-select[data-state="Confirmed"],
+.status-select[data-state="Compliant"] {
+  border-color: #63a683;
+  background: var(--success-bg);
+}
+
+.status-select[data-state="Partially confirmed"],
+.status-select[data-state="Information required"] {
+  border-color: #c4a04f;
+  background: var(--warning-bg);
+}
+
+.status-select[data-state="Remediation required"],
+.status-select[data-state="Rejected"] {
+  border-color: #c77373;
+  background: var(--danger-bg);
+}
+
+.section-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  padding: 12px 17px 16px;
+  border-top: 1px solid var(--border);
+  background: #fbfdff;
+}
+
+.calc-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(140px, 1fr));
+  gap: 10px;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.kpi {
+  min-width: 0;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-alt);
+}
+
+.kpi span {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.kpi strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--navy);
+  font-size: 21px;
+  line-height: 1.15;
+}
+
+/* Wide technical schedules need enough intrinsic width so fields do not overlap. */
+#camera-schedule .dynamic-table table {
+  min-width: 2360px;
+}
+
+#equipment-schedule .dynamic-table table {
+  min-width: 1720px;
+}
+
+.dynamic-table th,
+.dynamic-table td {
+  font-size: 11.5px;
+}
+
+.dynamic-table input,
+.dynamic-table select,
+.dynamic-table textarea {
+  min-width: 0;
+  padding: 5px 6px;
+  font-size: 11.5px;
+}
+
+.dynamic-table textarea {
+  min-height: 42px;
+}
+
+/* Practical column widths for the 20-column camera schedule. */
+#camera-schedule th:nth-child(1) { width: 48px; }
+#camera-schedule th:nth-child(2) { width: 120px; }
+#camera-schedule th:nth-child(3) { width: 155px; }
+#camera-schedule th:nth-child(4) { width: 170px; }
+#camera-schedule th:nth-child(5) { width: 130px; }
+#camera-schedule th:nth-child(6) { width: 145px; }
+#camera-schedule th:nth-child(7) { width: 68px; }
+#camera-schedule th:nth-child(8) { width: 105px; }
+#camera-schedule th:nth-child(9) { width: 72px; }
+#camera-schedule th:nth-child(10) { width: 100px; }
+#camera-schedule th:nth-child(11) { width: 105px; }
+#camera-schedule th:nth-child(12) { width: 105px; }
+#camera-schedule th:nth-child(13) { width: 105px; }
+#camera-schedule th:nth-child(14) { width: 135px; }
+#camera-schedule th:nth-child(15) { width: 135px; }
+#camera-schedule th:nth-child(16) { width: 130px; }
+#camera-schedule th:nth-child(17) { width: 135px; }
+#camera-schedule th:nth-child(18) { width: 125px; }
+#camera-schedule th:nth-child(19) { width: 185px; }
+#camera-schedule th:nth-child(20) { width: 82px; }
+
+#equipment-schedule th:nth-child(1) { width: 48px; }
+#equipment-schedule th:nth-child(2) { width: 135px; }
+#equipment-schedule th:nth-child(3) { width: 190px; }
+#equipment-schedule th:nth-child(4) { width: 150px; }
+#equipment-schedule th:nth-child(5) { width: 72px; }
+#equipment-schedule th:nth-child(6) { width: 85px; }
+#equipment-schedule th:nth-child(7) { width: 145px; }
+#equipment-schedule th:nth-child(8) { width: 125px; }
+#equipment-schedule th:nth-child(9) { width: 155px; }
+#equipment-schedule th:nth-child(10) { width: 115px; }
+#equipment-schedule th:nth-child(11) { width: 110px; }
+#equipment-schedule th:nth-child(12) { width: 180px; }
+#equipment-schedule th:nth-child(13) { width: 82px; }
+
+.remove-row {
+  min-height: 30px;
+  padding: 6px 8px;
+  font-size: 11px;
+}
+
+.helper {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.hidden-row {
+  display: none !important;
+}
+
+.sign-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.footer {
+  padding: 18px;
+  color: var(--muted);
+  text-align: center;
+  font-size: 12px;
+}
+
+@media (max-width: 1380px) {
+  .meta-grid {
+    grid-template-columns: repeat(3, minmax(180px, 1fr));
+  }
+
+  .calc-grid {
+    grid-template-columns: repeat(3, minmax(170px, 1fr));
+  }
+}
+
+@media (max-width: 1120px) {
+  :root {
+    --toolbar-height: 64px;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  nav {
+    display: none;
+  }
+
+  .meta-grid {
+    grid-template-columns: repeat(2, minmax(170px, 1fr));
+  }
+
+  .section-summary,
+  .sign-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .toolbar {
+    position: relative;
+  }
+}
+
+@media (max-width: 760px) {
+  header {
+    padding: 21px 17px;
+  }
+
+  header p {
+    font-size: 14px;
+  }
+
+  .toolbar {
+    padding: 9px 10px;
+  }
+
+  button,
+  .file-button {
+    flex: 1 1 calc(50% - 8px);
+  }
+
+  .search,
+  .progress-wrap {
+    flex-basis: 100%;
+    max-width: none;
+  }
+
+  main {
+    padding: 10px;
+  }
+
+  .card-body,
+  .section-head {
+    padding: 14px;
+  }
+
+  .section-head {
+    flex-direction: column;
+  }
+
+  .section-actions {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .section-actions button {
+    flex: 1 1 150px;
+  }
+
+  .meta-grid,
+  .calc-grid,
+  .kpi-grid,
+  .sign-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 430px) {
+  button,
+  .file-button {
+    flex-basis: 100%;
+  }
+}
+
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 8mm;
+  }
+
+  @page wideSchedule {
+    size: A3 landscape;
+    margin: 8mm;
+  }
+
+  * {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  body {
+    background: #fff;
+    font-size: 8pt;
+  }
+
+  header {
+    padding: 0 0 6mm;
+    color: var(--navy);
+    background: #fff !important;
+    border-bottom: 2px solid var(--navy);
+  }
+
+  header h1 {
+    font-size: 20pt;
+  }
+
+  header p {
+    color: var(--muted);
+    font-size: 9pt;
+  }
+
+  .toolbar,
+  nav,
+  .section-actions,
+  .no-print {
+    display: none !important;
+  }
+
+  .layout {
+    display: block;
+    max-width: none;
+  }
+
+  main {
+    padding: 0;
+  }
+
+  .card {
+    overflow: visible;
+    margin-bottom: 6mm;
+    border: 1px solid #9dafc2;
+    border-radius: 0;
+    box-shadow: none;
+    break-inside: auto;
+  }
+
+  .card:not(.first-card) {
+    break-before: page;
+  }
+
+  #camera-schedule,
+  #equipment-schedule {
+    page: wideSchedule;
+  }
+
+  .card-body {
+    padding: 8px;
+  }
+
+  .section-head {
+    padding: 7px 9px;
+  }
+
+  .section-head h2 {
+    font-size: 13pt;
+  }
+
+  .section-head p {
+    font-size: 8pt;
+  }
+
+  .table-wrap {
+    overflow: visible;
+    padding: 0;
+  }
+
+  table,
+  #camera-schedule .dynamic-table table,
+  #equipment-schedule .dynamic-table table {
+    width: 100%;
+    min-width: 0 !important;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tfoot {
+    display: table-footer-group;
+  }
+
+  tr,
+  .kpi,
+  label.field {
+    break-inside: avoid;
+  }
+
+  th,
+  td {
+    border: 1px solid #9dafc2;
+    padding: 3px;
+    font-size: 6.7pt;
+    overflow-wrap: anywhere;
+  }
+
+  th {
+    color: var(--navy);
+    background: #dce7f2 !important;
+  }
+
+  input,
+  select,
+  textarea {
+    min-height: 0;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: #000;
+    font-size: 6.7pt;
+    line-height: 1.15;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  textarea {
+    height: auto !important;
+    min-height: 15px;
+    overflow: visible;
+    resize: none;
+  }
+
+  select {
+    background-image: none !important;
+  }
+
+  .meta-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .calc-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .section-summary {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px;
+    padding: 5px 8px;
+  }
+
+  .dynamic-table input,
+  .dynamic-table select,
+  .dynamic-table textarea {
+    min-width: 0;
+    font-size: 6.2pt;
+  }
+
+  .kpi {
+    padding: 6px;
+  }
+
+  .kpi strong {
+    font-size: 13pt;
+  }
+
+  .footer {
+    display: none;
+  }
+}
+</style></head><body>
+<header><h1>MT CCTV Installation Site Assessment</h1><p>Comprehensive assessment for on-premises, MT cloud and hybrid CCTV solutions, from site survey to final design and commissioning.</p></header>
+<div class="toolbar no-print"><button onclick="window.print()">Print / Save as PDF</button><button class="secondary" id="saveHtmlBtn">Save Filled Form as HTML</button><button class="light" id="saveLocalBtn">Save in Browser</button><button class="light" id="loadLocalBtn">Load Browser Save</button><button class="light" id="exportJsonBtn">Export JSON</button><label class="file-button light">Import JSON<input type="file" id="importJsonInput" accept=".json,application/json"></label><button class="danger" id="resetBtn">Reset</button><input class="search" id="searchBox" type="search" placeholder="Search assessment items…"><div class="progress-wrap"><span id="progressText">0% reviewed</span><div class="progress"><span id="progressBar"></span></div></div></div>
+<div class="layout"><nav id="sectionNav"><h3>Assessment sections</h3></nav><main>
+<section class="card first-card"><div class="card-body"><h2 class="card-title">Assessment Control Information</h2><div class="meta-grid">
+<label class="field">Customer<input name="meta_customer"></label><label class="field">Site<input name="meta_site"></label><label class="field">Site Address<input name="meta_address"></label><label class="field">Assessment Date<input name="meta_date" type="date"></label><label class="field">Assessor<input name="meta_assessor"></label><label class="field">Account Manager<input name="meta_account_manager"></label><label class="field">Customer Security Contact<input name="meta_security_contact"></label><label class="field">Customer IT Contact<input name="meta_it_contact"></label><label class="field">Project / Opportunity Reference<input name="meta_project_ref"></label><label class="field">Deployment Model<select name="meta_deployment"><option value="">Select</option><option>On-premises</option><option>MT cloud CCTV</option><option>Hybrid on-premises and MT cloud</option><option>Customer private cloud</option><option>To be determined</option></select></label><label class="field">Project Type<select name="meta_project_type"><option value="">Select</option><option>New installation</option><option>Expansion</option><option>Replacement / migration</option><option>Cloud migration</option><option>Maintenance remediation</option><option>Proof of concept</option></select></label><label class="field">Overall Status<select name="meta_status"><option>Draft</option><option>In progress</option><option>Pending customer information</option><option>Ready for solution design</option><option>Approved</option></select></label></div><label class="field" style="margin-top:12px">Scope, Security Objectives and Customer Expectations<textarea name="meta_scope"></textarea></label></div></section>
+<section class="card" id="camera-schedule"><div class="section-head"><div><h2>Camera Location and Technical Schedule</h2><p>Add one row per camera location or group. The table feeds the storage and bandwidth calculation.</p></div><div class="section-actions no-print"><button class="secondary" id="addCameraRowBtn">Add Camera Row</button><button class="light" id="recalculateBtn">Recalculate</button></div></div><div class="table-wrap dynamic-table"><table><thead><tr><th style="width:42px">No.</th><th>Building / Zone</th><th>Exact Location</th><th>Purpose / Target</th><th>Camera Type</th><th>Brand / Model</th><th style="width:62px">Qty</th><th>Resolution</th><th style="width:66px">FPS</th><th>Codec</th><th style="width:85px">Avg Mbps</th><th style="width:86px">Hours / Day</th><th style="width:80px">Retention Days</th><th>Recording Mode</th><th>Mount / Height</th><th>Power / PoE</th><th>Switch / Cabinet</th><th>IP / VLAN</th><th>Notes</th><th class="no-print">Action</th></tr></thead><tbody id="cameraRows"></tbody></table></div><div class="card-body" style="padding-top:5px"><div class="calc-grid"><label class="field">Storage Overhead %<input name="calc_storage_overhead" id="storageOverhead" type="number" min="0" value="15"></label><label class="field">Storage Redundancy Factor<select name="calc_redundancy" id="redundancyFactor"><option value="1">1.00 — No duplication</option><option value="1.15">1.15 — RAID allowance</option><option value="2">2.00 — Mirrored storage</option></select></label><label class="field">Network Headroom %<input name="calc_network_headroom" id="networkHeadroom" type="number" min="0" value="20"></label><label class="field">Additional Archive TB<input name="calc_archive_tb" id="archiveTb" type="number" min="0" step="0.1" value="0"></label><label class="field">RAID / Storage Notes<input name="calc_raid_notes"></label><label class="field">Calculation Approval<select name="calc_approval"><option>Draft</option><option>Reviewed</option><option>Approved</option></select></label></div><div class="kpi-grid"><div class="kpi"><span>Total Cameras</span><strong id="totalCameras">0</strong></div><div class="kpi"><span>Estimated Peak Video Traffic</span><strong id="peakMbps">0 Mbps</strong></div><div class="kpi"><span>Traffic with Headroom</span><strong id="headroomMbps">0 Mbps</strong></div><div class="kpi"><span>Estimated Usable Storage</span><strong id="storageTb">0 TB</strong></div></div><p class="helper">Validate the final design with the selected manufacturer's storage calculator and actual scene complexity.</p></div></section>
+<section class="card" id="equipment-schedule"><div class="section-head"><div><h2>Proposed Equipment and Material Schedule</h2><p>Record cameras, NVRs, servers, storage, licences, network, power, racks and installation materials.</p></div><div class="section-actions no-print"><button class="secondary" id="addEquipmentRowBtn">Add Equipment Row</button></div></div><div class="table-wrap dynamic-table"><table><thead><tr><th style="width:42px">No.</th><th>Category</th><th>Description</th><th>Brand / Model</th><th style="width:75px">Qty</th><th>Unit</th><th>Existing / Proposed</th><th>Location</th><th>Licence / Subscription</th><th>Power / PoE</th><th>Warranty</th><th>Notes</th><th class="no-print">Action</th></tr></thead><tbody id="equipmentRows"></tbody></table></div></section>
+<div id="sectionsContainer"></div>
+<section class="card"><div class="card-body"><h2 class="card-title">Assessment Sign-off</h2><div class="sign-grid"><label class="field">Prepared by<input name="sign_prepared_by"></label><label class="field">Reviewed by<input name="sign_reviewed_by"></label><label class="field">Customer Representative<input name="sign_customer"></label><label class="field">Prepared Date<input name="sign_prepared_date" type="date"></label><label class="field">Review Date<input name="sign_review_date" type="date"></label><label class="field">Customer Confirmation Date<input name="sign_customer_date" type="date"></label></div><label class="field" style="margin-top:12px">Final Comments, Conditions and Approvals<textarea name="sign_comments"></textarea></label></div></section><div class="footer">Standalone form. Data remains on the device unless exported or saved into a filled HTML copy.</div></main></div>
+<script id="embedded-state" type="application/json">{}</script>
+<script>
+const SECTIONS=[{"id": "site", "title": "1. Customer, Site and Project Profile", "description": "Record the project, contacts, premises and commercial context.", "items": ["Customer legal name", "Site name", "Full site address", "GPS coordinates / map reference", "Customer business activity", "Main customer contact", "Security contact", "IT / network contact", "Facilities contact", "Health and safety contact", "Assessment date", "Assessor name", "Account manager", "Project / opportunity reference", "Tender / RFQ reference", "Number of buildings", "Number of floors", "Number of entrances and exits", "Number of car parks", "Site operating hours", "Security operating hours", "Public access hours", "Site occupancy profile", "Critical operating periods", "Planned implementation date", "Expected system life", "Expected site expansion", "Existing Mauritius Telecom services", "Required implementation phases"]}, {"id": "risk", "title": "2. Security Objectives and Risk Assessment", "description": "Confirm why surveillance is required and what outcomes the system must deliver.", "items": ["Primary security objectives", "Known security incidents", "Theft / shrinkage risk", "Vandalism risk", "Intrusion risk", "Employee safety risk", "Customer / visitor safety risk", "Vehicle-related risk", "Cash handling risk", "Restricted-area risk", "Perimeter breach risk", "Fire / smoke observation requirement", "Crowd or queue monitoring requirement", "Operational monitoring requirement", "Health and safety monitoring requirement", "High-risk locations", "Blind spots currently reported", "Required evidential image quality", "Required live monitoring level", "Required incident response time", "Security escalation process", "Law-enforcement evidence requirements", "Priority areas for Phase 1", "Areas excluded from scope", "Customer risk acceptance"]}, {"id": "existing", "title": "3. Existing CCTV Environment", "description": "Document the installed system, reusable assets, limitations and migration constraints.", "items": ["Existing CCTV manufacturer", "Existing camera models", "Existing camera quantities", "Existing analog camera quantity", "Existing IP camera quantity", "Existing PTZ quantity", "Existing thermal camera quantity", "Existing ANPR camera quantity", "Existing NVR / DVR manufacturer and model", "Existing VMS platform and version", "Existing storage capacity", "Current retention period", "Current recording mode", "Current frame rate and resolution", "Current codec", "Existing camera licences", "Existing analytics licences", "Existing maintenance contract", "Existing support provider", "Existing system age", "Existing firmware versions", "Existing IP addressing scheme", "Existing camera VLAN", "Existing switch infrastructure", "Existing fibre backbone", "Existing control room", "Existing video wall", "Existing operator workstations", "Existing UPS and backup power", "Existing cloud storage or backup", "Existing remote-access method", "Existing mobile application", "Existing faults", "Image-quality complaints", "Recording gaps", "System capacity limitations", "Cybersecurity weaknesses", "Assets suitable for reuse", "Assets to be replaced", "Configuration backup availability", "Administrator credentials availability", "Existing drawings and camera schedule availability"]}, {"id": "coverage", "title": "4. Coverage Zones and Surveillance Requirements", "description": "Define every area to be viewed and the purpose of each view.", "items": ["Site perimeter", "Main entrance", "Secondary entrances", "Emergency exits", "Reception / lobby", "Customer service counters", "Cashier / payment points", "Retail aisles / shop floor", "Warehouse / storage areas", "Loading bays", "Delivery zones", "Car parks", "Vehicle entrances and exits", "Pedestrian gates", "Staircases", "Corridors", "Lift lobbies", "Lift cabins", "Plant rooms", "Server / communications rooms", "Electrical rooms", "Roof access", "Restricted areas", "Staff-only areas", "Production areas", "Construction zones", "Waste disposal areas", "Outdoor open areas", "Public congregation areas", "High-value asset locations", "Point-of-sale areas", "ATM areas", "Privacy-sensitive areas", "Areas requiring audio", "Areas where audio is prohibited", "Areas requiring panoramic coverage", "Areas requiring facial identification", "Areas requiring vehicle identification", "Areas requiring long-range observation", "Areas requiring low-light or thermal coverage"]}, {"id": "camera", "title": "5. Camera and Image Requirements", "description": "Specify camera types, image performance and environmental ratings.", "items": ["Preferred camera manufacturer", "Permitted camera manufacturers", "Fixed dome requirement", "Fixed bullet requirement", "Turret requirement", "PTZ requirement", "Panoramic / fisheye requirement", "Multi-sensor requirement", "Thermal requirement", "Explosion-protected requirement", "ANPR / LPR requirement", "Intercom camera requirement", "Indoor camera quantity estimate", "Outdoor camera quantity estimate", "Minimum resolution", "Preferred resolution", "Required frame rate", "Required codec", "Wide Dynamic Range requirement", "Minimum low-light performance", "Infrared range", "White-light illuminator requirement", "Colour-at-night requirement", "Optical zoom requirement", "Digital zoom requirement", "Autofocus requirement", "Image stabilisation requirement", "Privacy masking requirement", "Defog requirement", "Backlight compensation", "HLC requirement", "Onboard SD card requirement", "Edge recording requirement", "Built-in microphone requirement", "External audio input requirement", "Speaker / audio output requirement", "Alarm input / output requirement", "Environmental rating", "Vandal-resistance rating", "Operating temperature range", "Corrosion resistance", "Marine / coastal protection", "Warranty requirement"]}, {"id": "mounting", "title": "6. Mounting, Field of View and Environment", "description": "Record physical conditions, target distance and installation access.", "items": ["Proposed mounting locations", "Mounting surface type", "Mounting height", "Camera viewing direction", "Required horizontal field of view", "Required vertical field of view", "Target distance", "Target width", "Required pixel density", "Identification / recognition / observation objective", "Ceiling mounts required", "Wall mounts required", "Pole mounts required", "Corner mounts required", "Parapet mounts required", "Pendant mounts required", "Junction boxes required", "Weatherproof enclosures required", "Sunshields required", "Pole foundation requirements", "Wind-loading requirement", "Vibration risk", "Water ingress risk", "Dust exposure", "Salt / coastal exposure", "Chemical exposure", "Extreme heat exposure", "Direct sunlight risk", "Glare risk", "Reflections / glass interference", "Vegetation obstruction", "Signage obstruction", "Future construction obstruction", "Tampering / vandalism risk", "Bird / insect interference", "Maintenance access method", "Need for ladder", "Need for scaffold", "Need for cherry picker", "Working-at-height permit", "Traffic-management requirement"]}, {"id": "lighting", "title": "7. Lighting and Image-Quality Assessment", "description": "Assess scene lighting throughout the day and supplementary illumination.", "items": ["Daytime lux level", "Night-time lux level", "Lighting uniformity", "Existing external lighting", "Existing internal lighting", "Lighting timer schedule", "Emergency lighting behaviour", "Backlighting conditions", "Vehicle headlight glare", "Sunrise / sunset glare", "Reflections from glass or metal", "Flashing signage impact", "Low-light zones", "Complete-darkness zones", "Supplementary IR requirement", "Supplementary white-light requirement", "Illuminator mounting location", "Illuminator power requirement", "Maximum acceptable motion blur", "Required shutter settings", "Required WDR performance", "Required colour accuracy", "Required facial image quality", "Required number-plate image quality", "Sample image test required", "Day / night acceptance test required"]}, {"id": "cabling", "title": "8. Cabling and Transmission Infrastructure", "description": "Confirm copper, fibre, containment, distances and testing.", "items": ["Existing structured-cabling drawings", "Existing cable category", "Required cable category", "Outdoor-rated cable requirement", "UV-resistant cable requirement", "Rodent-resistant cable requirement", "Armoured cable requirement", "Fire-rated cable requirement", "LSZH requirement", "Maximum copper distance", "Estimated new copper cable length", "Existing fibre type", "Required fibre type", "Estimated new fibre length", "Single-mode fibre requirement", "Multimode fibre requirement", "Fibre core count", "SFP / SFP+ requirements", "Media converter requirements", "PoE extender requirements", "Wireless bridge requirements", "Cable tray availability", "Conduit availability", "Trunking availability", "Underground duct availability", "Manhole availability", "Core drilling requirement", "Wall penetration requirement", "Fire-stopping requirement", "Waterproof glands requirement", "Surge protection requirement", "Lightning protection requirement", "Cable route access restrictions", "Existing outlet and patch-panel labels", "New labelling standard", "Cable certification requirement", "Fibre OTDR testing requirement", "As-built cabling drawing requirement"]}, {"id": "network", "title": "9. LAN, VLAN and Network Readiness", "description": "Validate switching, addressing, segmentation and capacity.", "items": ["Current network topology", "Core-switch manufacturer and model", "Access-switch manufacturer and model", "Available switch ports", "Existing PoE ports", "Switch firmware versions", "Layer 2 / Layer 3 design", "Dedicated CCTV VLAN availability", "CCTV VLAN ID", "CCTV subnet and mask", "Default gateway", "DHCP or static addressing", "IP address allocation plan", "DNS requirement", "NTP server", "Network monitoring platform", "Multicast requirement", "IGMP snooping requirement", "Jumbo-frame requirement", "QoS requirement", "Camera-to-VMS routing", "Camera-to-cloud routing", "Inter-VLAN access rules", "Operator workstation access rules", "Remote support access rules", "Firewall rules", "NAT requirements", "Current bandwidth utilisation", "Peak network utilisation", "Available uplink capacity", "Access-switch uplink capacity", "Core-switch uplink capacity", "Packet loss", "Latency", "Network redundancy", "Spanning-tree design", "Link aggregation", "Network-security policy", "Port-security requirement", "802.1X requirement", "MAC-address registration", "Network-readiness remediation"]}, {"id": "power", "title": "10. PoE, Electrical Power and Backup", "description": "Calculate power demand and confirm resilient power arrangements.", "items": ["Supported PoE standard", "Available PoE budget", "Current PoE consumption", "Proposed camera PoE demand", "PTZ PoE++ requirement", "Heater / blower power requirement", "Illuminator power requirement", "Intercom power requirement", "PoE switch quantity", "PoE injector requirement", "Midspan requirement", "Local power-supply requirement", "Field power outlet availability", "Electrical distribution-board capacity", "Dedicated circuit requirement", "Circuit-breaker requirement", "Earthing availability", "Surge-protection requirement", "Lightning-protection requirement", "UPS model and capacity", "Required UPS autonomy", "Existing UPS load", "Generator backup availability", "Automatic transfer switch", "Power-failure recording behaviour", "Graceful shutdown requirement", "Battery-health monitoring", "PoE reserve / headroom", "Redundant power supplies", "Power-remediation actions"]}, {"id": "cloud", "title": "11. Internet, WAN and Cloud Connectivity", "description": "Assess cloud recording, remote viewing, branches and managed connectivity.", "items": ["Primary internet provider", "Primary internet bandwidth", "Available upload bandwidth", "Available download bandwidth", "Busy-hour utilisation", "Secondary internet connection", "Static public IP", "SD-WAN availability", "MPLS availability", "VPN availability", "Branch connectivity", "Cloud route latency", "Cloud route packet loss", "Carrier-grade NAT", "Proxy impact", "Web-filtering impact", "Required cloud destinations", "Required ports and protocols", "Cloud storage region", "Data-residency requirement", "Cloud upload schedule", "Continuous cloud upload requirement", "Event-based cloud upload requirement", "Off-site backup requirement", "Remote live-view concurrency", "Remote playback concurrency", "Mobile-app users", "Web users", "International access requirement", "Bandwidth throttling requirement", "Bandwidth guarantee requirement", "Internet-failover behaviour", "Local recording during WAN outage", "Cloud synchronisation after outage", "Mauritius Telecom cloud option", "Hybrid on-premises / cloud requirement"]}, {"id": "storage", "title": "12. Recording, VMS and Storage Requirements", "description": "Define recording behaviour, retention, redundancy and storage architecture.", "items": ["Preferred VMS / NVR manufacturer", "Permitted VMS manufacturers", "NVR quantity", "Recording-server quantity", "Failover recording server", "VMS server architecture", "Physical or virtual deployment", "Operating-system requirement", "Database requirement", "Number of camera channels", "Future camera growth allowance", "Continuous recording", "Motion-based recording", "Event-based recording", "Schedule-based recording", "Pre-event duration", "Post-event duration", "Required retention days", "Critical-camera retention days", "Archive retention period", "Average camera bitrate", "Peak camera bitrate", "Target frame rate", "Target resolution", "Storage calculation method", "Raw storage requirement", "Usable storage requirement", "RAID level", "Hot-spare requirement", "Storage redundancy factor", "Recording-server redundancy", "NVR clustering requirement", "SAN / NAS integration", "Object-storage integration", "Cloud-storage integration", "Encryption at rest", "Evidence export format", "Watermarking requirement", "Hash / integrity verification", "Time synchronisation", "Storage-health monitoring", "Disk-failure alerting", "Retention verification", "Automatic overwrite policy", "Legal hold requirement", "Backup requirement", "Disaster-recovery requirement"]}, {"id": "analytics", "title": "13. Video Analytics and Intelligent Functions", "description": "Confirm analytics, expected accuracy and response workflow.", "items": ["Motion detection", "Line crossing", "Intrusion detection", "Region entrance / exit", "Loitering detection", "People counting", "Occupancy monitoring", "Queue-length monitoring", "Crowd-density monitoring", "Face detection", "Facial recognition", "Person attribute search", "Vehicle detection", "Vehicle classification", "ANPR / LPR", "Vehicle colour search", "Wrong-way detection", "Illegal parking detection", "Speed detection", "Object left behind", "Object removed", "Tripwire detection", "Perimeter protection", "Thermal analytics", "Fire / smoke video analytics", "PPE detection", "Fall detection", "Audio anomaly detection", "Camera tamper detection", "Scene-change detection", "Privacy redaction", "Metadata search", "Smart forensic search", "Analytics at edge", "Analytics on server", "Analytics in cloud", "Required analytics licences", "False-alarm tolerance", "Analytics calibration requirement", "Analytics acceptance-test scenarios", "Analytics alert recipients"]}, {"id": "control", "title": "14. Central Monitoring Office and Control Room", "description": "Assess operator facilities, displays, racks and ergonomics.", "items": ["Control-room location", "Control-room operating hours", "Number of operators per shift", "Number of operator workstations", "Operator workstation specification", "Number of monitors per operator", "Required monitor size", "Video-wall requirement", "Video-wall layout", "Display size and resolution", "Video-wall controller requirement", "Operator keyboard / joystick requirement", "PTZ controller requirement", "Alarm display requirement", "Incident-management workstation", "Evidence-export workstation", "Printer requirement", "Intercom / radio integration", "Access control to control room", "Control-room CCTV coverage", "42U rack requirement", "Rack dimensions", "Available rack units", "Rack cooling", "Room HVAC", "Heat-load calculation", "Rack earthing", "Rack-door tamper detection", "PDU requirement", "UPS requirement", "Generator supply", "Cable management", "Fibre patch panel", "Copper patch panel", "Core switch location", "NVR / server location", "Storage-array location", "Operator desk layout", "Lighting and glare control", "Acoustic conditions", "Ergonomic chair requirement", "Control-room SOP requirement"]}, {"id": "response", "title": "15. Monitoring, Alarm Handling and Incident Response", "description": "Define who watches, who receives alerts and how incidents are managed.", "items": ["Live monitoring required", "Centralised monitoring required", "Remote monitoring required", "24×7 monitoring required", "Event-driven monitoring", "Alarm priorities", "Alarm verification process", "Operator response time", "Security guard dispatch process", "Police / emergency escalation process", "Customer escalation matrix", "Email alerts", "SMS alerts", "Mobile push alerts", "Audio alerts", "Strobe / warning-light integration", "Public-address announcement", "Automated voice warning", "Incident ticket creation", "Incident classification", "Incident evidence package", "Incident retention", "Operator acknowledgement", "Alarm escalation timer", "False-alarm handling", "Maintenance alarm handling", "Camera offline alert", "Storage failure alert", "Network failure alert", "Tamper alert", "Video-loss alert", "Analytics alert", "Shift handover process", "Daily incident report", "Monthly service report", "SLA measurement", "SOC integration"]}, {"id": "security", "title": "16. Cybersecurity, Privacy and Data Protection", "description": "Confirm secure configuration, access control, evidence protection and privacy obligations.", "items": ["Security policy applicable", "Data-protection requirements", "Privacy-impact assessment", "Purpose limitation", "Camera signage requirement", "Privacy notices", "Areas where surveillance is prohibited", "Audio-recording legal approval", "Facial-recognition legal approval", "ANPR legal approval", "Retention-policy approval", "Evidence access approval process", "Role-based access control", "Least-privilege requirement", "Individual operator accounts", "Administrator MFA", "Password policy", "Default credential removal", "Certificate-based authentication", "HTTPS requirement", "TLS requirement", "Secure ONVIF configuration", "Unused service disablement", "Camera web-interface restriction", "Network segmentation", "Firewall allow-listing", "Remote-access VPN", "Vendor remote-support control", "Firmware-update policy", "Vulnerability-management process", "Patch-management responsibility", "Secure configuration baseline", "Configuration backup encryption", "Video encryption in transit", "Video encryption at rest", "Evidence watermarking", "Audit logging", "Log retention", "Time synchronisation", "Cybersecurity monitoring", "Penetration test requirement", "Security incident response", "Device disposal / data wiping"]}, {"id": "integration", "title": "17. System Integrations", "description": "Capture external platforms, protocols and responsibilities.", "items": ["Access-control integration", "Intrusion-alarm integration", "Fire-alarm integration", "Intercom integration", "Public-address integration", "Building-management-system integration", "Visitor-management integration", "Point-of-sale integration", "ATM integration", "ANPR barrier integration", "Parking-management integration", "Lift integration", "Emergency-call integration", "Video intercom integration", "Body-worn camera integration", "Command-and-control platform integration", "GIS / map integration", "SOC / SIEM integration", "Help-desk integration", "SMS gateway integration", "Email server integration", "Active Directory integration", "Microsoft Entra ID integration", "Single sign-on", "API availability", "ONVIF compatibility", "SDK requirement", "Webhook requirement", "Dry-contact input / output", "Integration testing responsibility", "Third-party dependency", "Integration licences", "Integration data flow", "Integration cybersecurity requirements"]}, {"id": "resilience", "title": "18. Resilience, Availability and Disaster Recovery", "description": "Define redundancy, outage behaviour and continuity arrangements.", "items": ["Required system availability", "Maximum acceptable outage", "Recovery Time Objective", "Recovery Point Objective", "Redundant recording server", "Redundant management server", "NVR clustering", "Failover VMS server", "Redundant storage controllers", "RAID level", "Hot-spare disks", "Dual network interfaces", "Redundant core switches", "Redundant access-switch uplinks", "Dual internet links", "Dual cloud routes", "UPS autonomy", "Generator autonomy", "Local edge recording", "SD-card recording", "Automatic recording resynchronisation", "Secondary monitoring location", "Off-site configuration backup", "Off-site evidence archive", "Cloud disaster recovery", "Replacement-device stock", "Critical spare cameras", "Critical spare switches", "Critical spare disks", "Failover test requirement", "Backup restoration test", "Disaster-recovery test frequency", "Business-continuity procedure"]}, {"id": "civil", "title": "19. Civil, Structural and Electrical Works", "description": "Identify non-ICT works needed for a complete and safe installation.", "items": ["New camera poles", "Pole height", "Pole foundation", "Pole earthing", "Pole lightning protection", "Pole access door", "Wall brackets", "Parapet brackets", "Ceiling reinforcement", "Equipment plinths", "Outdoor cabinets", "Cabinet cooling", "Cabinet locks", "Cabinet earthing", "Trenching requirement", "Road crossing requirement", "Paving reinstatement", "Concrete cutting", "Core drilling", "Wall chasing", "Conduit installation", "Cable tray installation", "Trunking installation", "Manhole installation", "Waterproofing", "Fire stopping", "Painting / making good", "Electrical outlets", "Dedicated power circuits", "DB modifications", "UPS installation", "Generator connection", "Lightning protection", "Surge protection", "Building permit requirement", "Landlord approval", "Structural engineer approval", "MEP coordination", "Civil-work drawings", "As-built civil drawings"]}, {"id": "logistics", "title": "20. Installation Logistics, Access and Safety", "description": "Plan access, permits, working conditions and safety controls.", "items": ["Site induction requirement", "Security clearance requirement", "Work permit process", "Working-hours restriction", "Night-work requirement", "Weekend-work requirement", "Public-area work restriction", "Business-continuity constraints", "Working-at-height permit", "Hot-work permit", "Confined-space permit", "Electrical isolation permit", "Traffic-management plan", "Scaffolding requirement", "Cherry-picker requirement", "Ladder restriction", "Roof-access procedure", "Lift-shaft access procedure", "Personal protective equipment", "Risk assessment and method statement", "Tool inspection requirement", "Equipment storage location", "Material delivery route", "Loading / unloading area", "Waste-disposal requirement", "Dust / noise control", "Customer escort requirement", "Coordination with other contractors", "Site shutdown requirement", "Temporary camera coverage during migration", "Weather dependency", "Cyclone / severe-weather plan", "Emergency contact", "Daily site report", "Photographic progress report"]}, {"id": "support", "title": "21. Licensing, Warranty, Support and Managed Services", "description": "Calculate licences and define operational support.", "items": ["Camera licences", "VMS base licence", "Recording-channel licences", "Failover licences", "Analytics licences", "ANPR licences", "Facial-recognition licences", "Mobile-client licences", "Web-client licences", "Video-wall licences", "Integration licences", "Cloud-storage subscription", "Cloud-camera subscription", "Software-assurance term", "Licence-renewal date", "Licence-renewal responsibility", "Camera warranty", "NVR / server warranty", "Storage warranty", "Switch warranty", "UPS warranty", "On-site warranty requirement", "Advance-replacement requirement", "Required support hours", "24×7 support", "Remote support", "On-site support", "Incident response time", "Resolution target", "Preventive-maintenance frequency", "Camera cleaning frequency", "Firmware-upgrade service", "Configuration-management service", "Health monitoring", "Storage monitoring", "Network monitoring", "Monthly reporting", "Service-review meeting", "Critical spare stock", "Escalation contacts", "Mauritius Telecom managed-service scope"]}, {"id": "implementation", "title": "22. Implementation and Migration Readiness", "description": "Confirm prerequisites, sequencing, ownership and cutover controls.", "items": ["Approved project scope", "Approved camera locations", "Approved architecture", "Approved camera schedule", "Approved storage calculation", "Approved bandwidth calculation", "Approved network design", "Approved IP address plan", "Approved firewall rules", "Approved integration design", "Approved civil works", "Approved electrical works", "Customer project manager", "Mauritius Telecom project manager", "Customer technical team", "Security team participation", "Facilities team participation", "Third-party contractor participation", "Equipment delivery date", "Staging and preconfiguration", "Factory acceptance test", "Site acceptance test", "Pilot area", "Phased deployment", "Legacy-system parallel run", "Data migration requirement", "Existing video migration", "Cutover window", "Rollback plan", "Temporary recording plan", "User training", "Operator training", "Administrator training", "Maintenance training", "SOP preparation", "As-built documentation", "Handover package", "Warranty commencement", "Post-go-live support period"]}, {"id": "testing", "title": "23. Testing, Commissioning and Acceptance", "description": "Record test methods, evidence and acceptance criteria.", "items": ["Camera physical inspection", "Camera aim and field-of-view test", "Daytime image-quality test", "Night-time image-quality test", "Facial identification test", "Vehicle identification test", "ANPR accuracy test", "PTZ preset test", "PTZ patrol test", "IR illumination test", "WDR test", "Audio test", "Alarm input / output test", "Tamper-detection test", "Analytics calibration test", "Analytics false-alarm test", "Motion recording test", "Continuous recording test", "Event recording test", "Pre-event / post-event test", "Playback test", "Evidence export test", "Watermark / hash verification", "Retention verification", "Disk-failure alert test", "Camera-offline alert test", "Network-failure test", "PoE failure test", "UPS autonomy test", "Generator test", "WAN outage test", "Cloud synchronisation test", "Remote live-view test", "Remote playback test", "Mobile-app test", "User-permission test", "Audit-log test", "Cybersecurity configuration review", "Integration test", "Control-room operator test", "Video-wall test", "Performance / load test", "Failover test", "Disaster-recovery test", "Customer User Acceptance Test", "Defect list closure", "Final customer sign-off"]}, {"id": "deliverables", "title": "24. Required Assessment and Design Deliverables", "description": "Track documents required for proposal and implementation.", "items": ["Site assessment report", "Security-risk summary", "Current-state CCTV architecture", "Proposed CCTV architecture", "Camera-location layout", "Camera field-of-view drawings", "Camera schedule", "Equipment schedule", "Network topology", "CCTV VLAN and IP address plan", "Bandwidth calculation", "Storage calculation", "PoE calculation", "Rack elevation", "Control-room layout", "Civil-work drawings", "Cable-route drawings", "Single-line power diagram", "Integration matrix", "Cybersecurity design", "Privacy and data-protection checklist", "Bill of quantities", "Licensing schedule", "Implementation programme", "Migration plan", "Testing and commissioning plan", "User Acceptance Test document", "Risk and remediation register", "Assumptions and exclusions", "Support and managed-service scope", "Training plan", "As-built documentation list"]}, {"id": "readiness", "title": "25. Final Site Readiness and Recommendation", "description": "Summarise readiness and the recommended deployment approach.", "items": ["Security requirements readiness", "Camera-location readiness", "Lighting readiness", "Cabling readiness", "Network readiness", "PoE readiness", "Electrical readiness", "Internet / WAN readiness", "Storage readiness", "VMS readiness", "Control-room readiness", "Cybersecurity readiness", "Privacy / legal readiness", "Integration readiness", "Civil-work readiness", "Installation-access readiness", "Licensing readiness", "Support readiness", "Migration readiness", "Overall site readiness", "Critical risks", "Mandatory remediation actions", "Recommended camera platform", "Recommended VMS / NVR platform", "Recommended storage architecture", "Recommended deployment model", "Recommended retention", "Recommended implementation phases", "Commercial assumptions", "Technical exclusions", "Assessment conclusion", "Customer comments"]}];const STATUS_OPTIONS=["Not reviewed", "Confirmed", "Partially confirmed", "Information required", "Compliant", "Remediation required", "Not applicable", "Rejected"];const STORAGE_KEY="mt-cctv-assessment-v1";
+const opt=(s="Not reviewed")=>STATUS_OPTIONS.map(v=>`<option value="${v}" ${v===s?"selected":""}>${v}</option>`).join("");
+function renderSections(){const c=document.getElementById("sectionsContainer"),n=document.getElementById("sectionNav");if(c.children.length)return;[["camera-schedule","Camera Location Schedule"],["equipment-schedule","Equipment Schedule"]].forEach(x=>{let a=document.createElement("a");a.href="#"+x[0];a.textContent=x[1];n.appendChild(a)});SECTIONS.forEach(s=>{let card=document.createElement("section");card.className="card";card.id=s.id;let rows=s.items.map((it,i)=>{let k=`${s.id}_${i+1}`;return `<tr data-search="${it.toLowerCase()}"><td class="item">${i+1}. ${it}</td><td class="status"><select class="status-select" name="${k}_status">${opt()}</select></td><td class="value"><textarea name="${k}_value" placeholder="Confirmed value, quantity, model or setting"></textarea></td><td class="notes"><textarea name="${k}_notes" placeholder="Evidence, finding, risk or required action"></textarea></td><td class="owner"><input name="${k}_owner" placeholder="Owner"></td><td class="date"><input name="${k}_date" type="date"></td></tr>`}).join("");card.innerHTML=`<div class="section-head"><div><h2>${s.title}</h2><p>${s.description}</p></div><div class="section-actions no-print"><button class="light" data-action="set-confirmed">Mark all confirmed</button><button class="light" data-action="clear-section">Clear section</button></div></div><div class="table-wrap"><table><thead><tr><th style="width:20%">Assessment Item</th><th style="width:13%">Status</th><th style="width:21%">Confirmed / Input Value</th><th style="width:25%">Evidence, Notes or Action</th><th style="width:11%">Owner</th><th style="width:10%">Target Date</th></tr></thead><tbody>${rows}</tbody></table></div><div class="section-summary"><label class="field">Section Conclusion<textarea name="${s.id}_summary"></textarea></label><label class="field">Main Risks / Gaps<textarea name="${s.id}_risks"></textarea></label><label class="field">Recommended Action<textarea name="${s.id}_action"></textarea></label></div>`;c.appendChild(card);let a=document.createElement("a");a.href="#"+s.id;a.textContent=s.title;n.appendChild(a)})}
+function camRow(i){return `<tr><td>${i}</td><td><input name="camera_${i}_zone"></td><td><textarea name="camera_${i}_location"></textarea></td><td><textarea name="camera_${i}_purpose"></textarea></td><td><select name="camera_${i}_type"><option></option><option>Fixed Dome</option><option>Fixed Bullet</option><option>Turret</option><option>PTZ</option><option>Panoramic / Fisheye</option><option>Multi-sensor</option><option>Thermal</option><option>ANPR / LPR</option><option>Intercom Camera</option><option>Analog Camera</option><option>Other</option></select></td><td><input name="camera_${i}_brand_model"></td><td><input class="calc-qty" name="camera_${i}_qty" type="number" min="0" value="1"></td><td><select name="camera_${i}_resolution"><option></option><option>2 MP</option><option>4 MP</option><option>5 MP</option><option>6 MP</option><option>8 MP / 4K</option><option>12 MP</option><option>Other</option></select></td><td><input name="camera_${i}_fps" type="number" min="1" max="60" value="15"></td><td><select name="camera_${i}_codec"><option>H.265+</option><option>H.265</option><option>H.264+</option><option>H.264</option><option>MJPEG</option></select></td><td><input class="calc-bitrate" name="camera_${i}_bitrate" type="number" min="0" step="0.1" value="4"></td><td><input class="calc-hours" name="camera_${i}_hours" type="number" min="0" max="24" step="0.5" value="24"></td><td><input class="calc-days" name="camera_${i}_days" type="number" min="0" value="30"></td><td><select name="camera_${i}_recording"><option>Continuous</option><option>Motion</option><option>Event</option><option>Scheduled</option><option>Continuous + Event</option></select></td><td><input name="camera_${i}_mount" placeholder="Wall, 4 m"></td><td><input name="camera_${i}_power" placeholder="PoE / PoE+ / PoE++"></td><td><input name="camera_${i}_switch"></td><td><input name="camera_${i}_ip_vlan"></td><td><textarea name="camera_${i}_notes"></textarea></td><td class="no-print"><button class="remove-row" data-remove>Remove</button></td></tr>`}
+function eqRow(i){return `<tr><td>${i}</td><td><select name="equipment_${i}_category"><option></option><option>Camera</option><option>NVR / Server</option><option>Storage</option><option>VMS / Licence</option><option>Network Switch</option><option>Firewall / Router</option><option>UPS / Power</option><option>Rack / Cabinet</option><option>Workstation / Monitor</option><option>Video Wall</option><option>Cabling</option><option>Mounting / Civil</option><option>Cloud Subscription</option><option>Other</option></select></td><td><textarea name="equipment_${i}_description"></textarea></td><td><input name="equipment_${i}_brand_model"></td><td><input name="equipment_${i}_qty" type="number" min="0" value="1"></td><td><input name="equipment_${i}_unit"></td><td><select name="equipment_${i}_state"><option>Proposed</option><option>Existing – Retain</option><option>Existing – Replace</option><option>Optional</option></select></td><td><input name="equipment_${i}_location"></td><td><input name="equipment_${i}_licence"></td><td><input name="equipment_${i}_power"></td><td><input name="equipment_${i}_warranty"></td><td><textarea name="equipment_${i}_notes"></textarea></td><td class="no-print"><button class="remove-row" data-remove>Remove</button></td></tr>`}
+function nextIdx(body,p){let m=0;body.querySelectorAll(`[name^="${p}_"]`).forEach(e=>{let x=e.name.match(new RegExp(`^${p}_(\\d+)_`));if(x)m=Math.max(m,+x[1])});return m+1}function addCam(){let b=document.getElementById("cameraRows"),i=nextIdx(b,"camera");b.insertAdjacentHTML("beforeend",camRow(i));recalc()}function addEq(){let b=document.getElementById("equipmentRows"),i=nextIdx(b,"equipment");b.insertAdjacentHTML("beforeend",eqRow(i))}
+const fields=()=>[...document.querySelectorAll("input[name],select[name],textarea[name]")];function state(){let s={};fields().forEach(e=>s[e.name]=e.value);return s}function apply(s){if(!s)return;fields().forEach(e=>{if(e.name in s)e.value=s[e.name];if(e.classList.contains("status-select"))e.dataset.state=e.value});progress();recalc()}function progress(){let a=[...document.querySelectorAll(".status-select")],r=a.filter(x=>x.value!=="Not reviewed").length,p=a.length?Math.round(r/a.length*100):0;document.getElementById("progressText").textContent=p+"% reviewed";document.getElementById("progressBar").style.width=p+"%"}function recalc(){let n=0,m=0,t=0;document.querySelectorAll("#cameraRows tr").forEach(r=>{let q=+(r.querySelector(".calc-qty")?.value||0),b=+(r.querySelector(".calc-bitrate")?.value||0),h=+(r.querySelector(".calc-hours")?.value||0),d=+(r.querySelector(".calc-days")?.value||0);n+=q;m+=q*b;t+=q*b*3600*h*d/(8*1e6)});let o=1+(+document.getElementById("storageOverhead").value||0)/100,rd=+document.getElementById("redundancyFactor").value||1,a=+document.getElementById("archiveTb").value||0,nh=1+(+document.getElementById("networkHeadroom").value||0)/100;document.getElementById("totalCameras").textContent=n;document.getElementById("peakMbps").textContent=m.toFixed(1)+" Mbps";document.getElementById("headroomMbps").textContent=(m*nh).toFixed(1)+" Mbps";document.getElementById("storageTb").textContent=(t*o*rd+a).toFixed(2)+" TB"}
+function dl(c,f,t){let b=new Blob([c],{type:t}),u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download=f;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u)}function base(){let c=document.querySelector('[name="meta_customer"]').value.trim()||"Customer",s=document.querySelector('[name="meta_site"]').value.trim()||"Site",d=document.querySelector('[name="meta_date"]').value||new Date().toISOString().slice(0,10);return `${c}_${s}_CCTV_Assessment_${d}`.replace(/[^a-z0-9_-]+/gi,"_")}function saveHtml(){let cl=document.documentElement.cloneNode(true),st=state();cl.querySelectorAll("input[name],select[name],textarea[name]").forEach(e=>{let v=st[e.name]??"";if(e.tagName==="TEXTAREA")e.textContent=v;else if(e.tagName==="SELECT")[...e.options].forEach(o=>o.toggleAttribute("selected",o.value===v));else e.setAttribute("value",v)});cl.querySelector("#embedded-state").textContent=JSON.stringify(st).replace(/<\/script/gi,"<\\/script");dl("<!DOCTYPE html>\n"+cl.outerHTML,base()+".html","text/html;charset=utf-8")}function exportJson(){dl(JSON.stringify({form:"MT CCTV Installation Site Assessment",exportedAt:new Date().toISOString(),data:state()},null,2),base()+".json","application/json")}
+function importJson(file){let r=new FileReader;r.onload=()=>{try{let p=JSON.parse(r.result),s=p.data||p,ci=new Set,ei=new Set;Object.keys(s).forEach(k=>{let m=k.match(/^camera_(\d+)_/);if(m)ci.add(+m[1]);m=k.match(/^equipment_(\d+)_/);if(m)ei.add(+m[1])});let cb=document.getElementById("cameraRows");cb.innerHTML="";[...ci].sort((a,b)=>a-b).forEach(i=>cb.insertAdjacentHTML("beforeend",camRow(i)));if(!cb.children.length)addCam();let eb=document.getElementById("equipmentRows");eb.innerHTML="";[...ei].sort((a,b)=>a-b).forEach(i=>eb.insertAdjacentHTML("beforeend",eqRow(i)));if(!eb.children.length)addEq();apply(s);alert("Assessment data imported.")}catch(e){alert("Invalid CCTV assessment JSON file.")}};r.readAsText(file)}
+
+function resizeTextareasForPrint(){
+  document.querySelectorAll("textarea").forEach(t=>{
+    t.dataset.previousHeight=t.style.height||"";
+    t.style.height="auto";
+    t.style.height=Math.max(t.scrollHeight,24)+"px";
+  });
+}
+function restoreTextareaHeights(){
+  document.querySelectorAll("textarea").forEach(t=>{
+    t.style.height=t.dataset.previousHeight||"";
+    delete t.dataset.previousHeight;
+  });
+}
+window.addEventListener("beforeprint",resizeTextareasForPrint);
+window.addEventListener("afterprint",restoreTextareaHeights);
+document.addEventListener("DOMContentLoaded",()=>{renderSections();for(let i=0;i<5;i++){addCam();addEq()}document.querySelectorAll(".status-select").forEach(s=>s.dataset.state=s.value);document.getElementById("addCameraRowBtn").onclick=addCam;document.getElementById("addEquipmentRowBtn").onclick=addEq;document.getElementById("recalculateBtn").onclick=recalc;document.getElementById("saveHtmlBtn").onclick=saveHtml;document.getElementById("saveLocalBtn").onclick=()=>{localStorage.setItem(STORAGE_KEY,JSON.stringify(state()));alert("Assessment saved in this browser.")};document.getElementById("loadLocalBtn").onclick=()=>{let x=localStorage.getItem(STORAGE_KEY);x?apply(JSON.parse(x)):alert("No browser save was found.")};document.getElementById("exportJsonBtn").onclick=exportJson;document.getElementById("importJsonInput").onchange=e=>{if(e.target.files[0])importJson(e.target.files[0]);e.target.value=""};document.getElementById("resetBtn").onclick=()=>{if(confirm("Clear all entered CCTV assessment data?")){localStorage.removeItem(STORAGE_KEY);location.reload()}};document.getElementById("searchBox").oninput=e=>{let q=e.target.value.trim().toLowerCase();document.querySelectorAll("#sectionsContainer tbody tr").forEach(r=>r.classList.toggle("hidden-row",q&&!r.dataset.search.includes(q)))};document.addEventListener("input",e=>{if(e.target.matches(".calc-qty,.calc-bitrate,.calc-hours,.calc-days,#storageOverhead,#redundancyFactor,#networkHeadroom,#archiveTb"))recalc()});document.addEventListener("change",e=>{if(e.target.classList.contains("status-select"))e.target.dataset.state=e.target.value;progress();recalc()});document.addEventListener("click",e=>{let rm=e.target.closest("[data-remove]");if(rm){rm.closest("tr").remove();recalc();return}let b=e.target.closest("button[data-action]");if(!b)return;let s=b.closest(".card");if(b.dataset.action==="set-confirmed"){s.querySelectorAll(".status-select").forEach(x=>{x.value="Confirmed";x.dataset.state=x.value});progress()}else if(confirm("Clear all data in this section?")){s.querySelectorAll("input[name],select[name],textarea[name]").forEach(x=>{if(x.classList.contains("status-select")){x.value="Not reviewed";x.dataset.state=x.value}else if(x.tagName==="SELECT")x.selectedIndex=0;else x.value=""});progress()}});try{let e=JSON.parse(document.getElementById("embedded-state").textContent||"{}");if(Object.keys(e).length)apply(e)}catch(e){}if(!document.querySelector('[name="meta_date"]').value)document.querySelector('[name="meta_date"]').value=new Date().toISOString().slice(0,10);progress();recalc()});
+</script></body></html>

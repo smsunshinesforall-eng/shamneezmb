@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MT Telephony Site Assessment Form</title>
+<style>
+:root {
+  --navy:#0b2545;
+  --blue:#163f73;
+  --teal:#0f766e;
+  --light:#eef4fa;
+  --paper:#ffffff;
+  --line:#cfdbea;
+  --text:#172435;
+  --muted:#5a6c7f;
+  --danger:#a63535;
+  --success:#1e7b4d;
+  --warning:#9a6700;
+  --toolbar-height:58px;
+  --shadow:0 3px 12px rgba(11,37,69,.07);
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  margin:0;
+  min-height:100vh;
+  font-family:Calibri, Arial, sans-serif;
+  color:var(--text);
+  background:#e9f0f7;
+  line-height:1.35;
+}
+header {
+  background:linear-gradient(120deg,var(--navy),var(--blue));
+  color:white;
+  padding:28px 32px 22px;
+}
+header h1 { margin:0 0 6px; font-size:31px; line-height:1.1; }
+header p { margin:0; color:#dce8f7; font-size:15px; }
+.toolbar {
+  position:sticky;
+  top:0;
+  z-index:30;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  align-items:center;
+  min-height:58px;
+  padding:10px 18px;
+  background:rgba(255,255,255,.98);
+  border-bottom:1px solid var(--line);
+  box-shadow:0 2px 8px rgba(11,37,69,.10);
+}
+button, .file-button {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:36px;
+  border:0;
+  border-radius:6px;
+  padding:8px 13px;
+  font:600 13px Calibri,Arial,sans-serif;
+  line-height:1.15;
+  cursor:pointer;
+  background:var(--navy);
+  color:white;
+  text-decoration:none;
+  white-space:nowrap;
+}
+button.secondary, .file-button.secondary { background:var(--teal); }
+button.light, .file-button.light {
+  background:#edf3f9;
+  color:var(--navy);
+  border:1px solid var(--line);
+}
+button.danger { background:var(--danger); }
+button:hover, .file-button:hover { filter:brightness(1.05); }
+button:focus-visible, .file-button:focus-visible,
+input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline:3px solid rgba(15,118,110,.23);
+  outline-offset:1px;
+}
+.file-button { position:relative; }
+.file-button input {
+  position:absolute;
+  width:1px;
+  height:1px;
+  opacity:0;
+  pointer-events:none;
+}
+.search {
+  flex:1 1 260px;
+  min-width:220px;
+  min-height:36px;
+  padding:8px 11px;
+  border:1px solid var(--line);
+  border-radius:6px;
+  font:14px Calibri,Arial,sans-serif;
+  background:white;
+}
+.progress-wrap {
+  flex:0 1 230px;
+  min-width:190px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:var(--muted);
+  font-size:12px;
+}
+.progress {
+  height:8px;
+  flex:1;
+  background:#dfe8f2;
+  border-radius:999px;
+  overflow:hidden;
+}
+.progress > span {
+  display:block;
+  height:100%;
+  width:0;
+  background:var(--teal);
+  transition:width .25s ease;
+}
+.layout {
+  display:grid;
+  grid-template-columns:270px minmax(0,1fr);
+  max-width:1700px;
+  margin:0 auto;
+}
+nav {
+  position:sticky;
+  top:var(--toolbar-height);
+  align-self:start;
+  height:calc(100vh - var(--toolbar-height));
+  overflow:auto;
+  overscroll-behavior:contain;
+  background:#f7fafd;
+  border-right:1px solid var(--line);
+  padding:15px;
+}
+nav a {
+  display:block;
+  text-decoration:none;
+  color:var(--blue);
+  padding:7px 8px;
+  border-radius:5px;
+  font-size:13px;
+  line-height:1.22;
+}
+nav a:hover, nav a:focus-visible { background:#e6eef7; }
+main {
+  min-width:0;
+  padding:20px;
+}
+.meta-card, .section-card {
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin-bottom:18px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  overflow:clip;
+}
+.meta-card { padding:18px; }
+.section-card { scroll-margin-top:calc(var(--toolbar-height) + 12px); }
+.meta-grid {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+}
+label.field {
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+  min-width:0;
+  font-size:12px;
+  font-weight:700;
+  color:var(--blue);
+}
+input, select, textarea {
+  width:100%;
+  min-width:0;
+  border:1px solid #b8c8db;
+  border-radius:5px;
+  padding:7px 8px;
+  font:13px Calibri,Arial,sans-serif;
+  line-height:1.25;
+  color:var(--text);
+  background:white;
+}
+input, select { min-height:36px; }
+textarea {
+  min-height:54px;
+  resize:vertical;
+  overflow:auto;
+}
+input:focus, select:focus, textarea:focus { border-color:var(--teal); }
+.section-head {
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  align-items:flex-start;
+  padding:16px 18px;
+  background:linear-gradient(90deg,#f4f8fc,#ffffff);
+  border-bottom:1px solid var(--line);
+}
+.section-head > div:first-child { min-width:0; }
+.section-head h2 {
+  margin:0 0 4px;
+  color:var(--navy);
+  font-size:20px;
+  line-height:1.2;
+}
+.section-head p {
+  margin:0;
+  color:var(--muted);
+  font-size:13px;
+}
+.section-actions {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  gap:6px;
+  flex:0 0 auto;
+}
+.section-body {
+  padding:0 12px 12px;
+  overflow-x:auto;
+  overflow-y:visible;
+  -webkit-overflow-scrolling:touch;
+}
+table {
+  width:100%;
+  min-width:1180px;
+  border-collapse:collapse;
+  table-layout:fixed;
+}
+th {
+  position:static;
+  background:var(--navy);
+  color:white;
+  text-align:left;
+  vertical-align:middle;
+  font-size:12px;
+  line-height:1.2;
+  padding:8px;
+  border:1px solid #25466e;
+}
+td {
+  border:1px solid var(--line);
+  padding:6px;
+  vertical-align:top;
+  background:white;
+}
+tbody tr:nth-child(even) td { background:#f9fbfd; }
+tbody tr:hover td { background:#f0f6fb; }
+td.item {
+  width:20%;
+  font-size:12.5px;
+  font-weight:700;
+  color:var(--blue);
+  overflow-wrap:anywhere;
+}
+td.status { width:13%; }
+td.value { width:21%; }
+td.notes { width:25%; }
+td.owner { width:11%; }
+td.date { width:10%; }
+td textarea {
+  min-height:48px;
+  resize:vertical;
+}
+.status-select[data-state="Confirmed"],
+.status-select[data-state="Compliant"] {
+  border-color:#68a985;
+  background:#edf8f2;
+}
+.status-select[data-state="Remediation required"],
+.status-select[data-state="Rejected"] {
+  border-color:#c97878;
+  background:#fff0f0;
+}
+.status-select[data-state="Information required"],
+.status-select[data-state="Partially confirmed"] {
+  border-color:#caa75d;
+  background:#fff9ea;
+}
+.status-select[data-state="Not applicable"] {
+  border-color:#aab6c3;
+  background:#f2f4f7;
+  color:#596675;
+}
+.section-summary {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  padding:12px 18px 16px;
+  border-top:1px solid var(--line);
+  background:#fbfdff;
+}
+.signoff {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+.small { font-size:12px; color:var(--muted); }
+.hidden-row { display:none; }
+.footer {
+  padding:18px;
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+}
+.print-only { display:none; }
+
+@media (max-width:1350px) {
+  .meta-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .toolbar { padding-inline:12px; }
+}
+@media (max-width:1100px) {
+  .layout { grid-template-columns:1fr; }
+  nav { display:none; }
+  .meta-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .section-summary { grid-template-columns:1fr; }
+}
+@media (max-width:700px) {
+  header { padding:22px 18px; }
+  header h1 { font-size:24px; }
+  .toolbar { position:relative; }
+  main { padding:10px; }
+  .meta-grid, .signoff { grid-template-columns:1fr; }
+  .section-head { flex-direction:column; gap:12px; }
+  .section-actions { width:100%; justify-content:flex-start; }
+  .progress-wrap { flex-basis:100%; }
+}
+
+@page { size:A4 landscape; margin:8mm; }
+
+@media print {
+  html, body {
+    width:auto;
+    min-height:0;
+    background:white !important;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+  body { font-size:8.5pt; line-height:1.22; }
+  header {
+    background:white !important;
+    color:var(--navy) !important;
+    padding:0 0 5mm;
+    border-bottom:2px solid var(--navy);
+  }
+  header h1 { font-size:20pt; }
+  header p { color:var(--muted) !important; font-size:9pt; }
+  .toolbar, nav, .section-actions, .no-print { display:none !important; }
+  .layout { display:block; max-width:none; }
+  main { padding:0; }
+  .meta-card, .section-card {
+    overflow:visible !important;
+    box-shadow:none !important;
+    border:1px solid #9eb1c8;
+    border-radius:0;
+    margin:0 0 5mm;
+    break-inside:auto;
+    page-break-inside:auto;
+  }
+  .meta-card { padding:4mm; }
+  .section-card {
+    break-before:page;
+    page-break-before:always;
+  }
+  #sectionsContainer .section-card:first-child {
+    break-before:auto;
+    page-break-before:auto;
+  }
+  main > .meta-card:last-of-type {
+    break-before:page;
+    page-break-before:always;
+  }
+  .section-head {
+    padding:3mm 4mm;
+    background:#eef4fa !important;
+    break-after:avoid;
+    page-break-after:avoid;
+  }
+  .section-head h2 { font-size:13pt; }
+  .section-head p { font-size:8pt; }
+  .section-body {
+    padding:0;
+    overflow:visible !important;
+  }
+  table {
+    width:100%;
+    min-width:0;
+    table-layout:fixed;
+    font-size:7.2pt;
+  }
+  thead { display:table-header-group; }
+  tfoot { display:table-footer-group; }
+  tr {
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+  th {
+    position:static;
+    background:#dce7f3 !important;
+    color:var(--navy) !important;
+    border-color:#9eb1c8;
+    font-size:7.2pt;
+    padding:2.2mm 1.5mm;
+  }
+  td {
+    padding:1.3mm;
+    border-color:#b7c5d5;
+    background:white !important;
+  }
+  tbody tr:nth-child(even) td { background:#f7f9fc !important; }
+  td.item { font-size:7.2pt; }
+  input, select, textarea {
+    min-height:0;
+    border:0 !important;
+    border-radius:0;
+    padding:0;
+    font-size:7.2pt;
+    line-height:1.18;
+    background:transparent !important;
+    box-shadow:none !important;
+    color:#111 !important;
+    appearance:none;
+    -webkit-appearance:none;
+  }
+  textarea {
+    display:block;
+    width:100%;
+    overflow:visible !important;
+    resize:none;
+    white-space:pre-wrap;
+  }
+  .section-summary {
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    padding:3mm 4mm;
+    gap:3mm;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+  .signoff {
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+  .footer { display:none; }
+  .print-only { display:block; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>MT Telephony Site Assessment Form</h1>
+  <p>Universal assessment for Cisco, 3CX, Avaya, Microsoft Teams Phone and hotel telephony solutions.</p>
+</header>
+
+<div class="toolbar no-print">
+  <button type="button" onclick="window.print()">Print / Save as PDF</button>
+  <button type="button" class="secondary" id="saveHtmlBtn">Save Filled Form as HTML</button>
+  <button type="button" class="light" id="saveLocalBtn">Save in Browser</button>
+  <button type="button" class="light" id="loadLocalBtn">Load Browser Save</button>
+  <button type="button" class="light" id="exportJsonBtn">Export JSON</button>
+  <label class="file-button light">Import JSON<input type="file" id="importJsonInput" accept=".json,application/json"></label>
+  <button type="button" class="danger" id="resetBtn">Reset</button>
+  <input class="search" id="searchBox" type="search" placeholder="Search assessment items…">
+  <div class="progress-wrap">
+    <span id="progressText">0% reviewed</span>
+    <div class="progress"><span id="progressBar"></span></div>
+  </div>
+</div>
+
+<div class="layout">
+  <nav id="sectionNav" aria-label="Assessment sections"></nav>
+  <main>
+    <section class="meta-card">
+      <h2 style="margin-top:0;color:var(--navy)">Assessment Control Information</h2>
+      <div class="meta-grid">
+        <label class="field">Customer<input name="meta_customer" type="text"></label>
+        <label class="field">Site<input name="meta_site" type="text"></label>
+        <label class="field">Site Address<input name="meta_address" type="text"></label>
+        <label class="field">Assessment Date<input name="meta_date" type="date"></label>
+        <label class="field">Assessor<input name="meta_assessor" type="text"></label>
+        <label class="field">Account Manager<input name="meta_account_manager" type="text"></label>
+        <label class="field">Customer Technical Contact<input name="meta_customer_contact" type="text"></label>
+        <label class="field">Project / Opportunity Reference<input name="meta_project_ref" type="text"></label>
+        <label class="field">Proposed Technology
+          <select name="meta_technology">
+            <option value="">Select</option>
+            <option>Cisco</option><option>3CX</option><option>Avaya</option>
+            <option>Microsoft Teams Phone</option><option>Hotel Telephony</option>
+            <option>Technology to be determined</option>
+          </select>
+        </label>
+        <label class="field">Deployment Model
+          <select name="meta_deployment">
+            <option value="">Select</option>
+            <option>On-premises</option><option>MT-hosted</option><option>Public cloud</option>
+            <option>Hybrid</option><option>To be determined</option>
+          </select>
+        </label>
+        <label class="field">Assessment Version<input name="meta_version" type="text" value="1.0"></label>
+        <label class="field">Overall Assessment Status
+          <select name="meta_status">
+            <option>Draft</option><option>In progress</option><option>Pending customer information</option>
+            <option>Ready for solution design</option><option>Approved</option>
+          </select>
+        </label>
+      </div>
+      <label class="field" style="margin-top:12px">Assessment Scope and Objectives
+        <textarea name="meta_scope" placeholder="Describe the site, business objectives, constraints and expected assessment outcome."></textarea>
+      </label>
+    </section>
+
+    <div id="sectionsContainer"></div>
+
+    <section class="meta-card">
+      <h2 style="margin-top:0;color:var(--navy)">Assessment Sign-off</h2>
+      <div class="signoff">
+        <label class="field">Prepared by<input name="sign_prepared_by" type="text"></label>
+        <label class="field">Reviewed by<input name="sign_reviewed_by" type="text"></label>
+        <label class="field">Customer representative<input name="sign_customer" type="text"></label>
+        <label class="field">Prepared date<input name="sign_prepared_date" type="date"></label>
+        <label class="field">Review date<input name="sign_review_date" type="date"></label>
+        <label class="field">Customer confirmation date<input name="sign_customer_date" type="date"></label>
+      </div>
+      <label class="field" style="margin-top:12px">Final Comments / Conditions of Approval
+        <textarea name="sign_comments"></textarea>
+      </label>
+    </section>
+
+    <div class="footer">
+      Standalone HTML form. Data remains on the device unless exported or saved into a filled HTML copy.
+    </div>
+  </main>
+</div>
+
+<script id="embedded-state" type="application/json">{}</script>
+<script>
+const SECTIONS = [{"id": "customer-site", "title": "1. Customer and Site Information", "description": "Record the basic commercial, technical and physical context of the site.", "items": ["Customer name", "Site name", "Site address", "GPS coordinates / map reference", "Main customer contact", "Technical contact", "Facilities contact", "Security contact", "Assessment date", "Assessor name", "Account manager", "Project reference", "Number of buildings", "Number of floors", "Number of offices or rooms", "Number of branches", "Operating hours", "Business criticality of telephony", "Planned implementation date", "Expected solution lifetime", "Expected business growth over 3–5 years", "Existing Mauritius Telecom services at the site"]}, {"id": "business-users", "title": "2. Business and User Requirements", "description": "Confirm user populations, roles, working patterns and growth.", "items": ["Total number of employees", "Total number of telephone users", "Number of basic users", "Number of standard office users", "Number of executive users", "Number of desk-phone users", "Number of softphone-only users", "Number of mobile-app users", "Number of receptionists / attendants", "Number of contact-centre agents", "Number of contact-centre supervisors", "Number of remote workers", "Number of branch-office users", "Number of shared or common-area phones", "Number of meeting rooms", "Number of analog devices", "Number of hotel guest rooms, where applicable", "Expected user growth over 3–5 years", "Preferred working model: office / hybrid / remote", "Required service availability and business impact of an outage"]}, {"id": "existing-telephony", "title": "3. Existing Telephony Environment", "description": "Document the current platform, capacity, features, assets and pain points.", "items": ["Existing PBX manufacturer and model", "Existing PBX software / firmware version", "Existing system age", "Existing support or maintenance contract", "Current system capacity", "Current number of extensions", "Existing extension numbering plan", "Existing telephone models and quantities", "Existing licences and subscription terms", "Existing voicemail system", "Existing IVR / auto-attendant", "Existing call queues and hunt groups", "Existing call-recording platform", "Existing contact-centre platform", "Existing reporting or call-accounting platform", "Existing DECT system", "Existing analog extensions", "Existing fax lines", "Existing emergency phones", "Existing door phones and intercoms", "Existing public-address integration", "Existing billing or hotel call-accounting system", "Current faults and user complaints", "Current maintenance and support challenges", "Existing configuration backup availability", "Administrator credential availability", "Configuration export / database availability", "Assets to be retained or reused", "Assets to be replaced or decommissioned"]}, {"id": "pstn-numbering", "title": "4. Telephone Numbers and PSTN Connectivity", "description": "Confirm trunks, channels, numbers, codecs, security and portability.", "items": ["Current telephone service provider", "Current PSTN technology", "SIP trunk availability", "ISDN PRI / BRI services", "Analog line quantities", "Current number of voice channels", "Maximum simultaneous calls", "Measured peak simultaneous calls", "Busy-hour call volume", "Inbound and outbound call volumes", "International calling requirements", "Toll-free numbers", "Premium-rate restrictions", "Emergency calling requirements", "Fax usage", "DTMF requirements", "Caller-ID presentation requirements", "Caller-ID restriction requirements", "Main business number", "Complete DID / DDI number range", "Numbers to be retained", "Number-porting requirements", "New-number requirements", "Extension length", "Branch numbering plan", "Department numbering plan", "Short-dial codes", "Emergency and special-service numbers", "E.164 number-normalisation requirements", "SIP trunk handoff type", "Registration-based or IP-authenticated SIP trunk", "SIP provider IP addresses", "SIP signalling port", "RTP media port range", "Supported codecs", "SIP DTMF method", "TLS support", "SRTP support", "SIP session limit", "Calls-per-second limit", "SIP trunk failover arrangement", "SBC requirement", "Static public IP requirement"]}, {"id": "call-flows", "title": "5. Call-Flow Requirements", "description": "Define the exact behaviour for inbound, outbound, internal and remote calls.", "items": ["Main-number inbound routing", "Direct-dial inbound routing", "Business-hours treatment", "After-hours treatment", "Weekend and public-holiday treatment", "IVR menu structure and options", "Reception routing", "Department routing", "Ring-group membership and strategy", "Call-queue membership and strategy", "Queue overflow destination", "Queue timeout", "No-answer destination", "Busy destination", "Voicemail destination", "External forwarding requirements", "Emergency announcement requirements", "Local calling permissions", "Mobile calling permissions", "International calling permissions", "Premium-number restrictions", "Emergency outbound calling", "Least-cost routing", "Outbound caller-ID policy", "Personal authorisation codes", "Department billing codes", "Call-barring rules", "Fraud-control limits", "Extension-to-extension routing", "Inter-branch dialing", "Remote-user calling", "Mobile-app calling", "Laptop softphone calling", "Simultaneous ringing", "Call delegation", "Executive-assistant functionality", "Hot-desking requirements"]}, {"id": "features", "title": "6. Required Telephony Features", "description": "For each feature, confirm whether it is required and capture the detailed expected behaviour.", "items": ["Auto-attendant", "Multi-level IVR", "Voicemail", "Voicemail-to-email", "Call forwarding", "Call transfer", "Call hold", "Call parking", "Call pickup", "Ring groups", "Hunt groups", "Call queues", "Music on hold", "Custom announcements", "Conference calling", "Audio conferencing", "Video conferencing", "Presence information", "Instant messaging", "Desktop softphone", "Mobile application", "Web client", "Hot desking", "Call recording", "Screen recording", "Call monitoring", "Whisper and barge-in", "Wallboards", "Call reporting", "Call accounting", "Contact-centre functionality", "SMS integration", "WhatsApp integration", "Web chat integration", "Fax-to-email", "Paging and intercom", "Door-phone integration", "Emergency calling", "Location-based emergency information", "Multilingual prompts", "Centralised management", "Multi-site administration"]}, {"id": "lan", "title": "7. LAN and Network Assessment", "description": "Validate switching, addressing, VLANs, QoS and voice-quality performance.", "items": ["Current network topology diagram", "Core-switch manufacturer and model", "Access-switch manufacturer and model", "Router manufacturer and model", "Firewall manufacturer and model", "Wireless-controller details", "Wireless access-point models", "Current switch-port utilisation", "Available switch ports", "Switch firmware versions", "Layer 3 routing capability", "DHCP service", "DNS service", "NTP service", "Network monitoring system", "Existing network faults", "Dedicated voice VLAN availability", "Voice VLAN ID", "Data VLAN ID", "Guest VLAN ID", "Video VLAN ID", "Voice IP subnet and mask", "Voice default gateway", "Voice DHCP scope", "Required DHCP options", "LLDP / LLDP-MED support", "CDP support for Cisco", "VLAN tagging through phone PC ports", "Inter-VLAN routing", "Voice access-control rules", "Current QoS configuration", "Voice traffic classification", "SIP signalling classification", "RTP media classification", "DSCP markings", "Switch QoS trust boundaries", "WAN QoS policy", "Voice bandwidth reservation", "Congestion-management policy", "Measured one-way latency", "Measured jitter", "Measured packet loss", "Network congestion periods", "Network availability target", "Required bandwidth headroom"]}, {"id": "wan", "title": "8. Internet and WAN Assessment", "description": "Assess all connectivity paths used by cloud, SIP, branch and remote users.", "items": ["Primary internet service provider", "Primary internet bandwidth", "Secondary internet connection", "Busy-hour internet utilisation", "Available upload bandwidth", "Available download bandwidth", "Static public IP", "Public IP failover", "NAT configuration", "Carrier-grade NAT", "MPLS service", "SD-WAN service", "VPN connectivity", "Branch-office connectivity", "Routing protocol", "Measured WAN latency", "Measured WAN jitter", "Measured WAN packet loss", "Cloud connectivity test", "Microsoft 365 connectivity test", "DNS resolution test", "Required ports and URLs", "Proxy or web-filtering impact", "Selected voice codec", "Calculated peak concurrent calls", "Audio-conferencing bandwidth", "Video-conferencing bandwidth", "Remote-user bandwidth", "Signalling overhead", "Encryption overhead", "Capacity headroom"]}, {"id": "poe", "title": "9. Power over Ethernet Assessment", "description": "Calculate the total PoE demand and confirm safe capacity with headroom.", "items": ["PoE support on existing switches", "Supported PoE standard", "Total PoE budget", "Current PoE consumption", "Power requirement per proposed phone", "Power requirement per DECT base", "Power requirement per conference device", "Power requirement per Wi-Fi AP", "Power requirement per video device", "Calculated total proposed PoE demand", "PoE reserve / headroom", "Redundant switch power supplies", "Devices requiring local power adapters"]}, {"id": "cabling", "title": "10. Cabling Assessment", "description": "Confirm structured cabling, outlet readiness, labels and additional works.", "items": ["Structured-cabling drawings", "Existing cable category", "Cable-certification reports", "Telephone outlet condition", "Data outlet condition", "Outlet labels", "Patch-panel labels", "Rack-to-outlet mapping", "Available data points", "Damaged outlets", "Cable-length compliance", "Copper uplinks", "Fibre uplinks", "Backbone capacity", "Additional cabling requirements", "Separate phone and computer outlets", "Phone PC-port pass-through acceptance", "Analog cabling requirements", "Outdoor / industrial cabling requirements", "Cable testing before deployment"]}, {"id": "rack-power", "title": "11. Equipment Room, Rack and Power Assessment", "description": "Validate physical hosting, power resilience, cooling and controlled access.", "items": ["Main equipment room", "Secondary equipment room", "Rack size and available rack units", "Rack depth", "Lockable rack", "Rack ventilation", "Room cooling", "Water-exposure risk", "Room access control", "Equipment earthing", "Cable management", "Patch-panel labelling", "Available power outlets", "Redundant power circuits", "UPS model and capacity", "UPS battery autonomy", "Generator supply", "Environmental monitoring", "Reserved space for expansion"]}, {"id": "security-sbc", "title": "12. Firewall, SBC and Security Assessment", "description": "Confirm perimeter readiness, secure signalling, fraud controls and administrative security.", "items": ["Firewall model and firmware", "Firewall throughput", "Firewall high availability", "SIP ALG status", "NAT rules", "Port-forwarding requirements", "Access-control lists", "Intrusion-prevention impact", "TLS inspection exclusions", "Session Border Controller requirement", "SBC deployment model", "Physical / virtual / cloud SBC", "SBC session capacity", "SBC transcoding capacity", "Media bypass requirements", "TLS certificate requirements", "Public DNS records", "Secure SIP signalling", "SRTP media encryption", "Administrator MFA", "Role-based administration", "Password policy", "IP-phone web interface security", "Default credential removal", "Fraud detection", "International-call limits", "Audit logging", "Log retention period", "Vulnerability-management process", "Backup encryption"]}, {"id": "endpoints", "title": "13. Endpoint Assessment", "description": "Specify endpoint quantities, capabilities, compatibility and coverage.", "items": ["Basic IP phone quantity", "Standard IP phone quantity", "Executive IP phone quantity", "Reception console quantity", "Colour-screen requirement", "Touchscreen requirement", "Video-phone requirement", "Required line keys", "Busy Lamp Field requirements", "Expansion-module requirement", "Gigabit PC port requirement", "Wi-Fi phone support", "Bluetooth support", "Electronic hook-switch support", "Wall-mounting requirement", "Headset compatibility", "Phone power-adapter requirements", "Windows softphone support", "macOS softphone support", "Android support", "iOS support", "Browser client requirement", "Device-management requirements", "Bring-your-own-device policy", "Mobile-data usage", "Push-notification requirements", "Headset quantity and model", "Webcam requirement", "Remote onboarding process", "DECT coverage areas", "DECT simultaneous calls", "DECT indoor coverage", "DECT outdoor coverage", "Lift / basement / warehouse coverage", "DECT survey requirement", "Estimated DECT base stations", "DECT base cabling", "DECT roaming", "DECT handover", "Rugged handsets", "Lone-worker functionality", "Wi-Fi calling alternative", "Fax machine quantity", "Analog phone quantity", "Lift phone quantity", "Alarm panel quantity", "Modem quantity", "Point-of-sale terminal quantity", "Door-phone quantity", "Paging system", "Required FXS ports", "Required FXO ports", "ATA / analog gateway model", "Fax protocol requirements", "Emergency power for analog devices"]}, {"id": "teams", "title": "14. Microsoft Teams Phone Assessment", "description": "Complete when Microsoft Teams Phone is being evaluated or proposed.", "items": ["Microsoft 365 tenant", "Tenant administrator", "Current Microsoft 365 licences", "Teams Phone entitlement", "Required Teams Phone add-ons", "Entra ID readiness", "User account synchronisation", "Domain and DNS readiness", "Microsoft Calling Plan availability", "Operator Connect availability", "Direct Routing requirement", "Certified SBC for Direct Routing", "Resource accounts", "Auto-attendant resource accounts", "Call-queue resource accounts", "Teams-certified endpoint selection", "Emergency locations", "Teams dial plans", "Voice-routing policies", "Calling policies", "Caller-ID policies", "Compliance recording", "Survivable Branch Appliance", "Teams Rooms integration", "Exchange Online voicemail integration", "Conditional Access impact", "MFA requirements"]}, {"id": "cisco", "title": "15. Cisco Telephony Assessment", "description": "Complete when Cisco CUCM, Webex Calling or Cisco collaboration is being evaluated.", "items": ["CUCM or Webex Calling deployment model", "CUCM cluster sizing", "Publisher requirements", "Subscriber requirements", "Cisco Unity Connection", "Cisco CUBE", "Cisco Emergency Responder", "UCCX / UCCE contact centre", "Webex integration", "Cisco licensing model", "Cisco Smart Account", "Virtualisation platform support", "Cisco phone models", "Device pools and regions", "Locations and bandwidth controls", "Calling Search Spaces", "Partitions", "Route patterns", "SRST / branch survivability", "Existing Cisco switching integration"]}, {"id": "avaya", "title": "16. Avaya Telephony Assessment", "description": "Complete when Avaya IP Office, Aura or related services are being evaluated.", "items": ["Avaya IP Office or Aura selection", "User and extension capacity", "IP Office server / appliance", "Communication Manager architecture", "Avaya SBCE", "Voicemail Pro / Messaging", "Avaya Workplace", "Avaya contact-centre solution", "Avaya licences", "Licence transferability", "Reusable Avaya endpoints", "J-Series phone selection", "SIP trunk compatibility", "Virtualisation requirements", "Resilience and failover"]}, {"id": "3cx", "title": "17. 3CX Telephony Assessment", "description": "Complete when 3CX is being evaluated or proposed.", "items": ["Total 3CX users", "Peak simultaneous calls", "Required 3CX edition", "Required simultaneous-call licence", "Self-hosted or hosted deployment", "Windows or Linux deployment", "Virtual-machine specifications", "Fully qualified domain name", "TLS certificate requirements", "Supported SIP trunk", "Supported IP phone models", "3CX SBC for remote locations", "3CX Web Client", "3CX mobile applications", "CRM integration", "Call recording", "Reporting requirements", "Backup destination", "High-availability requirement"]}, {"id": "hotel", "title": "18. Hotel Telephony Assessment", "description": "Complete for hotels, resorts, serviced apartments and hospitality sites.", "items": ["Number of guest rooms", "Number of hotel floors", "Public-area phone quantity", "Back-office user quantity", "Reception positions", "Operator consoles", "Housekeeping users", "Administration users", "Emergency phones", "Lifts", "Conference and banquet areas", "Property Management System manufacturer", "PMS version", "PMS integration protocol", "Check-in / check-out integration", "Guest-name display", "Room-status update", "Wake-up call", "Minibar posting", "Call charging", "Guest call barring", "Guest voicemail", "Message-waiting indication", "Do-not-disturb synchronisation", "Housekeeping codes", "Room-move functionality", "Language selection", "Emergency-location identification", "Guest-room phone type", "Bathroom phone requirements", "Analog guest-room phones to retain", "FXS gateway requirement", "Front-office failover process"]}, {"id": "integrations", "title": "19. Integration Requirements", "description": "Capture every external system, interface, responsibility and dependency.", "items": ["Active Directory integration", "Microsoft Entra ID integration", "LDAP integration", "Single sign-on", "Multifactor authentication", "Microsoft Outlook integration", "Microsoft Exchange integration", "Microsoft Teams integration", "CRM integration", "ERP integration", "Help-desk platform integration", "Property Management System integration", "Contact-centre integration", "Call-recording integration", "Call-accounting integration", "Billing-system integration", "SMS platform integration", "WhatsApp integration", "Paging integration", "Access-control integration", "Door-phone integration", "Public-address integration", "Emergency-system integration", "API availability", "Integration ownership and responsibilities"]}, {"id": "recording-compliance", "title": "20. Recording, Reporting and Compliance", "description": "Define recording scope, retention, storage, permissions and reporting.", "items": ["Users and calls to be recorded", "Inbound recording", "Outbound recording", "Internal recording", "On-demand recording", "Pause and resume", "Recording notification", "Recording retention period", "Estimated recording storage", "On-premises or cloud recording storage", "Recording encryption", "Recording access permissions", "Search and playback requirements", "Recording export requirements", "Tamper protection", "Audit trails", "Data-protection requirements", "Customer legal approval", "Standard reports", "Custom reports", "Scheduled reports", "Management dashboards"]}, {"id": "resilience", "title": "21. Resilience and Business Continuity", "description": "Define availability targets and all required redundancy or survivability measures.", "items": ["Required availability level", "Maximum acceptable outage", "Recovery Time Objective", "Recovery Point Objective", "Redundant PBX servers", "Redundant SBCs", "Redundant firewalls", "Redundant core switches", "Dual SIP trunks", "Dual internet links", "Dual WAN paths", "Secondary data centre", "Cloud disaster recovery", "Branch survivability", "Local PSTN breakout", "Mobile failover numbers", "UPS autonomy", "Generator backup", "Automated configuration backups", "Backup restoration test", "Disaster-recovery test frequency"]}, {"id": "hosting", "title": "22. Hosting and Platform Requirements", "description": "Specify the target hosting model and platform resources.", "items": ["On-premises deployment", "Customer data-centre deployment", "Mauritius Telecom hosted deployment", "Public-cloud deployment", "Hybrid deployment", "Physical server requirement", "Virtual machine requirement", "Supported hypervisor", "CPU requirement", "RAM requirement", "Application storage requirement", "Recording storage requirement", "Operating-system requirement", "Database requirement", "Backup platform", "Monitoring platform", "Antivirus exclusions", "Patch-management responsibility", "Cloud region", "Data-residency requirement"]}, {"id": "licensing", "title": "23. Licensing Assessment", "description": "Calculate all licence quantities, terms, renewals and growth allowances.", "items": ["Total user licences", "Basic-user licences", "Standard-user licences", "Premium-user licences", "Receptionist licences", "Contact-centre agent licences", "Contact-centre supervisor licences", "Call-recording licences", "Reporting licences", "Voicemail licences", "Mobile-client licences", "Conference licences", "SBC session licences", "SIP trunk channel licences", "Analog gateway licences", "High-availability licences", "Subscription term", "Support term", "Software assurance", "Growth licences", "Licence-renewal responsibility"]}, {"id": "support", "title": "24. Support and Managed Services", "description": "Define the operational support, monitoring and reporting service.", "items": ["Required support hours", "Business-hours support", "24×7 support", "Incident severity levels", "Response times", "Resolution targets", "Remote support", "On-site support", "Preventive maintenance", "Configuration management", "Platform monitoring", "Call-quality monitoring", "Licence management", "Software upgrades", "Firmware upgrades", "Monthly service reporting", "Service-review meetings", "Spare phones", "Spare gateway / SBC", "Escalation contacts"]}, {"id": "migration", "title": "25. Migration and Implementation Readiness", "description": "Capture all prerequisites, ownership, sequencing and cutover controls.", "items": ["Detailed implementation scope", "Project manager", "Customer project team", "Mauritius Telecom project team", "Site access process", "Change window", "Number-porting date", "Existing PBX configuration", "User database", "Approved dial plan", "Approved call flows", "Approved device allocation", "Network remediation completion", "Firewall-rule approval", "Cabling completion", "Rack and power readiness", "Licence availability", "Equipment delivery", "Staging and preconfiguration", "Pilot-user group", "User Acceptance Testing plan", "User training", "Administrator training", "Cutover communication", "Rollback plan", "Legacy-service decommissioning", "Post-cutover support"]}, {"id": "testing", "title": "26. Testing and Acceptance", "description": "Record the expected test method, result, evidence and acceptance owner.", "items": ["Internal calls", "Inbound calls", "Outbound calls", "Mobile calls", "International calls", "Emergency calls", "Direct-dial numbers", "Caller ID", "Call transfer", "Call forwarding", "Call hold", "Call pickup", "Ring groups", "Call queues", "IVR", "Business-hours routing", "After-hours routing", "Voicemail", "Voicemail-to-email", "Call recording", "Reporting", "Fax", "Analog devices", "DECT roaming", "Remote-user calling", "Branch failover", "Internet failover", "SIP trunk failover", "Power-failure behaviour", "Audio quality", "Latency", "Packet loss", "Jitter", "Customer acceptance and sign-off"]}, {"id": "deliverables", "title": "27. Required Assessment Deliverables", "description": "Track the completion and approval of the documents produced after the assessment.", "items": ["Site assessment report", "Current-state architecture diagram", "Proposed telephony architecture", "User and endpoint schedule", "Telephone-number and extension plan", "Detailed call-flow document", "Network-readiness assessment", "Bandwidth and concurrent-call calculation", "PoE and switch-port calculation", "Hardware and software bill of quantities", "Licensing schedule", "Integration matrix", "Risk and remediation register", "Implementation and migration plan", "Testing and acceptance plan", "Support and managed-service scope", "Commercial assumptions and exclusions"]}, {"id": "final-readiness", "title": "28. Final Readiness Decision", "description": "Summarise the site readiness and list all conditions that must be resolved before proposal or implementation.", "items": ["Business requirements readiness", "PSTN and numbering readiness", "LAN and QoS readiness", "Internet and WAN readiness", "Cabling readiness", "Power and rack readiness", "Security and firewall readiness", "Hosting platform readiness", "Licensing readiness", "Integration readiness", "Migration readiness", "Overall site readiness", "Critical risks", "Mandatory remediation actions", "Commercial assumptions", "Technical exclusions", "Recommended telephony platform", "Recommended deployment model", "Assessment conclusion", "Customer comments"]}];
+const STATUS_OPTIONS = ["Not reviewed", "Confirmed", "Partially confirmed", "Information required", "Compliant", "Remediation required", "Not applicable", "Rejected"];
+const STORAGE_KEY = "mt-telephony-assessment-v1";
+
+function syncStickyOffsets() {
+  const toolbar = document.querySelector('.toolbar');
+  const height = toolbar ? Math.ceil(toolbar.getBoundingClientRect().height) : 0;
+  document.documentElement.style.setProperty('--toolbar-height', `${height}px`);
+}
+
+function autoSizeTextarea(el) {
+  if (!el || el.tagName !== 'TEXTAREA') return;
+  const minimum = el.closest('td') ? 48 : 54;
+  el.style.height = 'auto';
+  el.style.height = `${Math.max(minimum, el.scrollHeight + 2)}px`;
+}
+
+function autoSizePopulatedTextareas() {
+  document.querySelectorAll('textarea').forEach(el => {
+    if (el.value) autoSizeTextarea(el);
+  });
+}
+
+function safeId(value) {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+}
+
+function optionHtml(selected="") {
+  return STATUS_OPTIONS.map(v => `<option value="${v}" ${v===selected ? "selected" : ""}>${v}</option>`).join("");
+}
+
+function renderSections() {
+  const container = document.getElementById("sectionsContainer");
+  const nav = document.getElementById("sectionNav");
+  if (container.children.length) return;
+
+  SECTIONS.forEach((section, sIndex) => {
+    const card = document.createElement("section");
+    card.className = "section-card";
+    card.id = section.id;
+    card.dataset.generated = "true";
+
+    const rows = section.items.map((item, i) => {
+      const key = `${section.id}_${i+1}`;
+      return `
+      <tr data-search="${item.toLowerCase()}">
+        <td class="item">${i+1}. ${item}</td>
+        <td class="status">
+          <select class="status-select" name="${key}_status" aria-label="${item} status">
+            ${optionHtml()}
+          </select>
+        </td>
+        <td class="value"><textarea name="${key}_value" aria-label="${item} confirmed value" placeholder="Confirmed value, quantity, model, setting or requirement"></textarea></td>
+        <td class="notes"><textarea name="${key}_notes" aria-label="${item} notes" placeholder="Evidence, finding, dependency, risk or action"></textarea></td>
+        <td class="owner"><input name="${key}_owner" type="text" aria-label="${item} owner" placeholder="Owner"></td>
+        <td class="date"><input name="${key}_date" type="date" aria-label="${item} target date"></td>
+      </tr>`;
+    }).join("");
+
+    card.innerHTML = `
+      <div class="section-head">
+        <div>
+          <h2>${section.title}</h2>
+          <p>${section.description}</p>
+        </div>
+        <div class="section-actions no-print">
+          <button type="button" class="light" data-action="set-confirmed">Mark all confirmed</button>
+          <button type="button" class="light" data-action="clear-section">Clear section</button>
+        </div>
+      </div>
+      <div class="section-body">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:20%">Assessment item</th>
+              <th style="width:13%">Status</th>
+              <th style="width:21%">Confirmed / Input Value</th>
+              <th style="width:25%">Evidence, Notes or Required Action</th>
+              <th style="width:11%">Owner</th>
+              <th style="width:10%">Target Date</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+      <div class="section-summary">
+        <label class="field">Section conclusion
+          <textarea name="${section.id}_summary" placeholder="Summarise the confirmed position for this section."></textarea>
+        </label>
+        <label class="field">Main risks / gaps
+          <textarea name="${section.id}_risks" placeholder="List unresolved risks, gaps and dependencies."></textarea>
+        </label>
+        <label class="field">Recommended action
+          <textarea name="${section.id}_action" placeholder="Record the design decision or remediation action."></textarea>
+        </label>
+      </div>`;
+    container.appendChild(card);
+
+    const link = document.createElement("a");
+    link.href = `#${section.id}`;
+    link.textContent = section.title;
+    nav.appendChild(link);
+  });
+}
+
+function allFields() {
+  return [...document.querySelectorAll("input[name], select[name], textarea[name]")];
+}
+
+function collectState() {
+  const state = {};
+  allFields().forEach(el => {
+    if (el.type === "checkbox" || el.type === "radio") state[el.name] = el.checked;
+    else state[el.name] = el.value;
+  });
+  return state;
+}
+
+function applyState(state) {
+  if (!state || typeof state !== "object") return;
+  allFields().forEach(el => {
+    if (!(el.name in state)) return;
+    if (el.type === "checkbox" || el.type === "radio") el.checked = Boolean(state[el.name]);
+    else el.value = state[el.name] ?? "";
+    if (el.classList.contains("status-select")) el.dataset.state = el.value;
+  });
+  autoSizePopulatedTextareas();
+  updateProgress();
+}
+
+function updateStatusStyle(select) {
+  select.dataset.state = select.value;
+}
+
+function updateProgress() {
+  const selects = [...document.querySelectorAll(".status-select")];
+  const reviewed = selects.filter(s => s.value !== "Not reviewed").length;
+  const pct = selects.length ? Math.round((reviewed / selects.length) * 100) : 0;
+  document.getElementById("progressText").textContent = `${pct}% reviewed`;
+  document.getElementById("progressBar").style.width = `${pct}%`;
+}
+
+function downloadBlob(content, filename, type) {
+  const blob = new Blob([content], {type});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+function fileBaseName() {
+  const customer = document.querySelector('[name="meta_customer"]').value.trim() || "Customer";
+  const site = document.querySelector('[name="meta_site"]').value.trim() || "Site";
+  const date = document.querySelector('[name="meta_date"]').value || new Date().toISOString().slice(0,10);
+  return `${customer}_${site}_Telephony_Assessment_${date}`.replace(/[^a-z0-9_-]+/gi, "_");
+}
+
+function persistValuesIntoClone(clone) {
+  const current = collectState();
+  const cloneFields = [...clone.querySelectorAll("input[name], select[name], textarea[name]")];
+  cloneFields.forEach(el => {
+    const value = current[el.name] ?? "";
+    if (el.tagName === "TEXTAREA") {
+      el.textContent = value;
+    } else if (el.tagName === "SELECT") {
+      [...el.options].forEach(opt => {
+        if (opt.value === value) opt.setAttribute("selected", "selected");
+        else opt.removeAttribute("selected");
+      });
+    } else if (el.type === "checkbox" || el.type === "radio") {
+      if (value) el.setAttribute("checked", "checked");
+      else el.removeAttribute("checked");
+    } else {
+      el.setAttribute("value", value);
+    }
+  });
+  const stateScript = clone.querySelector("#embedded-state");
+  if (stateScript) stateScript.textContent = JSON.stringify(current).replace(/<\/script/gi, "<\\/script");
+}
+
+function saveAsHtml() {
+  const clone = document.documentElement.cloneNode(true);
+  persistValuesIntoClone(clone);
+  const html = "<!DOCTYPE html>\n" + clone.outerHTML;
+  downloadBlob(html, fileBaseName() + ".html", "text/html;charset=utf-8");
+}
+
+function saveLocal() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(collectState()));
+  alert("Assessment saved in this browser.");
+}
+
+function loadLocal() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (!saved) {
+    alert("No browser save was found.");
+    return;
+  }
+  applyState(JSON.parse(saved));
+}
+
+function exportJson() {
+  const payload = {
+    form: "MT Telephony Site Assessment",
+    version: "1.0",
+    exportedAt: new Date().toISOString(),
+    data: collectState()
+  };
+  downloadBlob(JSON.stringify(payload, null, 2), fileBaseName() + ".json", "application/json");
+}
+
+function importJson(file) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const parsed = JSON.parse(reader.result);
+      applyState(parsed.data || parsed);
+      alert("Assessment data imported.");
+    } catch (e) {
+      alert("The selected file is not a valid assessment JSON file.");
+    }
+  };
+  reader.readAsText(file);
+}
+
+function resetForm() {
+  if (!confirm("Clear all entered assessment data? This cannot be undone unless you exported or saved a copy.")) return;
+  allFields().forEach(el => {
+    if (el.tagName === "SELECT") el.selectedIndex = 0;
+    else if (el.type === "date") el.value = "";
+    else el.value = "";
+    if (el.classList.contains("status-select")) {
+      el.value = "Not reviewed";
+      updateStatusStyle(el);
+    }
+  });
+  document.querySelector('[name="meta_version"]').value = "1.0";
+  updateProgress();
+}
+
+function bindEvents() {
+  document.addEventListener("input", e => {
+    if (e.target.tagName === "TEXTAREA") autoSizeTextarea(e.target);
+  });
+
+  document.addEventListener("change", e => {
+    if (e.target.classList.contains("status-select")) updateStatusStyle(e.target);
+    updateProgress();
+  });
+
+  document.getElementById("saveHtmlBtn").addEventListener("click", saveAsHtml);
+  document.getElementById("saveLocalBtn").addEventListener("click", saveLocal);
+  document.getElementById("loadLocalBtn").addEventListener("click", loadLocal);
+  document.getElementById("exportJsonBtn").addEventListener("click", exportJson);
+  document.getElementById("resetBtn").addEventListener("click", resetForm);
+  document.getElementById("importJsonInput").addEventListener("change", e => {
+    if (e.target.files[0]) importJson(e.target.files[0]);
+    e.target.value = "";
+  });
+
+  document.getElementById("searchBox").addEventListener("input", e => {
+    const term = e.target.value.trim().toLowerCase();
+    document.querySelectorAll("tbody tr").forEach(row => {
+      row.classList.toggle("hidden-row", term && !row.dataset.search.includes(term));
+    });
+  });
+
+  document.getElementById("sectionsContainer").addEventListener("click", e => {
+    const button = e.target.closest("button[data-action]");
+    if (!button) return;
+    const section = button.closest(".section-card");
+    if (button.dataset.action === "set-confirmed") {
+      section.querySelectorAll(".status-select").forEach(s => {
+        s.value = "Confirmed";
+        updateStatusStyle(s);
+      });
+      updateProgress();
+    }
+    if (button.dataset.action === "clear-section") {
+      if (!confirm("Clear all data in this section?")) return;
+      section.querySelectorAll("input[name], select[name], textarea[name]").forEach(el => {
+        if (el.classList.contains("status-select")) el.value = "Not reviewed";
+        else el.value = "";
+        if (el.classList.contains("status-select")) updateStatusStyle(el);
+      });
+      updateProgress();
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderSections();
+  bindEvents();
+  syncStickyOffsets();
+
+  if (window.ResizeObserver) {
+    const toolbar = document.querySelector('.toolbar');
+    if (toolbar) new ResizeObserver(syncStickyOffsets).observe(toolbar);
+  }
+  window.addEventListener('resize', syncStickyOffsets);
+  window.addEventListener('beforeprint', () => {
+    syncStickyOffsets();
+    document.querySelectorAll('textarea').forEach(autoSizeTextarea);
+  });
+  window.addEventListener('afterprint', autoSizePopulatedTextareas);
+
+  document.querySelectorAll(".status-select").forEach(updateStatusStyle);
+
+  try {
+    const embedded = JSON.parse(document.getElementById("embedded-state").textContent || "{}");
+    if (Object.keys(embedded).length) applyState(embedded);
+  } catch (e) {
+    console.warn("Embedded form data could not be loaded.", e);
+  }
+
+  if (!document.querySelector('[name="meta_date"]').value) {
+    document.querySelector('[name="meta_date"]').value = new Date().toISOString().slice(0,10);
+  }
+  autoSizePopulatedTextareas();
+  updateProgress();
+});
+</script>
+</body>
+</html>

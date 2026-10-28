@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Check Point Complete Product &amp; Solution Architect Reference</title>
+<style>
+  :root {
+    --cp-blue: #003A70;
+    --cp-blue-dark: #002147;
+    --ink: #1A1A2E;
+    --paper: #F5F5F5;
+    --card: #FFFFFF;
+    --line: #E5E5E5;
+    --muted: #6B7280;
+    --def: #334155;
+    --quantum: #003A70;
+    --cloudguard: #1E40AF;
+    --harmony: #0D9488;
+    --infinity: #7C3AED;
+    --threatcloud: #DC2626;
+    --cost-low: #16A34A;
+    --cost-med: #D97706;
+    --cost-high: #003A70;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); font-family: -apple-system, "Segoe UI", Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .sheet { max-width: 1800px; margin: 0 auto; padding: 24px; }
+
+  header {
+    background: linear-gradient(135deg, var(--cp-blue-dark) 0%, var(--cp-blue) 100%);
+    color: white;
+    padding: 22px 28px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 90px 1fr auto;
+    gap: 22px;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+  .logo { font-weight: 800; font-size: 22px; letter-spacing: -1px; line-height: 1; }
+  .logo .star { color: #FFD700; display: block; font-size: 14px; margin-top: 2px; }
+  header h1 { margin: 0 0 4px 0; font-size: 26px; }
+  header .sub { margin: 0; opacity: 0.85; font-size: 13px; }
+  header .sub b { color: #FFD700; font-weight: 600; }
+  .badge {
+    text-align: right;
+    border-left: 1px solid rgba(255,255,255,0.2);
+    padding-left: 22px;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  .badge .big { font-size: 18px; font-weight: 700; color: #FFD700; display: block; }
+
+  .legend {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    font-size: 11.5px;
+    align-items: center;
+  }
+  .legend .item { display: flex; align-items: center; gap: 6px; }
+  .legend strong { color: var(--cp-blue-dark); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .cat {
+    background: var(--card);
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .cat > h2 {
+    margin: 0;
+    padding: 10px 14px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cat > h2 .count {
+    margin-left: auto;
+    font-size: 11px;
+    background: rgba(255,255,255,0.25);
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-weight: 500;
+  }
+  .cat table { width: 100%; border-collapse: collapse; font-size: 11.5px; table-layout: fixed; }
+  .cat thead th {
+    background: #FAFAFA;
+    text-align: left;
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--line);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .cat tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #F1F1F1;
+    vertical-align: top;
+    line-height: 1.4;
+  }
+  .cat tbody tr:last-child td { border-bottom: none; }
+
+  .col-svc  { width: 12%; }
+  .col-def  { width: 28%; }
+  .col-use  { width: 15%; }
+  .col-when { width: 20%; }
+  .col-fit  { width: 13%; }
+  .col-cost { width: 12%; }
+
+  .svc { font-weight: 700; color: var(--ink); }
+  .def { color: var(--def); }
+  .when { color: var(--muted); }
+
+  .fit {
+    display: inline-flex;
+    gap: 3px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10px;
+  }
+  .fit span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    padding: 2px 0;
+    border: 1px solid #D1D5DB;
+    border-radius: 3px;
+    background: #FAFAFA;
+    color: #9CA3AF;
+  }
+  .fit span.on {
+    background: var(--cp-blue-dark);
+    color: white;
+    border-color: var(--cp-blue-dark);
+    font-weight: 700;
+  }
+
+  .cost {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    color: white;
+    min-width: 46px;
+    text-align: center;
+  }
+  .cost.L { background: var(--cost-low); }
+  .cost.M { background: var(--cost-med); }
+  .cost.H { background: var(--cost-high); }
+
+  .c-quantum h2 { background: var(--quantum); }
+  .c-cloudguard h2 { background: var(--cloudguard); }
+  .c-harmony h2 { background: var(--harmony); }
+  .c-infinity h2 { background: var(--infinity); }
+  .c-threatcloud h2 { background: var(--threatcloud); }
+
+  .lower {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr 0.7fr;
+    gap: 14px;
+    margin-top: 18px;
+  }
+  @media (max-width: 1100px) { .lower { grid-template-columns: 1fr; } }
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .panel h3 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: var(--cp-blue-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .panel h3::before {
+    content: "";
+    display: inline-block;
+    width: 4px; height: 16px;
+    background: #FFD700;
+    border-radius: 2px;
+  }
+  .why ul { padding-left: 18px; margin: 4px 0; font-size: 12px; line-height: 1.65; }
+  .why li::marker { color: #FFD700; }
+  .arch .flow {
+    background: #F8FAFC;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 8px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10.5px;
+    white-space: pre-wrap;
+    color: #334155;
+  }
+  .arch .note { color: var(--muted); font-size: 10.5px; }
+  footer { margin-top: 18px; text-align: center; font-size: 10.5px; color: var(--muted); padding: 10px; }
+  @media print {
+    body { background: white; }
+    .sheet { max-width: none; padding: 8px; }
+    .cat, .panel, header { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<header>
+  <div class="logo">check<span class="star">★</span>point</div>
+  <div>
+    <h1>Check Point Complete Product &amp; Solution Architect Reference</h1>
+    <p class="sub">Product · <b>Definition</b> · Use Case · When to Choose · Enterprise Fit · Cost Tier</p>
+  </div>
+  <div class="badge">
+    <span class="big">Infinity Platform</span>
+    Quantum · CloudGuard · Harmony · 2026 edition
+  </div>
+</header>
+
+<div class="legend">
+  <div class="item"><strong>Fit:</strong></div>
+  <div class="item"><span class="fit"><span class="on">S</span><span>M</span><span>L</span></span> Small / SMB</div>
+  <div class="item"><span class="fit"><span>S</span><span class="on">M</span><span>L</span></span> Mid-market</div>
+  <div class="item"><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span> Large enterprise</div>
+  <div class="item"><strong style="margin-left:10px">Cost:</strong>
+    <span class="cost L">LOW</span>
+    <span class="cost M">MED</span>
+    <span class="cost H">HIGH</span>
+  </div>
+  <div class="item" style="color:var(--muted); font-size:10.5px">Cost = typical hardware + subscription footprint at moderate deployment. Products with <b>*</b> are legacy or being phased out.</div>
+</div>
+
+<div class="grid">
+
+<!-- QUANTUM (NETWORK SECURITY) -->
+<section class="cat c-quantum">
+<h2>🔥 Quantum (Network Security) <span class="count">12</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Quantum Spark 1500</td><td class="def">Entry-level SMB security gateways with integrated UTM, WiFi 6 and 5G options, running Gaia embedded OS [citation:12].</td><td>SMB firewall</td><td class="when">Small offices, retail, branch</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Quantum Spark 1600/1800</td><td class="def">Mid-range SMB gateways with enterprise-grade security, 1U form factor, and cloud management via Quantum Spark Portal [citation:12].</td><td>SMB firewall</td><td class="when">Mid-size SMB, branch offices</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Quantum Spark 1900/2000</td><td class="def">1U rack-mount SMB gateways with 10GbE fiber ports and high threat prevention throughput [citation:12].</td><td>SMB firewall</td><td class="when">Growing SMB, high-throughput branch</td><td><span class="fit"><span>S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Quantum 3600/3800</td><td class="def">Branch office gateways with up to 1.5 Gbps zero-day protection, redundant PSUs and SSDs [citation:2].</td><td>Branch firewall</td><td class="when">Enterprise branch, remote office</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Quantum 6200/6400</td><td class="def">Small enterprise gateways with up to 2.5 Gbps zero-day protection [citation:2].</td><td>Enterprise firewall</td><td class="when">Small enterprise, campus edge</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Quantum 6600/6700</td><td class="def">Mid-size enterprise gateways with up to 7.6 Gbps zero-day protection, modular connectivity up to 40 GbE [citation:2].</td><td>Enterprise firewall</td><td class="when">Mid-size enterprise, data center edge</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Quantum 7000/16200</td><td class="def">Large enterprise gateways with up to 15 Gbps zero-day protection, modular connectivity up to 100 GbE [citation:2].</td><td>Enterprise firewall</td><td class="when">Large enterprise, high-throughput DC</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Quantum 26000/28000</td><td class="def">Data center gateways with up to 30 Gbps threat prevention, telco-grade reliability, modular expansion to 16x100 GbE [citation:2][citation:7].</td><td>Data center firewall</td><td class="when">Mission-critical data center</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Quantum Force</td><td class="def">Enterprise-grade NGFW series for perimeter protection with TLS inspection, IPS, sandboxing and URL filtering [citation:5].</td><td>Enterprise NGFW</td><td class="when">Enterprise perimeter security</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Quantum Hyperscale Gateway 16600</td><td class="def">1RU gateway designed for Maestro, enabling cloud-grade security systems up to 850 Gbps zero-day protection [citation:2].</td><td>Hyperscale firewall</td><td class="when">Cloud-scale security, Maestro orchestration</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Maestro Hyperscale Orchestrator</td><td class="def">Orchestration platform enabling hyperscale security by clustering multiple gateways [citation:2].</td><td>Hyperscale orchestration</td><td class="when">Cloud-scale, elastic security</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Quantum SD-WAN</td><td class="def">Built-in SD-WAN and site-to-site VPN for branch connectivity [citation:5].</td><td>SD-WAN</td><td class="when">Branch networking, WAN optimization</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- CLOUDGUARD (CLOUD SECURITY) -->
+<section class="cat c-cloudguard">
+<h2>☁️ CloudGuard (Cloud Security) <span class="count">8</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">CloudGuard Network Security</td><td class="def">Cloud-native firewall for public clouds (AWS, Azure, GCP, OCI) with unified policy, automated provisioning, and dynamic object discovery [citation:13].</td><td>Cloud firewall</td><td class="when">Multi-cloud security, cloud perimeter</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">CloudGuard CNAPP</td><td class="def">Cloud-Native Application Protection Platform with CSPM, workload protection, and application security [citation:5].</td><td>CNAPP</td><td class="when">Comprehensive cloud security</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">CloudGuard CSPM</td><td class="def">Cloud Security Posture Management for continuous analysis and control of cloud security posture [citation:8].</td><td>CSPM</td><td class="when">Cloud compliance, misconfiguration detection</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">CloudGuard Workload Protection</td><td class="def">Runtime protection for containers, serverless, and cloud workloads [citation:5].</td><td>Workload security</td><td class="when">Container and serverless protection</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">CloudGuard SaaS</td><td class="def">Protection for SaaS applications with account hijacking prevention using ID-Guard technology [citation:3].</td><td>SaaS security</td><td class="when">SaaS application protection</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">CloudGuard IaaS</td><td class="def">Advanced security and threat prevention for cloud infrastructure and workloads (formerly vSEC) [citation:3].</td><td>Cloud IaaS security</td><td class="when">Public/private cloud workloads</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">CloudGuard Posture Management</td><td class="def">Automated cloud security posture management with compliance benchmarking [citation:8].</td><td>Posture management</td><td class="when">Cloud compliance, governance</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">CloudGuard Dome9</td><td class="def">Cloud security posture management and compliance for public cloud environments [citation:11].</td><td>Cloud compliance</td><td class="when">Multi-cloud compliance</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- HARMONY (WORKSPACE SECURITY) -->
+<section class="cat c-harmony">
+<h2>🛡️ Harmony (Workspace Security) <span class="count">8</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Harmony Endpoint</td><td class="def">Comprehensive endpoint protection with EPP, EDR, and XDR in a single client, protecting workstations and servers [citation:4][citation:5].</td><td>Endpoint security</td><td class="when">Endpoint protection, EDR</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Harmony SASE</td><td class="def">Cloud-delivered Secure Access Service Edge with ZTNA, SWG, and CASB in a unified service [citation:4][citation:5].</td><td>SASE</td><td class="when">Remote access, branch security</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Harmony Email &amp; Collaboration</td><td class="def">AI-powered anti-phishing, anti-malware, and BEC protection for Microsoft 365, Google Workspace, and collaboration platforms [citation:9].</td><td>Email security</td><td class="when">Email threat protection, M365/Google</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Harmony Mobile</td><td class="def">Comprehensive mobile threat protection across apps, files, network, and OS for Android and iOS [citation:9].</td><td>Mobile security</td><td class="when">BYOD, mobile device protection</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Harmony Endpoint Protection</td><td class="def">Basic endpoint protection against malware, ransomware, and phishing [citation:14].</td><td>EPP</td><td class="when">Basic endpoint protection</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Harmony Endpoint Advanced</td><td class="def">Advanced endpoint protection with EDR capabilities [citation:14].</td><td>EDR</td><td class="when">Endpoint detection and response</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Harmony Endpoint Complete</td><td class="def">Complete endpoint protection with EPP, EDR, and XDR [citation:14].</td><td>XDR</td><td class="when">Comprehensive endpoint security</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Harmony DMARC</td><td class="def">Email authentication and DMARC management for domain protection [citation:4].</td><td>DMARC</td><td class="when">Email authentication, domain protection</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- INFINITY CORE SERVICES -->
+<section class="cat c-infinity">
+<h2>🧠 Infinity Core Services <span class="count">8</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Infinity Portal</td><td class="def">Unified management portal consolidating security management across the enterprise [citation:15].</td><td>Unified management</td><td class="when">Single-pane-of-glass management</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Infinity ThreatCloud AI</td><td class="def">AI-powered threat intelligence with 50+ AI engines, preventing 3 billion attacks annually with 99.8% block rate [citation:1].</td><td>Threat intelligence</td><td class="when">Real-time threat prevention</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Infinity AI Copilot</td><td class="def">Generative AI assistant for security administration, threat hunting, mitigation, and remediation [citation:1].</td><td>AI assistant</td><td class="when">AI-assisted security operations</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Infinity XDR</td><td class="def">Extended Detection and Response with behavioral analytics and real-time threat intelligence [citation:1].</td><td>XDR</td><td class="when">Cross-surface threat detection</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Infinity Playblocks</td><td class="def">Automated threat response orchestration with predefined preventive actions [citation:1].</td><td>Automation</td><td class="when">Automated incident response</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Check Point Events</td><td class="def">Automated mitigation workflows with collaborative security across the enterprise [citation:15].</td><td>Event management</td><td class="when">Security event orchestration</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">External Risk Management</td><td class="def">Manages external risk from supply chains, brand impersonation, and the dark web [citation:15].</td><td>External risk</td><td class="when">Supply chain and brand risk</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Check Point GenAI Protect</td><td class="def">Secures enterprise adoption of generative AI tools and applications [citation:15].</td><td>GenAI security</td><td class="when">GenAI governance and protection</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- THREATCLOUD & SERVICES -->
+<section class="cat c-threatcloud">
+<h2>🔍 ThreatCloud &amp; Services <span class="count">4</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">ThreatCloud AI</td><td class="def">Shared threat intelligence platform delivering real-time protection updates to all Check Point customers in under 2 seconds [citation:1][citation:6].</td><td>Threat intelligence</td><td class="when">Real-time threat prevention</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">SandBlast Zero-Day Protection</td><td class="def">Advanced zero-day malware protection with threat emulation (sandboxing) and threat extraction [citation:2][citation:11].</td><td>Zero-day protection</td><td class="when">Unknown threat prevention</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Managed Security Services</td><td class="def">24/7 managed security services, consulting, and training [citation:1].</td><td>MSS</td><td class="when">Outsourced security operations</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Check Point MDR</td><td class="def">Managed Detection and Response service providing 24/7 expert monitoring and response [citation:4].</td><td>MDR</td><td class="when">Outsourced SOC, 24/7 coverage</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+</div>
+
+<div class="lower">
+  <div class="panel">
+    <h3>Solution Architect Decision Guide</h3>
+    <div style="font-size:11.5px; line-height:1.7;">
+      <p><b>1. Network Security (Quantum)</b> — Spark (SMB) · 3600-3800 (branch) · 6200-6700 (enterprise) · 26000-28000 (data center) · Maestro (hyperscale) [citation:2][citation:5]</p>
+      <p><b>2. Cloud Security (CloudGuard)</b> — Network Security (cloud FW) · CNAPP · CSPM · Workload Protection · SaaS Security · IaaS [citation:3][citation:5][citation:13]</p>
+      <p><b>3. Workspace Security (Harmony)</b> — Endpoint (EPP/EDR/XDR) · SASE (ZTNA/SWG/CASB) · Email &amp; Collaboration · Mobile [citation:4][citation:5][citation:9]</p>
+      <p><b>4. Security Operations (Infinity)</b> — Infinity XDR · AI Copilot · Playblocks · Events · External Risk · GenAI Protect [citation:1][citation:15]</p>
+      <p><b>5. Threat Intelligence</b> — ThreatCloud AI (50+ AI engines) · SandBlast Zero-Day · Managed Security Services [citation:1][citation:11]</p>
+    </div>
+  </div>
+
+  <div class="panel arch">
+    <h3>Reference Architecture — Infinity Zero Trust</h3>
+    <div class="flow">Users &amp; Devices
+  │
+  ▼
+Harmony SASE (ZTNA/SWG/CASB)
+  │
+  ▼
+┌─────────────┴─────────────┐
+│  On-Prem     │    Cloud     │
+│  Quantum     │  CloudGuard  │
+│  Gateways    │  Network FW  │
+└─────────────┬─────────────┘
+              │
+              ▼
+     ┌──── Infinity Platform ────┐
+     │  • Infinity Portal (mgmt)  │
+     │  • Infinity ThreatCloud AI │
+     │  • Infinity XDR            │
+     │  • Infinity AI Copilot     │
+     └──────────────┬────────────┘
+                    │
+                    ▼
+     Harmony Endpoint · Email · Mobile
+                    │
+                    ▼
+     CloudGuard CNAPP / CSPM / Workload
+                    │
+                    ▼
+     SandBlast Zero-Day Protection</div>
+    <p class="arch note"><b>Zero Trust pillars:</b> Networks (Quantum) · Workloads (CloudGuard) · People (Identity Awareness) · Devices (Harmony) · Data (DLP) · Visibility (SmartEvent) · Automation (APIs) [citation:11].</p>
+    <p class="arch note"><b>Cloud-native variant:</b> CloudGuard Network Security + CNAPP + Workload Protection for multi-cloud environments [citation:13].</p>
+  </div>
+
+  <div class="panel why">
+    <h3>How to read this reference</h3>
+    <ul style="font-size:11.5px">
+      <li><b>Definition</b> — plain-language description of what the product is and does.</li>
+      <li><b>Use case</b> — the shortest tag for the primary job.</li>
+      <li><b>When to choose</b> — trigger conditions that push you toward this product.</li>
+      <li><b>Fit</b> — S/M/L boxes ticked = natural fit at that org size.</li>
+      <li><b>Cost</b> — LOW = entry-level; MED = professional; HIGH = enterprise or carrier-grade. Hardware + subscription costs vary by throughput and deployment.</li>
+      <li>Products marked with <b>*</b> are legacy or being phased out.</li>
+    </ul>
+    <h3 style="margin-top:14px">Why Check Point?</h3>
+    <ul style="font-size:11.5px">
+      <li>Unified Infinity Platform: network, cloud, workspace, SecOps [citation:1]</li>
+      <li>AI-powered: 50+ AI engines, 99.8% block rate [citation:1]</li>
+      <li>ThreatCloud AI: real-time intelligence shared in <2 sec [citation:1]</li>
+      <li>Prevention-first: stops attacks before they succeed [citation:6]</li>
+      <li>Zero Trust: complete framework across all pillars [citation:11]</li>
+      <li>1.2B+ real-world executions for AI agent training</li>
+    </ul>
+  </div>
+</div>
+
+<footer>Check Point Complete Product &amp; Solution Architect Reference · 2026 edition with Definition, Fit &amp; Cost columns.</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Avaya Complete Product & Solutions Reference</title>
+<style>
+  :root {
+    --avaya-red: #EC2027;
+    --avaya-red-dark: #B8171C;
+    --avaya-black: #1A1A1A;
+    --avaya-dark: #232323;
+    --ink: #0F1720;
+    --paper: #F6F5F3;
+    --card: #FFFFFF;
+    --line: #E4E4DE;
+    --muted: #6B7280;
+    --def: #334155;
+    --axp: #EC2027;
+    --wfo: #B91C1C;
+    --uc: #C2410C;
+    --ipo: #D97706;
+    --devices: #7C2D12;
+    --video: #DB2777;
+    --sec: #1E293B;
+    --ai: #7C3AED;
+    --analytics: #0EA5E9;
+    --dev: #0891B2;
+    --services: #475569;
+    --cost-low: #16A34A;
+    --cost-med: #D97706;
+    --cost-high: #DC2626;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); font-family: -apple-system, "Segoe UI", Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .sheet { max-width: 1800px; margin: 0 auto; padding: 24px; }
+
+  header {
+    background: linear-gradient(135deg, var(--avaya-black) 0%, var(--avaya-dark) 100%);
+    color: white;
+    padding: 22px 28px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 130px 1fr auto;
+    gap: 22px;
+    align-items: center;
+    margin-bottom: 18px;
+    border-left: 6px solid var(--avaya-red);
+  }
+  .logo {
+    font-weight: 800;
+    font-size: 34px;
+    letter-spacing: -0.5px;
+    line-height: 1;
+    color: white;
+  }
+  .logo .swoop { color: var(--avaya-red); }
+  .logo .tag { display: block; font-size: 10.5px; letter-spacing: 2px; color: var(--avaya-red); margin-top: 4px; text-transform: uppercase; font-weight: 600; }
+  header h1 { margin: 0 0 4px 0; font-size: 26px; }
+  header .sub { margin: 0; opacity: 0.85; font-size: 13px; }
+  header .sub b { color: var(--avaya-red); font-weight: 600; }
+  .badge {
+    text-align: right;
+    border-left: 1px solid rgba(255,255,255,0.2);
+    padding-left: 22px;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  .badge .big { font-size: 18px; font-weight: 700; color: var(--avaya-red); display: block; }
+
+  .legend {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    font-size: 11.5px;
+    align-items: center;
+  }
+  .legend .item { display: flex; align-items: center; gap: 6px; }
+  .legend strong { color: var(--avaya-black); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .cat {
+    background: var(--card);
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .cat > h2 {
+    margin: 0;
+    padding: 10px 14px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cat > h2 .count {
+    margin-left: auto;
+    font-size: 11px;
+    background: rgba(255,255,255,0.25);
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-weight: 500;
+  }
+  .cat table { width: 100%; border-collapse: collapse; font-size: 11.5px; table-layout: fixed; }
+  .cat thead th {
+    background: #FAFAF7;
+    text-align: left;
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--line);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .cat tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #F1F0EB;
+    vertical-align: top;
+    line-height: 1.4;
+  }
+  .cat tbody tr:last-child td { border-bottom: none; }
+
+  .col-svc  { width: 14%; }
+  .col-def  { width: 28%; }
+  .col-use  { width: 14%; }
+  .col-when { width: 19%; }
+  .col-fit  { width: 13%; }
+  .col-cost { width: 12%; }
+
+  .svc { font-weight: 700; color: var(--ink); }
+  .def { color: var(--def); }
+  .when { color: var(--muted); }
+
+  .fit {
+    display: inline-flex;
+    gap: 3px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10px;
+  }
+  .fit span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    padding: 2px 0;
+    border: 1px solid #D1D5DB;
+    border-radius: 3px;
+    background: #FAFAFA;
+    color: #9CA3AF;
+  }
+  .fit span.on {
+    background: var(--avaya-black);
+    color: white;
+    border-color: var(--avaya-black);
+    font-weight: 700;
+  }
+
+  .cost {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    color: white;
+    min-width: 46px;
+    text-align: center;
+  }
+  .cost.L { background: var(--cost-low); }
+  .cost.M { background: var(--cost-med); }
+  .cost.H { background: var(--cost-high); }
+
+  .c-axp h2       { background: var(--axp); }
+  .c-wfo h2       { background: var(--wfo); }
+  .c-uc h2        { background: var(--uc); }
+  .c-ipo h2       { background: var(--ipo); }
+  .c-devices h2   { background: var(--devices); }
+  .c-video h2     { background: var(--video); }
+  .c-sec h2       { background: var(--sec); }
+  .c-ai h2        { background: var(--ai); }
+  .c-analytics h2 { background: var(--analytics); }
+  .c-dev h2       { background: var(--dev); }
+  .c-services h2  { background: var(--services); }
+
+  .lower {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr 0.7fr;
+    gap: 14px;
+    margin-top: 18px;
+  }
+  @media (max-width: 1100px) { .lower { grid-template-columns: 1fr; } }
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .panel h3 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: var(--avaya-black);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .panel h3::before {
+    content: "";
+    display: inline-block;
+    width: 4px; height: 16px;
+    background: var(--avaya-red);
+    border-radius: 2px;
+  }
+  .why ul { padding-left: 18px; margin: 4px 0; font-size: 12px; line-height: 1.65; }
+  .why li::marker { color: var(--avaya-red); }
+  .arch .flow {
+    background: #F9FAFB;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 8px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10.5px;
+    white-space: pre-wrap;
+    color: #334155;
+  }
+  .arch .note { color: var(--muted); font-size: 10.5px; }
+  footer { margin-top: 18px; text-align: center; font-size: 10.5px; color: var(--muted); padding: 10px; }
+  @media print {
+    body { background: white; }
+    .sheet { max-width: none; padding: 8px; }
+    .cat, .panel, header { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<header>
+  <div class="logo">AVAYA<span class="swoop">.</span><span class="tag">Experience Builders</span></div>
+  <div>
+    <h1>Avaya Complete Product &amp; Solutions Reference</h1>
+    <p class="sub">Product · <b>Definition</b> · Use Case · When to Choose · Enterprise Fit · Cost Tier — the modern Avaya portfolio in one page</p>
+  </div>
+  <div class="badge">
+    <span class="big">60+ Products</span>
+    11 Domains · One CX Platform<br>2026 edition
+  </div>
+</header>
+
+<div class="legend">
+  <div class="item"><strong>Fit:</strong></div>
+  <div class="item"><span class="fit"><span class="on">S</span><span>M</span><span>L</span></span> Small / SMB</div>
+  <div class="item"><span class="fit"><span>S</span><span class="on">M</span><span>L</span></span> Mid-market</div>
+  <div class="item"><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span> Large enterprise</div>
+  <div class="item"><strong style="margin-left:10px">Cost:</strong>
+    <span class="cost L">LOW</span>
+    <span class="cost M">MED</span>
+    <span class="cost H">HIGH</span>
+  </div>
+  <div class="item" style="color:var(--muted); font-size:10.5px">Cost = typical annual footprint. Avaya usually licenses per named/concurrent user; hardware phones add capex.</div>
+</div>
+
+<div class="grid">
+
+<!-- AVAYA EXPERIENCE PLATFORM (CX) -->
+<section class="cat c-axp">
+<h2>🎧 Avaya Experience Platform (AXP) &amp; Infinity <span class="count">6</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Avaya Infinity</td><td class="def">Avaya's unified customer-experience platform (launched 2025) supporting cloud-native, hybrid and on-prem deployment, with AI orchestration via Model Context Protocol (MCP).</td><td>Unified CX platform</td><td class="when">Modernize without replacing what works</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">AXP On-Prem</td><td class="def">On-premises contact center (formerly Avaya Call Center Elite) — voice-centric routing, IVR and workforce features on Aura infrastructure.</td><td>On-prem contact center</td><td class="when">Regulated, sovereign, or long-tenured Elite estates</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">AXP Private Cloud</td><td class="def">Fully managed private-cloud CX deployment (formerly Avaya Enterprise Cloud) with dedicated tenancy and hybrid options.</td><td>Dedicated cloud CC</td><td class="when">Compliance requires isolation from public multi-tenant</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">AXP Public Cloud</td><td class="def">Multi-tenant CCaaS (formerly Avaya Experience Platform CCaaS) with voice, digital channels, self-service, workforce engagement and AI.</td><td>CCaaS</td><td class="when">Cloud-first, fast rollout</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">AXP Agent Desktop</td><td class="def">Unified agent workspace surfacing voice + digital interactions, context, CRM data and AI-guided next-best-action.</td><td>Agent workspace</td><td class="when">Consolidate agent screens</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">AXP Supervisor</td><td class="def">Real-time and historical dashboards for team leads — monitoring, coaching, whisper/barge and adherence controls.</td><td>Supervisor console</td><td class="when">Bundled with every AXP deployment</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- WORKFORCE ENGAGEMENT / OUTREACH -->
+<section class="cat c-wfo">
+<h2>🧑‍💻 Workforce Engagement &amp; Outreach <span class="count">7</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Workforce Engagement (WEM)</td><td class="def">Suite covering WFM (forecast/schedule), quality management, speech &amp; text analytics and performance management, powered by partnership with Verint.</td><td>WFO / WFM</td><td class="when">Optimize agent workloads &amp; quality</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Workforce Optimization Select</td><td class="def">Simplified WFO bundle for mid-market — call recording, screen capture, quality scoring and basic WFM.</td><td>SMB WFO</td><td class="when">Smaller contact centers</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Proactive Outreach Manager (POM)</td><td class="def">Outbound campaign engine for voice, SMS and email with preview/predictive/progressive dialing and consent management.</td><td>Outbound dialer</td><td class="when">Collections, sales, notifications</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Callback Assist</td><td class="def">Virtual queuing / callback service that lets customers keep their place in line and receive a call when an agent is available.</td><td>Callback / virtual hold</td><td class="when">Reduce hold-time abandonment</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Experience Portal / IVR</td><td class="def">Speech-enabled self-service platform for IVR, voice bots and outbound notifications, integrating with Nuance/Google STT/TTS.</td><td>IVR / self-service</td><td class="when">Legacy IVR modernization</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Orchestration Designer</td><td class="def">Visual, low-code tool to design self-service and routing flows across voice and digital channels for AXP/Experience Portal.</td><td>Flow designer</td><td class="when">Build/modify IVR &amp; bot flows</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Contact Recorder</td><td class="def">Enterprise-grade voice and screen recording with retention, encryption and archiving for compliance and QA.</td><td>Call recording</td><td class="when">PCI, MiFID, healthcare compliance</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- UNIFIED COMMUNICATIONS -->
+<section class="cat c-uc">
+<h2>☎️ Unified Communications — Avaya Aura &amp; Cloud Office <span class="count">11</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Avaya Aura Platform</td><td class="def">Umbrella enterprise UC suite delivering voice, video and mobility across sites via a set of tightly coupled server components.</td><td>Enterprise UC</td><td class="when">Large multi-site UC estate</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Aura Communication Manager</td><td class="def">The core Avaya IP-PBX call-processing engine handling call control, features and PSTN trunking.</td><td>Enterprise IP-PBX</td><td class="when">Enterprise call control</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Aura Session Manager</td><td class="def">SIP routing engine that federates SIP endpoints, applications and trunks, providing survivability and dial-plan flexibility.</td><td>SIP routing core</td><td class="when">Multi-site SIP infrastructure</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Aura System Manager</td><td class="def">Central management console for the Aura suite — provisioning, licensing, security policy, patching and monitoring.</td><td>Aura management</td><td class="when">Any Aura deployment</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Aura Media Server</td><td class="def">Software-based media processing — announcements, conferencing mixing, transcoding and IVR media for Aura and AXP.</td><td>Media processing</td><td class="when">Software-only media path</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Aura Messaging</td><td class="def">Enterprise unified messaging (voicemail, unified inbox, notifications) integrated with Communication Manager.</td><td>Voicemail / UM</td><td class="when">Enterprise voicemail modernization</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Aura Application Enablement Services (AES)</td><td class="def">Middleware exposing CTI, DMCC and JTAPI/TSAPI interfaces so third-party apps and CRMs can control calls.</td><td>CTI middleware</td><td class="when">CRM screen-pop &amp; call control</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Aura Device Services</td><td class="def">Provides configuration, contacts and settings push to Avaya endpoints, and hosts the phone settings services (46xxsettings).</td><td>Endpoint config</td><td class="when">Aura endpoint deployments</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Aura Web Gateway</td><td class="def">WebRTC gateway that exposes Avaya voice/video to web and mobile clients, and enables Spaces / Workplace on-net.</td><td>WebRTC gateway</td><td class="when">Browser/mobile UC clients</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Avaya Workplace Client</td><td class="def">Desktop and mobile softphone / collaboration app (Windows, macOS, iOS, Android) for voice, video, IM and presence.</td><td>Softphone</td><td class="when">Bundled with Aura / IP Office</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Avaya Cloud Office (ACO)</td><td class="def">Cloud UCaaS offering delivered in partnership with RingCentral — voice, video, meetings, messaging and integrations, per-user monthly.</td><td>Cloud UCaaS</td><td class="when">Cloud UC, replace on-prem PBX</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- IP OFFICE / SMB -->
+<section class="cat c-ipo">
+<h2>🏢 IP Office &amp; SMB Communications <span class="count">5</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Avaya IP Office</td><td class="def">Unified communications platform for small and mid-market businesses (up to 3,000 users, 150 sites) — voice, video, IM, mobility and simple contact center.</td><td>SMB PBX</td><td class="when">SMB / mid-market on-prem or hybrid</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">IP Office Server Edition</td><td class="def">Software-based, scalable deployment of IP Office for larger multi-site SMBs — Linux-based with resilience across nodes.</td><td>IP Office Linux</td><td class="when">Multi-site SMB with HA needs</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">IP Office Contact Center</td><td class="def">Add-on multichannel contact-center capability for IP Office — voice, email, chat, basic reporting.</td><td>SMB contact center</td><td class="when">IP Office site adding a small CC</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">IP Office Web Manager</td><td class="def">Browser-based administration for IP Office — configuration, user management, licensing, backup and system status.</td><td>IP Office admin</td><td class="when">Every IP Office deployment</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">one-X Portal / Web Client</td><td class="def">Browser softphone and call-control portal for IP Office users, including call log, contacts and conference controls.</td><td>Browser UC client</td><td class="when">IP Office self-service UI</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- DEVICES / IP PHONES / HEADSETS -->
+<section class="cat c-devices">
+<h2>📞 Devices — IP Phones, Vantage &amp; Headsets <span class="count">12</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">J129</td><td class="def">Entry-level 2-line SIP IP phone with a monochrome display — designed for common areas, hallways and lobbies.</td><td>Entry IP phone</td><td class="when">Common-area handset</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">J139</td><td class="def">Basic 4-line SIP color IP phone for occasional users — no expansion module support.</td><td>Basic user phone</td><td class="when">Task workers, receptionist backup</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">J159</td><td class="def">Mid-tier SIP phone with dual color displays, 8 line keys and optional Wi-Fi/Bluetooth wireless module.</td><td>Mid-tier IP phone</td><td class="when">General office users</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">J169</td><td class="def">Business SIP/H.323 phone with 4-line monochrome display, wideband HD audio and expansion-module support.</td><td>Business user phone</td><td class="when">Standard knowledge worker</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">J179</td><td class="def">Power-user SIP/H.323 phone with 4-line color display, optional Wi-Fi/Bluetooth and up to three JBM24 expansion modules.</td><td>Power-user phone</td><td class="when">Managers, assistants, supervisors</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">J189</td><td class="def">Executive SIP phone with two color touchscreens (main + side-car), 8 line keys and integrated Bluetooth.</td><td>Executive phone</td><td class="when">Executives, admins with heavy button use</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">JBM24 Expansion Module</td><td class="def">24-key add-on module (up to 72 keys with three modules) providing programmable line/feature keys to J169/J179.</td><td>Line-key expansion</td><td class="when">Receptionists, high busy-lamp users</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Vantage K155 / K165 / K175</td><td class="def">Android-based touchscreen desk devices for voice, video and web apps — customizable with a Vantage Connect softphone.</td><td>Video desk phone</td><td class="when">Video-first executives, teleworker</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">B199 Conference Phone</td><td class="def">SIP conference phone with 360° microphone coverage, HD audio and Wi-Fi/Bluetooth — for medium meeting rooms.</td><td>Conference phone</td><td class="when">Meeting rooms up to ~12 people</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Avaya L100 Series Headsets</td><td class="def">Corded and DECT wireless USB/QD headsets built for contact center and knowledge workers with noise cancellation.</td><td>Wired/DECT headsets</td><td class="when">Contact centers, desk-heavy users</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Avaya K100 Series Headsets</td><td class="def">Bluetooth wireless headsets designed for mobile UC users, with unified call controls across softphone and mobile.</td><td>Bluetooth headsets</td><td class="when">Mobile / hybrid workers</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">D100 Series DECT</td><td class="def">DECT wireless handsets and base stations for mobility inside a campus (warehouses, hospitals, retail).</td><td>DECT mobility</td><td class="when">Roaming staff without Wi-Fi handsets</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- VIDEO / ROOMS / COLLAB -->
+<section class="cat c-video">
+<h2>🎥 Video, Rooms &amp; Collaboration <span class="count">5</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Avaya Spaces</td><td class="def">Cloud meeting and team-collaboration service — video meetings, chat, file sharing and workstreams accessible from browser or Workplace.</td><td>Team collaboration</td><td class="when">Alternative to Zoom/Teams inside Avaya</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Spaces Calling</td><td class="def">Cloud PBX add-on that layers business telephony (DID, PSTN, call flows) onto Avaya Spaces meeting/chat.</td><td>Cloud voice for Spaces</td><td class="when">Spaces users needing PSTN</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">IX Room Systems / CU-360</td><td class="def">All-in-one video collaboration bar with camera, mic, speaker and codec — pairs with Spaces or third-party rooms.</td><td>Meeting room video</td><td class="when">Small/medium rooms</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Scopia*</td><td class="def">Legacy video conferencing platform (endpoints, MCU, gateway). *End-of-life; migrate to Spaces or interop via SIP.</td><td>Legacy video</td><td class="when">*Retired — do not deploy new</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Equinox*</td><td class="def">Prior name for the Avaya Workplace client and conferencing suite. *Rebranded — use Workplace / Spaces.</td><td>Legacy UC client</td><td class="when">*Deprecated brand</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- SBC / SECURITY -->
+<section class="cat c-sec">
+<h2>🛡️ Session Border Controllers &amp; Security <span class="count">4</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Avaya Session Border Controller for Enterprise (SBCE)</td><td class="def">Signaling and media firewall (based on Oracle/Acme Packet) that terminates SIP trunks, encrypts media and enables remote workers.</td><td>SIP border firewall</td><td class="when">SIP trunking &amp; remote workers</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Aura Session Border Controller</td><td class="def">Ruggedized SBC deployment tuned for Avaya Aura core, offering topology hiding, transcoding and denial-of-service protection.</td><td>Aura-facing SBC</td><td class="when">Terminate SIP into Aura core</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Avaya SBC Cloud</td><td class="def">Virtualized SBC deployment (VMware, KVM, AWS, Azure) with same feature set and licensed by session capacity.</td><td>Virtual SBC</td><td class="when">Cloud-based UC or bursty SIP</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Avaya Identity Engines*</td><td class="def">NAC/BYOD policy engine (formerly with the Nortel networking line). *Portfolio largely divested; check availability regionally.</td><td>NAC / identity</td><td class="when">*Legacy — use partner NAC now</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- AI & AUTOMATION -->
+<section class="cat c-ai">
+<h2>🤖 AI &amp; Automation <span class="count">7</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Avaya AI Virtual Agent</td><td class="def">Cloud voice- and chat-bot service that handles routine contacts end-to-end and hands off to humans with full context.</td><td>Voice / chat bot</td><td class="when">Automate high-volume, low-complexity contacts</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Avaya AI Agent Assist</td><td class="def">Real-time transcription, sentiment and next-best-action suggestions surfaced to live agents inside AXP Desktop.</td><td>Agent copilot</td><td class="when">Accelerate handle time &amp; quality</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Tandem Care (Human + AI)</td><td class="def">Avaya's human-AI collaboration model orchestrating when an AI agent handles vs. hands off to a person — with shared context.</td><td>Human-AI orchestration</td><td class="when">Blend AI + agent workflows</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">MCP Orchestration (Agentic AI)</td><td class="def">Avaya Infinity's use of the open Model Context Protocol (MCP) to connect multiple AI agents and enterprise systems into orchestrated workflows.</td><td>Agentic AI framework</td><td class="when">Multi-agent, multi-system automation</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">AI Noise Removal</td><td class="def">Real-time background-noise suppression on voice channels to improve clarity for agents and customers.</td><td>Voice quality</td><td class="when">Home-agent / noisy environments</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Conversational Intelligence</td><td class="def">Post-call speech &amp; text analytics with topic detection, compliance scoring and coaching insights across 100% of interactions.</td><td>Speech analytics</td><td class="when">QA at scale, not sampling</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Workflow Automation</td><td class="def">Low-code automation layer connecting AI decisions to enterprise business processes (case creation, order updates, notifications).</td><td>Process automation</td><td class="when">Automate handoffs to back-office</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- ANALYTICS & MANAGEMENT -->
+<section class="cat c-analytics">
+<h2>📊 Analytics, Reporting &amp; Management <span class="count">6</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Avaya Analytics</td><td class="def">Modern real-time and historical analytics for AXP — data lake, cross-channel dashboards and open APIs for BI tools.</td><td>CX analytics</td><td class="when">Replace legacy CMS reporting</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Call Management System (CMS)</td><td class="def">Long-standing real-time and historical reporting server for Elite/AXP On-Prem — still the reference for many enterprises.</td><td>ACD reporting</td><td class="when">Long-tenured Elite deployments</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Real-Time Speech</td><td class="def">Live keyword and phrase detection on active calls, triggering agent alerts, coaching or supervisor intervention.</td><td>Real-time speech alerts</td><td class="when">Compliance monitoring, escalation</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">System Manager (SMGR)</td><td class="def">Centralized administration and licensing hub for the Aura suite (see UC section) — repeated here as ops surface.</td><td>Central admin</td><td class="when">Aura estates of any size</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Avaya Diagnostic Server (ADS)</td><td class="def">Endpoint monitoring and troubleshooting for J-series and 9600-series phones — remote pcap, call quality metrics and remote worker checks.</td><td>Endpoint diagnostics</td><td class="when">Support large phone fleets</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Control Manager</td><td class="def">Multi-tenant management for MSPs and large enterprises running many Avaya UC/CC estates, with delegated admin and change tracking.</td><td>Multi-tenant admin</td><td class="when">MSP / multi-BU governance</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- DEV / APIs -->
+<section class="cat c-dev">
+<h2>🧑‍💻 Developer, APIs &amp; Integrations <span class="count">5</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Avaya OneCloud APIs / CPaaS</td><td class="def">Programmable communications APIs — SMS, voice, video, verify, WhatsApp and messaging — pay-as-you-go.</td><td>CPaaS APIs</td><td class="when">Embed communications in apps</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Avaya Breeze Platform</td><td class="def">Java-based application platform on top of Aura — Snap-ins (custom services), Engagement Designer flow builder and open APIs.</td><td>UC app platform</td><td class="when">Custom Aura-integrated apps</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Engagement Designer</td><td class="def">Visual, BPMN-style workflow designer inside Breeze for orchestrating multichannel customer journeys.</td><td>Journey designer</td><td class="when">Complex omnichannel flows</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Application Enablement (AES) SDKs</td><td class="def">DMCC, JTAPI and TSAPI SDKs used by CRM and third-party applications to control CM calls (screen-pop, agent state, etc.).</td><td>CTI SDK</td><td class="when">Building custom CTI apps</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">DevConnect Program</td><td class="def">Avaya's technology-partner program with SDKs, sandbox access and interop testing — 20,000+ certified compliance results.</td><td>Partner ecosystem</td><td class="when">ISV integrations &amp; certifications</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- SERVICES -->
+<section class="cat c-services">
+<h2>🛠️ Services, Support &amp; Programs <span class="count">5</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Avaya Professional Services</td><td class="def">Global consulting and delivery organization for design, deployment, migration and optimization of Avaya solutions.</td><td>Consulting / SI</td><td class="when">Major upgrade or migration</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Avaya Managed Services</td><td class="def">Fully or co-managed operations of your Avaya estate — monitoring, patching, MACs, incident and problem management.</td><td>Managed services</td><td class="when">Offload day-2 operations</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Avaya Support Advantage</td><td class="def">Tiered technical support (Preferred, Advantage, Premium) — 24×7 access, RMA and firmware, escalations and SLAs.</td><td>Support contract</td><td class="when">Every production Avaya deployment</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Avaya Innovation Without Disruption</td><td class="def">Framework and licensing constructs enabling on-prem customers to consume cloud innovations (AI, digital, analytics) without ripping out existing infrastructure.</td><td>Modernization program</td><td class="when">Long-tenured Elite/Aura estates</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Avaya Learning</td><td class="def">Training and certification program (ACIS, ACSS, APDS/APSS) for administrators, engineers and sales partners.</td><td>Training / certification</td><td class="when">Build/renew Avaya skills</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+</div>
+
+<div class="lower">
+  <div class="panel">
+    <h3>Avaya Portfolio Decision Guide</h3>
+    <div style="font-size:11.5px; line-height:1.7;">
+      <p><b>1. Customer Experience</b> — AXP On-Prem · AXP Private Cloud · AXP Public Cloud · Avaya Infinity · AXP Desktop / Supervisor</p>
+      <p><b>2. Workforce &amp; Outreach</b> — WEM (WFM/QM) · POM · Callback Assist · Experience Portal · Orchestration Designer · Contact Recorder</p>
+      <p><b>3. Enterprise UC</b> — Aura CM · Session Manager · System Manager · Media Server · Messaging · AES · Device Services · Web Gateway · Workplace Client</p>
+      <p><b>4. Cloud UCaaS</b> — Avaya Cloud Office (ACO, powered by RingCentral)</p>
+      <p><b>5. SMB UC</b> — IP Office (500 / Server Edition) · IP Office Contact Center · Web Manager · one-X Portal</p>
+      <p><b>6. Devices</b> — J129 / J139 / J159 / J169 / J179 / J189 · Vantage K1xx · B199 conference · JBM24 · L100 / K100 headsets · D100 DECT</p>
+      <p><b>7. Video &amp; Rooms</b> — Avaya Spaces · Spaces Calling · IX Room Systems / CU-360</p>
+      <p><b>8. Security &amp; SBC</b> — SBCE · Aura SBC · Avaya SBC Cloud</p>
+      <p><b>9. AI &amp; Automation</b> — Virtual Agent · Agent Assist · Tandem Care · MCP Orchestration · AI Noise Removal · Conversational Intelligence · Workflow Automation</p>
+      <p><b>10. Analytics &amp; Mgmt</b> — Avaya Analytics · CMS · Real-Time Speech · System Manager · Diagnostic Server · Control Manager</p>
+      <p><b>11. Developer</b> — OneCloud APIs / CPaaS · Breeze · Engagement Designer · AES SDKs · DevConnect</p>
+      <p><b>12. Services</b> — Professional Services · Managed Services · Support Advantage · Innovation Without Disruption · Avaya Learning</p>
+    </div>
+  </div>
+
+  <div class="panel arch">
+    <h3>Reference Architecture — Modern Avaya Deployment</h3>
+    <div class="flow">Customers (voice + digital)
+   │
+   ▼
+SBCE / Aura SBC ──► SIP Trunks / Carriers
+   │
+   ▼
+┌───── Avaya Experience Platform ─────────────────────┐
+│  Routing · Digital Channels · Self-Service · WEM    │
+│  Agent Desktop · Supervisor · Analytics             │
+│  AI: Virtual Agent · Agent Assist · Tandem Care     │
+└──────┬──────────────────────────────────────────────┘
+       │
+       ▼
+Avaya Aura Core (Enterprise UC)
+   CM · Session Manager · System Manager
+   Media Server · Messaging · AES · Web Gateway
+       │
+       ▼
+Endpoints
+   J-Series IP phones · Vantage · Workplace Client
+   B199 conference · L100/K100 headsets · Spaces
+       │
+       ▼
+Integrations
+   OneCloud APIs / CPaaS · Breeze / Engagement Designer
+   DevConnect partners (CRM, ITSM, WFM, BI)</div>
+    <p class="arch note"><b>SMB variant:</b> Replace Aura core with <b>Avaya IP Office</b> Server Edition; add IP Office Contact Center for small CC needs.</p>
+    <p class="arch note"><b>Cloud-first variant:</b> Use <b>Avaya Cloud Office</b> (UCaaS) + <b>AXP Public Cloud</b> (CCaaS), with SBCs only where SIP trunks stay on-prem.</p>
+  </div>
+
+  <div class="panel why">
+    <h3>How to read this reference</h3>
+    <ul style="font-size:11.5px">
+      <li><b>Definition</b> — plain-language description of the product.</li>
+      <li><b>Use case</b> — the shortest tag for its primary job.</li>
+      <li><b>When to choose</b> — trigger conditions that push you toward it.</li>
+      <li><b>Fit</b> — S/M/L ticked = natural fit at that org size.</li>
+      <li><b>Cost</b> — LOW = few $K/yr; MED = tens of $K/yr; HIGH = $100K+/yr or hardware-heavy.</li>
+      <li>Products marked with <b>*</b> are legacy, end-of-life or rebranded.</li>
+    </ul>
+    <h3 style="margin-top:14px">Why Avaya?</h3>
+    <ul style="font-size:11.5px">
+      <li>90k+ customers including 90% of the Fortune 100</li>
+      <li>Deep voice heritage — reliability &amp; call quality</li>
+      <li>Unified CX platform (Infinity) across on-prem, private &amp; public cloud</li>
+      <li>Innovation Without Disruption — modernize without ripping out</li>
+      <li>Open architecture with MCP-based agentic AI orchestration</li>
+      <li>Named in Omdia Universe 2026 CX Platforms assessment</li>
+      <li>DevConnect ecosystem — 20,000+ certified integrations</li>
+    </ul>
+  </div>
+</div>
+
+<footer>Avaya Complete Product &amp; Solutions Reference · 2026 edition · Product names reflect current Avaya branding (post-AXP realignment).</footer>
+
+</div>
+</body>
+</html>

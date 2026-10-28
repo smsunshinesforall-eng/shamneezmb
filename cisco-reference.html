@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cisco Complete Product & Solutions Reference</title>
+<style>
+  :root {
+    --cisco-blue: #049FD9;
+    --cisco-dark: #00375E;
+    --cisco-navy: #0D274D;
+    --cisco-black: #1A1A1A;
+    --ink: #0F1720;
+    --paper: #F5F7FA;
+    --card: #FFFFFF;
+    --line: #E4E4DE;
+    --muted: #6B7280;
+    --def: #334155;
+
+    --switch: #049FD9;
+    --dc: #0369A1;
+    --sp: #1E40AF;
+    --wireless: #0891B2;
+    --meraki: #10B981;
+    --sdwan: #059669;
+    --secfw: #DC2626;
+    --seccloud: #B91C1C;
+    --splunk: #EF4444;
+    --collab: #7C3AED;
+    --compute: #C2410C;
+    --observ: #EC4899;
+    --iot: #16A34A;
+    --dev: #6366F1;
+    --services: #475569;
+
+    --cost-low: #16A34A;
+    --cost-med: #D97706;
+    --cost-high: #DC2626;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); font-family: -apple-system, "Segoe UI", Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .sheet { max-width: 1800px; margin: 0 auto; padding: 24px; }
+
+  header {
+    background: linear-gradient(135deg, var(--cisco-dark) 0%, var(--cisco-navy) 100%);
+    color: white;
+    padding: 22px 28px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 130px 1fr auto;
+    gap: 22px;
+    align-items: center;
+    margin-bottom: 18px;
+    border-left: 6px solid var(--cisco-blue);
+  }
+  .logo {
+    font-weight: 800;
+    font-size: 30px;
+    letter-spacing: -0.5px;
+    line-height: 1;
+    color: white;
+  }
+  .logo .bars {
+    display: inline-block;
+    color: var(--cisco-blue);
+    letter-spacing: -2px;
+    font-size: 26px;
+    vertical-align: 3px;
+  }
+  .logo .tag { display: block; font-size: 10.5px; letter-spacing: 2px; color: var(--cisco-blue); margin-top: 4px; text-transform: uppercase; font-weight: 600; }
+  header h1 { margin: 0 0 4px 0; font-size: 26px; }
+  header .sub { margin: 0; opacity: 0.85; font-size: 13px; }
+  header .sub b { color: var(--cisco-blue); font-weight: 600; }
+  .badge {
+    text-align: right;
+    border-left: 1px solid rgba(255,255,255,0.2);
+    padding-left: 22px;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  .badge .big { font-size: 18px; font-weight: 700; color: var(--cisco-blue); display: block; }
+
+  .legend {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    font-size: 11.5px;
+    align-items: center;
+  }
+  .legend .item { display: flex; align-items: center; gap: 6px; }
+  .legend strong { color: var(--cisco-dark); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .cat {
+    background: var(--card);
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .cat > h2 {
+    margin: 0;
+    padding: 10px 14px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cat > h2 .count {
+    margin-left: auto;
+    font-size: 11px;
+    background: rgba(255,255,255,0.25);
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-weight: 500;
+  }
+  .cat table { width: 100%; border-collapse: collapse; font-size: 11.5px; table-layout: fixed; }
+  .cat thead th {
+    background: #FAFAF7;
+    text-align: left;
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--line);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .cat tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #F1F0EB;
+    vertical-align: top;
+    line-height: 1.4;
+  }
+  .cat tbody tr:last-child td { border-bottom: none; }
+
+  .col-svc  { width: 14%; }
+  .col-def  { width: 28%; }
+  .col-use  { width: 14%; }
+  .col-when { width: 19%; }
+  .col-fit  { width: 13%; }
+  .col-cost { width: 12%; }
+
+  .svc { font-weight: 700; color: var(--ink); }
+  .def { color: var(--def); }
+  .when { color: var(--muted); }
+
+  .fit {
+    display: inline-flex;
+    gap: 3px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10px;
+  }
+  .fit span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    padding: 2px 0;
+    border: 1px solid #D1D5DB;
+    border-radius: 3px;
+    background: #FAFAFA;
+    color: #9CA3AF;
+  }
+  .fit span.on {
+    background: var(--cisco-dark);
+    color: white;
+    border-color: var(--cisco-dark);
+    font-weight: 700;
+  }
+
+  .cost {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    color: white;
+    min-width: 46px;
+    text-align: center;
+  }
+  .cost.L { background: var(--cost-low); }
+  .cost.M { background: var(--cost-med); }
+  .cost.H { background: var(--cost-high); }
+
+  .c-switch h2   { background: var(--switch); }
+  .c-dc h2       { background: var(--dc); }
+  .c-sp h2       { background: var(--sp); }
+  .c-wireless h2 { background: var(--wireless); }
+  .c-meraki h2   { background: var(--meraki); }
+  .c-sdwan h2    { background: var(--sdwan); }
+  .c-secfw h2    { background: var(--secfw); }
+  .c-seccloud h2 { background: var(--seccloud); }
+  .c-splunk h2   { background: var(--splunk); }
+  .c-collab h2   { background: var(--collab); }
+  .c-compute h2  { background: var(--compute); }
+  .c-observ h2   { background: var(--observ); }
+  .c-iot h2      { background: var(--iot); }
+  .c-dev h2      { background: var(--dev); }
+  .c-services h2 { background: var(--services); }
+
+  .lower {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr 0.7fr;
+    gap: 14px;
+    margin-top: 18px;
+  }
+  @media (max-width: 1100px) { .lower { grid-template-columns: 1fr; } }
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .panel h3 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: var(--cisco-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .panel h3::before {
+    content: "";
+    display: inline-block;
+    width: 4px; height: 16px;
+    background: var(--cisco-blue);
+    border-radius: 2px;
+  }
+  .why ul { padding-left: 18px; margin: 4px 0; font-size: 12px; line-height: 1.65; }
+  .why li::marker { color: var(--cisco-blue); }
+  .arch .flow {
+    background: #F9FAFB;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 8px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10.5px;
+    white-space: pre-wrap;
+    color: #334155;
+  }
+  .arch .note { color: var(--muted); font-size: 10.5px; }
+  footer { margin-top: 18px; text-align: center; font-size: 10.5px; color: var(--muted); padding: 10px; }
+  @media print {
+    body { background: white; }
+    .sheet { max-width: none; padding: 8px; }
+    .cat, .panel, header { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<header>
+  <div class="logo">CISCO <span class="bars">||⁞|||⁞||</span><span class="tag">The Bridge to Possible</span></div>
+  <div>
+    <h1>Cisco Complete Product &amp; Solutions Reference</h1>
+    <p class="sub">Product · <b>Definition</b> · Use Case · When to Choose · Enterprise Fit · Cost Tier — Cisco's networking, security, collab, compute &amp; observability portfolio in one page</p>
+  </div>
+  <div class="badge">
+    <span class="big">150+ Products</span>
+    15 Domains · One Portfolio<br>2026 edition
+  </div>
+</header>
+
+<div class="legend">
+  <div class="item"><strong>Fit:</strong></div>
+  <div class="item"><span class="fit"><span class="on">S</span><span>M</span><span>L</span></span> Small / SMB</div>
+  <div class="item"><span class="fit"><span>S</span><span class="on">M</span><span>L</span></span> Mid-market</div>
+  <div class="item"><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span> Large enterprise / SP</div>
+  <div class="item"><strong style="margin-left:10px">Cost:</strong>
+    <span class="cost L">LOW</span>
+    <span class="cost M">MED</span>
+    <span class="cost H">HIGH</span>
+  </div>
+  <div class="item" style="color:var(--muted); font-size:10.5px">Cost = typical annual footprint. Cisco Enterprise Agreements (EAs) reshape totals significantly.</div>
+</div>
+
+<div class="grid">
+
+<!-- ENTERPRISE SWITCHING -->
+<section class="cat c-switch">
+<h2>🔗 Enterprise Switching <span class="count">8</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Catalyst 9200</td><td class="def">Entry-level enterprise access switch with StackWise, PoE+ and IOS XE — fixed 1/10G access for branches and small campus.</td><td>Branch access switch</td><td class="when">Small branch / campus edge</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Catalyst 9300 / 9300X</td><td class="def">Enterprise stackable access switch with UPOE+, 25/40/100G uplinks, StackWise-1T and hardware-accelerated encryption.</td><td>Campus access</td><td class="when">Standard enterprise access tier</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Catalyst 9400</td><td class="def">Modular chassis switch for large campus wiring closets with redundant supervisors and up to 480 access ports.</td><td>Modular access</td><td class="when">Large wiring closets, high port density</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Catalyst 9500 / 9500X</td><td class="def">Fixed high-performance core/aggregation switch — 100/400G, SRv6 in campus, and Silicon One-based 9500X models.</td><td>Campus core</td><td class="when">Aggregation / campus core</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Catalyst 9600</td><td class="def">Modular chassis aggregation switch designed for large enterprise cores, up to 25.6 Tbps, 400G interfaces.</td><td>Large core</td><td class="when">Multi-thousand-user campus</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Catalyst 1000 / 1300</td><td class="def">SMB-focused fixed switches with basic L2/L3 features and simple management — successor to SG-series.</td><td>SMB switching</td><td class="when">Small offices, retail sites</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Catalyst IE Series</td><td class="def">Industrial Ethernet switches (IE-3x00, 9300 Rugged) hardened for temperature/vibration in factories, utilities and transport.</td><td>Industrial switching</td><td class="when">OT / ICS environments</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Catalyst Center (formerly DNA Center)</td><td class="def">On-prem controller for automation, assurance and SD-Access on Catalyst campus — analytics, policy and workflows for switch/AP fleets.</td><td>Campus controller</td><td class="when">Catalyst automation &amp; assurance</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- DATA CENTER NETWORKING -->
+<section class="cat c-dc">
+<h2>🏢 Data Center Networking <span class="count">7</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Nexus 9300</td><td class="def">Fixed top-of-rack data-center switch running NX-OS, powered by Cloud Scale ASICs — 10/25/100/400G ports for leaf duty.</td><td>DC leaf switch</td><td class="when">ToR access in leaf-spine fabrics</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Nexus 9500</td><td class="def">Modular chassis with pluggable line cards for spine or high-density leaf roles in EVPN/VXLAN or ACI fabrics.</td><td>DC spine / large leaf</td><td class="when">Spine of a leaf-spine fabric</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Nexus 7000 / 7700*</td><td class="def">Legacy modular DC switches — still supported, but no longer the strategic direction. *Migration path: Nexus 9000.</td><td>Legacy DC</td><td class="when">*Refresh candidates</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Cisco ACI (APIC)</td><td class="def">Application Centric Infrastructure — SDN controller-based fabric using Nexus 9000, driven by application-level policy contracts.</td><td>Policy-based DC fabric</td><td class="when">Multi-tenant, policy-driven DC</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">VXLAN EVPN Fabric</td><td class="def">Standards-based DC fabric (BGP EVPN control plane) on NX-OS Nexus 9000, managed through NDFC / Nexus Dashboard.</td><td>Open DC fabric</td><td class="when">Standards-based fabric, non-ACI</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">MDS 9000</td><td class="def">Multilayer director-class Fibre Channel / FCoE storage networking switches for SAN fabrics up to 64G FC.</td><td>SAN switching</td><td class="when">Enterprise storage fabrics</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Nexus Dashboard</td><td class="def">Unified operational console for Nexus fabrics — orchestration, insights, fabric controller (NDFC) and cloud fabric services.</td><td>DC ops console</td><td class="when">Every modern Nexus deployment</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- SERVICE PROVIDER / OPTICAL -->
+<section class="cat c-sp">
+<h2>🛰️ Service Provider Routing &amp; Optical <span class="count">6</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Cisco 8000</td><td class="def">400G-native SP routing platform (fixed &amp; modular) powered by Silicon One ASICs — for internet backbone, cloud &amp; peering.</td><td>Internet backbone</td><td class="when">Hyperscale / Tier-1 SP core</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">ASR 9000</td><td class="def">Long-standing SP edge platform running IOS XR — high-density 100/400G edge, peering and metro-aggregation duties.</td><td>SP edge / metro</td><td class="when">SP edge, ISP aggregation</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">NCS 500 / 5500 / 5700</td><td class="def">Network Convergence Series — compact metro and aggregation routers with SRv6/EVPN support for 5G transport.</td><td>Metro aggregation</td><td class="when">5G transport, MPLS/SR</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">NCS 2000 / 1000 Optical</td><td class="def">Coherent optical DWDM platforms delivering 400G/800G ZR/ZR+ wavelengths across metro, long-haul and DCI.</td><td>Optical / DWDM</td><td class="when">DCI, long-haul networks</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Catalyst 8500 / 8300</td><td class="def">Enterprise WAN edge / SD-WAN aggregation routers running IOS XE, replacing ASR 1000 / ISR 4000 at scale.</td><td>WAN aggregation</td><td class="when">SD-WAN head-ends, DC egress</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Silicon One</td><td class="def">Cisco's unified network silicon architecture spanning WebScale, SP and enterprise switching/routing — foundation of Cisco 8000, 9500X and Nexus 9000-X.</td><td>Network ASIC family</td><td class="when">Deep tech evaluation</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- WIRELESS -->
+<section class="cat c-wireless">
+<h2>📶 Wireless (Enterprise) <span class="count">6</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Catalyst 9100 Wi-Fi 7</td><td class="def">Next-gen Wi-Fi 7 (802.11be) APs with multi-link operation, 6 GHz, AI/ML radio management, managed via Catalyst Center or Meraki dashboard.</td><td>Wi-Fi 7 AP</td><td class="when">New deployments &amp; refresh</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Catalyst 9130 / 9166 Wi-Fi 6E</td><td class="def">High-performance Wi-Fi 6E APs with 6 GHz band and advanced RF telemetry — still available where Wi-Fi 7 isn't required.</td><td>Wi-Fi 6E AP</td><td class="when">Cost-optimized high-perf Wi-Fi</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Catalyst 9800 WLC</td><td class="def">Wireless LAN Controller running IOS XE for enterprise wireless — appliance, embedded on switch, VM or cloud form factors.</td><td>WLC</td><td class="when">Central AP management</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Cisco Spaces</td><td class="def">Cloud location and IoT platform on top of Cisco wireless — indoor maps, wayfinding, occupancy analytics and asset tracking.</td><td>Wi-Fi analytics / IoT</td><td class="when">Location-aware services</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Ultra-Reliable Wireless Backhaul (URWB)</td><td class="def">Fluidmesh-based technology giving Wi-Fi high availability &amp; fast handoff for mobile assets (trains, mining, ports).</td><td>Industrial wireless</td><td class="when">Rugged mobility use cases</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Cisco Private 5G</td><td class="def">Managed private cellular network delivered as-a-service, including radios, packet core and SIM management.</td><td>Private 5G</td><td class="when">Large campus / factory coverage</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- MERAKI -->
+<section class="cat c-meraki">
+<h2>☁️ Cisco Meraki <span class="count">9</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Meraki Dashboard</td><td class="def">Cloud-native controller / management plane for the entire Meraki portfolio — zero-touch provisioning, policy and analytics.</td><td>Cloud mgmt</td><td class="when">Simple, cloud-first ops</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Meraki MX</td><td class="def">Cloud-managed security appliance with NGFW, SD-WAN, IDS/IPS and content filtering built in — a branch-in-a-box.</td><td>Branch NGFW / SD-WAN</td><td class="when">Distributed retail/branch estate</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Meraki MS</td><td class="def">Cloud-managed access and aggregation switches (MS120–MS450), including PoE options and 25/40/100G uplinks.</td><td>Cloud-managed switch</td><td class="when">Distributed sites needing simplicity</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Meraki MR</td><td class="def">Cloud-managed Wi-Fi 6/6E/7 access points with location analytics, Air Marshal WIPS and mesh capabilities.</td><td>Cloud-managed Wi-Fi</td><td class="when">SMB, retail, education Wi-Fi</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Meraki MV</td><td class="def">Smart security cameras with onboard storage, ML-based analytics (people counting, motion) and cloud archive.</td><td>Smart cameras</td><td class="when">Retail, safety, physical security</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Meraki MT</td><td class="def">Environmental sensors (temperature, humidity, water, door, air quality, power) with cloud dashboards and alerts.</td><td>IoT sensors</td><td class="when">Cold-chain, facilities monitoring</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Meraki MG</td><td class="def">Cellular gateways providing LTE/5G backup or primary connectivity for MX or third-party sites.</td><td>Cellular backup</td><td class="when">Sites with unreliable wired WAN</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Meraki Systems Manager</td><td class="def">Cloud MDM/EMM for iOS, macOS, Android, Windows and ChromeOS with app deployment and security posture controls.</td><td>MDM / EMM</td><td class="when">Manage endpoints alongside network</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Meraki Go</td><td class="def">Ultra-simple cloud-managed switches and APs aimed at very small businesses, provisioned via a mobile app.</td><td>Micro-SMB</td><td class="when">Coffee shop, tiny office</td><td><span class="fit"><span class="on">S</span><span>M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- SD-WAN / SASE -->
+<section class="cat c-sdwan">
+<h2>🌐 SD-WAN &amp; SASE <span class="count">5</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Catalyst SD-WAN (Viptela)</td><td class="def">Enterprise SD-WAN overlay (formerly Viptela) with cEdge/vEdge devices, vManage/vSmart/vBond controllers and rich policy.</td><td>Enterprise SD-WAN</td><td class="when">Large multi-region SD-WAN</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Meraki SD-WAN</td><td class="def">Auto-VPN mesh built into every MX with app-aware policies — simpler than Catalyst SD-WAN, cloud-managed.</td><td>SMB / branch SD-WAN</td><td class="when">Rapid, simple deployments</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Cisco Secure Connect</td><td class="def">Unified SASE offering combining SD-WAN, ZTNA, SWG, CASB, DLP and FWaaS in a single cloud subscription.</td><td>Unified SASE</td><td class="when">Cloud-first hybrid workforce</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Cisco Multicloud Fabric</td><td class="def">Cloud-delivered service (announced 2026) connecting branches, DCs and cloud workloads across AWS, Azure, GCP and neoclouds.</td><td>Cross-cloud network</td><td class="when">Multicloud connectivity</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Umbrella (SIG)</td><td class="def">Cloud-delivered secure internet gateway with DNS security, SWG, CASB and DLP — core of Cisco Secure Connect.</td><td>DNS / SWG</td><td class="when">Fast, DNS-layer protection</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- SECURITY - FIREWALL / NETWORK -->
+<section class="cat c-secfw">
+<h2>🛡️ Security — Network &amp; Firewalls <span class="count">6</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Secure Firewall (Firepower)</td><td class="def">Next-gen firewall family (1000/3100/4200/9300) running FTD — NGFW, NGIPS, VPN, TLS decrypt, managed by FMC or CDO.</td><td>NGFW</td><td class="when">Enterprise perimeter, DC edge</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">ASA*</td><td class="def">Long-standing IPsec/SSL VPN and stateful firewall platform. *Now positioned for legacy/VPN roles; new deployments should use Secure Firewall.</td><td>Legacy FW / VPN</td><td class="when">*Legacy — plan migration</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Secure Firewall Management Center (FMC)</td><td class="def">On-prem manager for Secure Firewall — policy, events, analytics and health monitoring for firewall fleets.</td><td>FW manager</td><td class="when">Central FW management</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Defense Orchestrator (CDO)</td><td class="def">Cloud-based manager for Secure Firewall, ASA, Meraki MX and third-party FWs — consolidated policy across a hybrid estate.</td><td>Cloud FW mgr</td><td class="when">Hybrid/multi-vendor FW ops</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Cisco Hypershield</td><td class="def">AI-native workload &amp; network security fabric (2024, GA 2026) providing distributed enforcement, autonomous segmentation and live patching.</td><td>AI-native security</td><td class="when">Cloud-scale zero-trust</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Secure Workload (Tetration)</td><td class="def">Zero-trust workload segmentation and application-dependency mapping across on-prem, cloud and containers.</td><td>Micro-segmentation</td><td class="when">Segment east-west traffic</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- SECURITY - CLOUD / IDENTITY / ENDPOINT -->
+<section class="cat c-seccloud">
+<h2>🔐 Security — Cloud, Identity &amp; Endpoint <span class="count">9</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Duo</td><td class="def">Cloud-delivered MFA, single sign-on and adaptive access with device-posture checks — a foundational zero-trust component.</td><td>MFA / SSO / ZTNA</td><td class="when">Add MFA quickly, everywhere</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">ISE</td><td class="def">Identity Services Engine — RADIUS, TACACS+, 802.1X, guest and BYOD, and posture-based network access control.</td><td>NAC / RADIUS</td><td class="when">Wired/wireless access control</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Secure Endpoint (AMP)</td><td class="def">Cloud-managed EDR/EPP that combines behavioral prevention, threat hunting and retrospective detection powered by Talos.</td><td>EDR</td><td class="when">Enterprise endpoint protection</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Secure Email (ESA / CES)</td><td class="def">Cloud or appliance email security with anti-phishing, anti-spam, sandboxing and Advanced Email Protection.</td><td>Email security</td><td class="when">M365 / on-prem mail protection</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Secure Web Appliance (WSA)</td><td class="def">On-prem secure web gateway with URL filtering, DLP and sandboxing — Umbrella is the cloud-first alternative.</td><td>On-prem SWG</td><td class="when">Regulated on-prem SWG requirement</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Cisco XDR</td><td class="def">Cloud-delivered XDR correlating telemetry across Secure Firewall, Endpoint, Duo, Umbrella, Splunk and third-party sources for detection &amp; response.</td><td>XDR</td><td class="when">SOC consolidation</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Talos Intelligence</td><td class="def">Cisco's global threat research group — feeds every Cisco security product with signatures, reputation and threat intel.</td><td>Threat intel</td><td class="when">Bundled with every SKU</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Cisco AI Defense</td><td class="def">Security service for AI applications (models &amp; agents) — validates AI models, protects runtime and enforces policy on AI usage.</td><td>AI app security</td><td class="when">Enterprise GenAI rollout</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Vulnerability Mgmt (Kenna)</td><td class="def">Risk-based vulnerability management using ML to prioritize which CVEs to fix first, based on real-world exploitability.</td><td>Vuln prioritization</td><td class="when">Overloaded patching pipelines</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- SPLUNK -->
+<section class="cat c-splunk">
+<h2>📈 Splunk (Cisco company) <span class="count">7</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Splunk Enterprise</td><td class="def">Self-managed data platform for indexing, searching and analyzing machine data across security, IT and business use cases.</td><td>Data platform (self-managed)</td><td class="when">On-prem, sovereign data</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Splunk Cloud Platform</td><td class="def">SaaS-delivered Splunk with the same search &amp; ingest experience, operated by Splunk on AWS/GCP.</td><td>Data platform (SaaS)</td><td class="when">No infra to manage</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Splunk Enterprise Security (ES)</td><td class="def">SIEM app on top of Splunk — correlation searches, notable events, risk scoring and MITRE ATT&amp;CK mapping.</td><td>SIEM</td><td class="when">Enterprise SOC detection</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Splunk SOAR</td><td class="def">Security orchestration, automation and response — playbooks, case management, connectors and, increasingly, agentic SOC workflows.</td><td>SOAR / agentic SOC</td><td class="when">Automate SOC response</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Splunk ITSI</td><td class="def">IT Service Intelligence — service-oriented monitoring with KPIs, glass tables and predictive analytics for IT ops.</td><td>ITSI</td><td class="when">Service-level ITOps</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Splunk Observability Cloud</td><td class="def">SaaS full-stack observability — infra monitoring, APM, RUM, synthetics and log observer, with OpenTelemetry native.</td><td>Observability (SaaS)</td><td class="when">Cloud-native apps &amp; SRE</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Splunk Attack Analyzer</td><td class="def">Malware &amp; phishing detonation service that auto-analyzes credential-theft and other targeted-attack campaigns.</td><td>Attack analysis</td><td class="when">Rich phishing / malware triage</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- COLLABORATION -->
+<section class="cat c-collab">
+<h2>🎥 Collaboration — Webex, Voice &amp; Devices <span class="count">11</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Webex Suite</td><td class="def">Cloud collaboration bundle — Meetings, Calling, Messaging, Polling (Slido) and Events in one subscription.</td><td>UCaaS bundle</td><td class="when">Single-vendor collab platform</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Webex Meetings</td><td class="def">HD video meetings service with noise removal, AI summarization, translation and transcription.</td><td>Video meetings</td><td class="when">Enterprise-grade video</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Webex Calling</td><td class="def">Global cloud PBX with PSTN options (Webex-provided or bring-your-own), replacing on-prem PBX for most sites.</td><td>Cloud calling</td><td class="when">Retire on-prem PBX</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Webex Contact Center</td><td class="def">Cloud CCaaS with voice + digital channels, IVR, workforce optimization and generative AI agent assist.</td><td>CCaaS</td><td class="when">Cloud contact center</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Webex App</td><td class="def">Unified desktop/mobile client for messaging, calling and meetings — spaces, teams, whiteboard and search.</td><td>Collab client</td><td class="when">Bundled with Webex Suite</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Webex Control Hub</td><td class="def">Central administration for Webex services and devices — users, licenses, security, analytics and policies.</td><td>Webex admin</td><td class="when">All Webex customers</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Webex Rooms &amp; Boards</td><td class="def">Video devices — Room Kit, Room Bar, Board Pro, Desk Pro — with camera intelligence, noise removal and touch UI.</td><td>Meeting rooms &amp; huddle</td><td class="when">Physical spaces for hybrid work</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Cisco IP Phone 9800 Series</td><td class="def">Wi-Fi 6E multi-platform desk phones (Webex or third-party) with built-in Bluetooth and modern touchscreens.</td><td>IP desk phone</td><td class="when">New phone refresh</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Cisco IP Phone 8800 / 7800 / 6800</td><td class="def">Long-standing multi-platform SIP desk phones (executive → basic) for Webex Calling, UCM or third-party.</td><td>IP desk phone</td><td class="when">Standard phone estates</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Unified Communications Manager (UCM)</td><td class="def">On-prem or cloud-hosted call-processing platform — the traditional Cisco enterprise IP-PBX; also delivered as UCM Cloud.</td><td>Enterprise IP-PBX</td><td class="when">On-prem / hybrid voice</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Cisco Headsets 300/500/700</td><td class="def">USB, wireless DECT and Bluetooth headsets integrated with Webex and other UC platforms, with firmware updates via Control Hub.</td><td>Headsets</td><td class="when">Bundle with soft/hard phones</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- COMPUTE / DATA CENTER -->
+<section class="cat c-compute">
+<h2>🖥️ Data Center Compute &amp; AI Infrastructure <span class="count">7</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">UCS X-Series</td><td class="def">Modular DC compute platform — a single chassis for compute, GPU and storage nodes, managed by Intersight.</td><td>Modular compute</td><td class="when">Modern converged DC</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">UCS C-Series</td><td class="def">Standalone rack servers (1U/2U/4U) for general-purpose workloads, virtualization and databases.</td><td>Rack servers</td><td class="when">General DC compute</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">UCS B-Series*</td><td class="def">Long-running blade server line — still supported but new investment focused on X-Series.</td><td>Legacy blades</td><td class="when">*Legacy — X-Series preferred</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">HyperFlex</td><td class="def">Hyperconverged infrastructure combining compute, storage &amp; networking with unified management.</td><td>HCI</td><td class="when">Simplified DC / branch DC</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Intersight</td><td class="def">SaaS control plane for UCS, HyperFlex, Nexus and third-party — inventory, orchestration, workload optimization and Kubernetes.</td><td>DC ops platform</td><td class="when">Cloud ops for on-prem DC</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">AI PODs</td><td class="def">Pre-integrated Cisco + Nvidia infrastructure stacks for GenAI training and inference — validated designs with UCS &amp; Nexus.</td><td>AI infrastructure</td><td class="when">Enterprise GenAI rollout</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Secure AI Factory</td><td class="def">End-to-end blueprint (Cisco + Nvidia + Nutanix + others) securing GenAI workloads across data, model and runtime layers.</td><td>Secure AI stack</td><td class="when">Regulated AI workloads</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- OBSERVABILITY / AIOPS -->
+<section class="cat c-observ">
+<h2>👁️ Observability, Assurance &amp; AIOps <span class="count">7</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">ThousandEyes</td><td class="def">Internet and cloud network intelligence — end-to-end visibility from user to SaaS through ISPs, DNS and cloud fabrics.</td><td>Internet monitoring</td><td class="when">SaaS/cloud &amp; SD-WAN experience</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">AppDynamics</td><td class="def">Application performance management (APM) for on-prem and cloud apps, with business transaction correlation.</td><td>APM</td><td class="when">Enterprise app performance</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Splunk Observability Cloud</td><td class="def">SaaS observability for infra, APM, RUM and synthetics — cross-referenced here (see Splunk section).</td><td>Observability (SaaS)</td><td class="when">See Splunk section</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Catalyst Center Assurance</td><td class="def">AI-driven assurance for campus wired and wireless — device health, client journey and issue-cause analysis.</td><td>Campus assurance</td><td class="when">Catalyst wired/wireless</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Meraki Insight</td><td class="def">Application-layer performance monitoring inside the Meraki dashboard, tracking SaaS and WAN experience.</td><td>Meraki app perf</td><td class="when">Meraki-managed sites</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Nexus Dashboard Insights</td><td class="def">Assurance and analytics for Nexus / ACI fabrics — proactive issue detection, compliance and change validation.</td><td>DC assurance</td><td class="when">Nexus / ACI fabrics</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Cisco Cloud Control</td><td class="def">Unified management platform (announced 2026) spanning Meraki, Nexus, Intersight and Splunk — one operating surface for the Cisco stack.</td><td>Unified ops plane</td><td class="when">Multi-domain Cisco estates</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- IOT / INDUSTRIAL -->
+<section class="cat c-iot">
+<h2>🏭 IoT &amp; Industrial <span class="count">5</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Catalyst IE Switches</td><td class="def">Industrial Ethernet switches (IE-3x00, IE-9x00) certified for ICS/SCADA, transportation and utility environments.</td><td>OT switching</td><td class="when">Factories, substations, transit</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Industrial Wireless</td><td class="def">Ruggedized outdoor APs and URWB radios for warehouses, ports and mobile assets — Wi-Fi and mesh.</td><td>Rugged Wi-Fi</td><td class="when">Outdoor / mobile OT</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">IR / IE Routers</td><td class="def">Industrial routers (IR1101, IR8140) with LTE/5G, GPS, and hardened enclosures for utilities and transport.</td><td>Industrial WAN</td><td class="when">Remote field connectivity</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Cyber Vision</td><td class="def">OT security platform that passively discovers ICS assets, monitors OT protocols and integrates with Firewall/ISE.</td><td>OT visibility &amp; security</td><td class="when">IEC 62443 / NIS2 compliance</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">IoT Operations Dashboard</td><td class="def">Cloud portal for onboarding, monitoring and updating industrial routers, switches and gateways at scale.</td><td>OT/IoT ops</td><td class="when">Large field IoT fleets</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- DEVELOPER / APIS -->
+<section class="cat c-dev">
+<h2>🧑‍💻 Developer, APIs &amp; Automation <span class="count">5</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">DevNet</td><td class="def">Cisco's developer program — SDKs, sandboxes, learning labs and certifications (DevNet Associate/Professional/Expert).</td><td>Developer program</td><td class="when">Automate Cisco infrastructure</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Meraki APIs</td><td class="def">Rich REST APIs (Dashboard, Sensor, Camera, Webhooks) that expose every Meraki configuration and event for automation and telemetry.</td><td>Cloud APIs</td><td class="when">Meraki automation</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Webex Developer APIs</td><td class="def">REST APIs and Bot/Widget SDKs for Webex Meetings, Calling, Messaging, Devices and Control Hub.</td><td>Collab APIs</td><td class="when">Custom Webex integrations</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">NSO (Network Services Orchestrator)</td><td class="def">Multi-vendor service orchestrator with YANG-based service models and full transactional rollback across network domains.</td><td>Network orchestration</td><td class="when">SP-scale / multi-vendor automation</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Agentic Actions</td><td class="def">Cisco's 2026 closed-loop autonomous remediation capability for campus and branch networks, driven by Cisco AI.</td><td>Autonomous NetOps</td><td class="when">Reduce manual firefighting</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- SERVICES / CX -->
+<section class="cat c-services">
+<h2>🛠️ Services, Support &amp; Programs <span class="count">6</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Cisco CX Cloud</td><td class="def">Customer-experience portal aggregating assets, contracts, telemetry, best practices and expert engagement.</td><td>CX portal</td><td class="when">Every Cisco customer</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Solution Support</td><td class="def">Top-tier multi-product support with single point of accountability for complex Cisco solutions.</td><td>Premium support</td><td class="when">Critical multi-product estates</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">SMARTnet / Software Support</td><td class="def">Product-level hardware and software support with 24×7 TAC access and RMA options — the classic Cisco support tier.</td><td>Standard support</td><td class="when">Bundled with hardware</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Cisco Professional Services</td><td class="def">Design, migration and optimization consulting for networking, security, collab and DC.</td><td>Consulting</td><td class="when">Major transformations</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Cisco Enterprise Agreement (EA)</td><td class="def">Multi-year, per-user commercial framework covering broad portfolio consumption with predictable pricing.</td><td>Commercial framework</td><td class="when">Portfolio-wide standardization</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Cisco Learning &amp; Certifications</td><td class="def">CCNA, CCNP, CCIE, DevNet, Cybersecurity Professional and Splunk certifications — Cisco's training ladder.</td><td>Training / cert</td><td class="when">Build in-house Cisco skills</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+</div>
+
+<div class="lower">
+  <div class="panel">
+    <h3>Cisco Portfolio Decision Guide</h3>
+    <div style="font-size:11.5px; line-height:1.7;">
+      <p><b>1. Campus Access</b> — Catalyst 9200 / 9300 / 9300X · Catalyst 9400 (modular) · Catalyst 1000/1300 (SMB) · managed by Catalyst Center or Meraki dashboard</p>
+      <p><b>2. Campus Core / Agg</b> — Catalyst 9500 / 9500X / 9600</p>
+      <p><b>3. Wi-Fi</b> — Catalyst 9100 Wi-Fi 7 · Catalyst 9800 WLC · Meraki MR · Cisco Spaces analytics</p>
+      <p><b>4. Data Center</b> — Nexus 9300/9500 leaf-spine · ACI · MDS SAN · Nexus Dashboard</p>
+      <p><b>5. WAN / SD-WAN / SASE</b> — Catalyst SD-WAN · Meraki SD-WAN · Catalyst 8300/8500 · Cisco Secure Connect · Umbrella</p>
+      <p><b>6. Service Provider</b> — Cisco 8000 · ASR 9000 · NCS 500/5500/5700 · NCS Optical · Silicon One</p>
+      <p><b>7. Security (Network)</b> — Secure Firewall · Meraki MX · Hypershield · Secure Workload · FMC/CDO</p>
+      <p><b>8. Security (Cloud/Identity)</b> — Duo · ISE · Secure Endpoint · Secure Email · Umbrella · Cisco XDR · AI Defense · Talos</p>
+      <p><b>9. Observability</b> — ThousandEyes · AppDynamics · Splunk Observability · Catalyst Center Assurance · Nexus Dashboard Insights</p>
+      <p><b>10. SecOps / Data</b> — Splunk Enterprise/Cloud · Splunk ES · Splunk SOAR · Splunk ITSI · Attack Analyzer</p>
+      <p><b>11. Collaboration</b> — Webex Suite · Webex Calling · Webex Contact Center · Webex Rooms/Boards · Cisco 9800/8800 phones · UCM</p>
+      <p><b>12. Compute &amp; AI</b> — UCS X/C-Series · HyperFlex · Intersight · AI PODs · Secure AI Factory</p>
+      <p><b>13. IoT / OT</b> — Catalyst IE · Industrial Wireless · IR/IE Routers · Cyber Vision · IoT Ops Dashboard</p>
+      <p><b>14. Automation</b> — DevNet · Meraki/Webex APIs · NSO · Agentic Actions</p>
+      <p><b>15. Services</b> — CX Cloud · Solution Support · SMARTnet · Professional Services · Enterprise Agreement · Learning</p>
+    </div>
+  </div>
+
+  <div class="panel arch">
+    <h3>Reference Architecture — Modern Cisco Enterprise</h3>
+    <div class="flow">Users / Devices
+   │
+   ▼
+Wi-Fi 7 APs (Catalyst 9100 / Meraki MR)
+   │
+   ▼
+Access Switching (Catalyst 9200/9300 · Meraki MS)
+   │
+   ▼
+Campus Core (Catalyst 9500/9600)
+   │
+   ├── Security: Secure Firewall / Meraki MX / Hypershield
+   ├── Identity: Duo · ISE
+   ├── Cloud edge: Umbrella / Secure Connect (SASE)
+   │
+   ▼
+WAN / SD-WAN (Catalyst SD-WAN · Meraki SD-WAN)
+   │
+   ▼
+Data Center (Nexus 9000 · ACI · UCS X-Series · Intersight)
+   │
+   ▼
+Cloud (AWS/Azure/GCP) via Multicloud Fabric
+   │
+Ops &amp; Assurance:
+  Catalyst Center · Meraki Dashboard · Nexus Dashboard
+  ThousandEyes · AppDynamics · Splunk (Obs / ES / SOAR)
+  Cisco Cloud Control (unified) · Talos threat intel</div>
+    <p class="arch note"><b>SMB / branch variant:</b> Meraki MX + MS + MR + MT (sensors) all managed via the Meraki Dashboard, with Webex Calling for voice.</p>
+    <p class="arch note"><b>Service provider variant:</b> Cisco 8000 backbone + NCS 5500 edge + NCS 2000 optical + NSO orchestration.</p>
+  </div>
+
+  <div class="panel why">
+    <h3>How to read this reference</h3>
+    <ul style="font-size:11.5px">
+      <li><b>Definition</b> — plain-language description of the product.</li>
+      <li><b>Use case</b> — the shortest tag for its primary job.</li>
+      <li><b>When to choose</b> — trigger conditions that push you toward it.</li>
+      <li><b>Fit</b> — S/M/L ticked = natural fit at that org size.</li>
+      <li><b>Cost</b> — LOW = ≤ $10K/yr; MED = tens of $K/yr; HIGH = $100K+/yr or hardware-heavy. Cisco EAs reshape totals significantly.</li>
+      <li>Products marked with <b>*</b> are legacy or being succeeded.</li>
+    </ul>
+    <h3 style="margin-top:14px">Why Cisco?</h3>
+    <ul style="font-size:11.5px">
+      <li>Largest networking market share globally</li>
+      <li>Broadest single-vendor stack — network + security + collab + compute + observability</li>
+      <li>Splunk (2024) makes Cisco a top SecOps / data platform vendor</li>
+      <li>Talos — one of the largest commercial threat intel teams</li>
+      <li>Meraki cloud model for SMB/branch simplicity</li>
+      <li>ThousandEyes + AppDynamics + Splunk = deep observability</li>
+      <li>Silicon One unifies routing/switching ASIC roadmap</li>
+      <li>DevNet + NSO for infrastructure automation at scale</li>
+    </ul>
+  </div>
+</div>
+
+<footer>Cisco Complete Product &amp; Solutions Reference · 2026 edition · Product names and categories reflect current Cisco branding (Catalyst Center, Secure Firewall, Splunk-as-Cisco).</footer>
+
+</div>
+</body>
+</html>

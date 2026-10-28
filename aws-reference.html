@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AWS Complete Product & Solution Architect Reference</title>
+<style>
+  :root {
+    --aws-navy: #232F3E;
+    --aws-navy-2: #1B2532;
+    --aws-orange: #FF9900;
+    --ink: #0F1720;
+    --paper: #F7F7F5;
+    --card: #FFFFFF;
+    --line: #E4E4DE;
+    --muted: #6B7280;
+    --def: #334155;
+    --compute: #E85D24;
+    --storage: #2A9D5B;
+    --network: #7C3AED;
+    --security: #DC2626;
+    --govern: #D97706;
+    --db: #6D28D9;
+    --analytics: #0EA5E9;
+    --ml: #EC4899;
+    --devtools: #2563EB;
+    --appint: #BE185D;
+    --migration: #16A34A;
+    --iot: #059669;
+    --media: #DB2777;
+    --biz: #7C2D12;
+    --cost-low: #16A34A;
+    --cost-med: #D97706;
+    --cost-high: #DC2626;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); font-family: -apple-system, "Segoe UI", Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .sheet { max-width: 1800px; margin: 0 auto; padding: 24px; }
+
+  header {
+    background: linear-gradient(135deg, var(--aws-navy) 0%, var(--aws-navy-2) 100%);
+    color: white;
+    padding: 22px 28px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 90px 1fr auto;
+    gap: 22px;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+  .logo { font-weight: 800; font-size: 34px; letter-spacing: -1px; line-height: 1; }
+  .logo .smile { color: var(--aws-orange); display: block; font-size: 16px; margin-top: 2px; }
+  header h1 { margin: 0 0 4px 0; font-size: 26px; }
+  header .sub { margin: 0; opacity: 0.85; font-size: 13px; }
+  header .sub b { color: var(--aws-orange); font-weight: 600; }
+  .badge {
+    text-align: right;
+    border-left: 1px solid rgba(255,255,255,0.2);
+    padding-left: 22px;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  .badge .big { font-size: 18px; font-weight: 700; color: var(--aws-orange); display: block; }
+
+  .legend {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    font-size: 11.5px;
+    align-items: center;
+  }
+  .legend .item { display: flex; align-items: center; gap: 6px; }
+  .legend strong { color: var(--aws-navy); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .cat {
+    background: var(--card);
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .cat > h2 {
+    margin: 0;
+    padding: 10px 14px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cat > h2 .count {
+    margin-left: auto;
+    font-size: 11px;
+    background: rgba(255,255,255,0.25);
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-weight: 500;
+  }
+  .cat table { width: 100%; border-collapse: collapse; font-size: 11.5px; table-layout: fixed; }
+  .cat thead th {
+    background: #FAFAF7;
+    text-align: left;
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--line);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .cat tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #F1F0EB;
+    vertical-align: top;
+    line-height: 1.4;
+  }
+  .cat tbody tr:last-child td { border-bottom: none; }
+
+  /* Column widths — 6 columns */
+  .col-svc  { width: 12%; }
+  .col-def  { width: 28%; }
+  .col-use  { width: 15%; }
+  .col-when { width: 20%; }
+  .col-fit  { width: 13%; }
+  .col-cost { width: 12%; }
+
+  .svc { font-weight: 700; color: var(--ink); }
+  .def { color: var(--def); }
+  .when { color: var(--muted); }
+
+  .fit {
+    display: inline-flex;
+    gap: 3px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10px;
+  }
+  .fit span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    padding: 2px 0;
+    border: 1px solid #D1D5DB;
+    border-radius: 3px;
+    background: #FAFAFA;
+    color: #9CA3AF;
+  }
+  .fit span.on {
+    background: var(--aws-navy);
+    color: white;
+    border-color: var(--aws-navy);
+    font-weight: 700;
+  }
+
+  .cost {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    color: white;
+    min-width: 46px;
+    text-align: center;
+  }
+  .cost.L { background: var(--cost-low); }
+  .cost.M { background: var(--cost-med); }
+  .cost.H { background: var(--cost-high); }
+
+  .c-compute h2   { background: var(--compute); }
+  .c-storage h2   { background: var(--storage); }
+  .c-network h2   { background: var(--network); }
+  .c-security h2  { background: var(--security); }
+  .c-govern h2    { background: var(--govern); }
+  .c-db h2        { background: var(--db); }
+  .c-analytics h2 { background: var(--analytics); }
+  .c-ml h2        { background: var(--ml); }
+  .c-devtools h2  { background: var(--devtools); }
+  .c-appint h2    { background: var(--appint); }
+  .c-migration h2 { background: var(--migration); }
+  .c-iot h2       { background: var(--iot); }
+  .c-media h2     { background: var(--media); }
+  .c-biz h2       { background: var(--biz); }
+  .c-euc h2       { background: #475569; }
+  .c-container h2 { background: #0D9488; }
+  .c-blockchain h2 { background: #4338CA; }
+
+  .lower {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr 0.7fr;
+    gap: 14px;
+    margin-top: 18px;
+  }
+  @media (max-width: 1100px) { .lower { grid-template-columns: 1fr; } }
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .panel h3 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: var(--aws-navy);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .panel h3::before {
+    content: "";
+    display: inline-block;
+    width: 4px; height: 16px;
+    background: var(--aws-orange);
+    border-radius: 2px;
+  }
+  .why ul { padding-left: 18px; margin: 4px 0; font-size: 12px; line-height: 1.65; }
+  .why li::marker { color: var(--aws-orange); }
+  .arch .flow {
+    background: #F9FAFB;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 8px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10.5px;
+    white-space: pre-wrap;
+    color: #334155;
+  }
+  .arch .note { color: var(--muted); font-size: 10.5px; }
+  footer { margin-top: 18px; text-align: center; font-size: 10.5px; color: var(--muted); padding: 10px; }
+  @media print {
+    body { background: white; }
+    .sheet { max-width: none; padding: 8px; }
+    .cat, .panel, header { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<header>
+  <div class="logo">aws<span class="smile">◡</span></div>
+  <div>
+    <h1>AWS Complete Product &amp; Solution Architect Reference</h1>
+    <p class="sub">Service · <b>Definition</b> · Use Case · When to Choose · Enterprise Fit · Cost Tier</p>
+  </div>
+  <div class="badge">
+    <span class="big">240+ Services</span>
+    20+ Categories · 2026 edition
+  </div>
+</header>
+
+<div class="legend">
+  <div class="item"><strong>Fit:</strong></div>
+  <div class="item"><span class="fit"><span class="on">S</span><span>M</span><span>L</span></span> Small / startup</div>
+  <div class="item"><span class="fit"><span>S</span><span class="on">M</span><span>L</span></span> Mid-market</div>
+  <div class="item"><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span> Large enterprise</div>
+  <div class="item"><strong style="margin-left:10px">Cost:</strong>
+    <span class="cost L">LOW</span>
+    <span class="cost M">MED</span>
+    <span class="cost H">HIGH</span>
+  </div>
+  <div class="item" style="color:var(--muted); font-size:10.5px">Cost = typical spend footprint at moderate usage. Services with <b>*</b> are closed to new customers or being retired.</div>
+</div>
+
+<div class="grid">
+
+<!-- COMPUTE -->
+<section class="cat c-compute">
+<h2>⚙️ Compute <span class="count">17</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">EC2</td><td class="def">Elastic Compute Cloud — resizable virtual machines in the AWS cloud with a wide range of CPU, memory, storage, GPU and networking options.</td><td>Virtual servers</td><td class="when">OS control, custom workloads</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Auto Scaling</td><td class="def">Automatically adjusts EC2 or other AWS resource capacity up or down based on demand, health checks or schedules.</td><td>Scale instances</td><td class="when">Variable, scalable workloads</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Lambda</td><td class="def">Serverless compute that runs your code in response to events, without provisioning or managing servers. Billed per invocation and duration.</td><td>Serverless functions</td><td class="when">Event-driven, short-lived</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">ECS</td><td class="def">Elastic Container Service — AWS-native orchestrator for Docker containers on EC2 or Fargate.</td><td>Containers (Docker)</td><td class="when">Managed containers on AWS</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">EKS</td><td class="def">Elastic Kubernetes Service — managed Kubernetes control plane with upstream API compatibility.</td><td>Kubernetes</td><td class="when">K8s ecosystem, portability</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Fargate</td><td class="def">Serverless compute engine for containers on ECS and EKS — no EC2 nodes to manage or patch.</td><td>Serverless containers</td><td class="when">No EC2/node management</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Elastic Beanstalk</td><td class="def">Platform-as-a-service that deploys and scales web apps written in common languages on your behalf.</td><td>Web app PaaS</td><td class="when">Fast managed app deploy</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Batch</td><td class="def">Fully managed service that plans, schedules and runs batch computing workloads across EC2, Spot and Fargate.</td><td>Batch jobs</td><td class="when">HPC, scheduled workloads</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">App Runner</td><td class="def">Fully managed service to build and run containerized web apps or APIs from source or an image, with auto-scaling and HTTPS.</td><td>Container/web apps</td><td class="when">Simple web apps/APIs from repo</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Lightsail</td><td class="def">Simplified virtual private servers with predictable monthly pricing that bundle compute, storage and networking.</td><td>Simplified VPS</td><td class="when">Small apps, WordPress</td><td><span class="fit"><span class="on">S</span><span>M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Outposts</td><td class="def">Fully managed AWS-designed racks that extend AWS infrastructure and services to your on-prem data center.</td><td>AWS on-premises</td><td class="when">On-prem with AWS APIs</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Local Zones</td><td class="def">Extensions of an AWS Region placed in metro areas to bring compute and storage closer to end users.</td><td>Low-latency compute</td><td class="when">Metro-area latency</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Wavelength</td><td class="def">Embeds AWS compute and storage inside telecom carrier 5G networks for ultra-low-latency mobile apps.</td><td>5G/edge compute</td><td class="when">Ultra-low latency mobile</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">EVS</td><td class="def">Elastic VMware Service — runs VMware Cloud Foundation natively inside your VPC for migrating VMware workloads.</td><td>VMware in VPC</td><td class="when">Migrate VMware workloads</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">EC2 Image Builder</td><td class="def">Automates the creation, patching, testing and distribution of AMIs and container images across accounts and regions.</td><td>Build AMIs</td><td class="when">Automated golden images</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Compute Optimizer</td><td class="def">Uses machine learning to recommend optimal EC2, EBS, Lambda and Auto Scaling configurations to cut cost and improve performance.</td><td>Right-sizing</td><td class="when">Reduce compute waste</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">ParallelCluster</td><td class="def">Open-source cluster management tool that deploys and manages HPC clusters on AWS with common schedulers.</td><td>HPC clusters</td><td class="when">Scientific / research HPC</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- STORAGE -->
+<section class="cat c-storage">
+<h2>💾 Storage <span class="count">14</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">S3</td><td class="def">Simple Storage Service — durable, virtually unlimited object storage with 99.999999999% (11 nines) durability.</td><td>Object storage</td><td class="when">Durable, scalable, data lake</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">S3 Glacier</td><td class="def">Low-cost S3 storage classes for archival data with retrieval times from minutes to hours.</td><td>Archive storage</td><td class="when">Rare access, low cost</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">S3 Glacier Deep Archive</td><td class="def">The lowest-cost S3 storage class for long-term archive that is accessed once or twice a year, with 12-hour retrieval.</td><td>Long-term archive</td><td class="when">Compliance, decades</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">EBS</td><td class="def">Elastic Block Store — persistent block storage volumes attached to EC2 instances, similar to a virtual disk.</td><td>Block storage</td><td class="when">Persistent EC2 volumes</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">EFS</td><td class="def">Elastic File System — fully managed, elastic NFS file system shared across multiple EC2, containers or Lambda.</td><td>Shared file system</td><td class="when">Multi-AZ Linux shared access</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FSx</td><td class="def">Managed file systems for popular commercial and open-source file systems: Windows, Lustre, NetApp ONTAP, OpenZFS.</td><td>Managed file systems</td><td class="when">Windows/Lustre/ONTAP/OpenZFS</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Storage Gateway</td><td class="def">Hybrid storage service that connects on-prem apps to AWS storage using standard file, volume or tape protocols.</td><td>Hybrid storage</td><td class="when">On-prem → AWS bridge</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">AWS Backup</td><td class="def">Centralized, policy-based backup across AWS services (EBS, RDS, DynamoDB, EFS, FSx, etc.) with lifecycle and vaulting.</td><td>Central backup</td><td class="when">Cross-service backup policy</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">DataSync</td><td class="def">Automates and accelerates online data transfer between on-prem storage and AWS storage services.</td><td>Data transfer</td><td class="when">High-speed sync on/off cloud</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Snow Family</td><td class="def">Physical, ruggedized devices (Snowcone/Snowball/Snowmobile) to move petabyte- to exabyte-scale data offline.</td><td>Physical transfer</td><td class="when">Large / offline datasets</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Elastic DR</td><td class="def">Elastic Disaster Recovery — continuously replicates servers to AWS for fast, low-cost failover of on-prem or cross-region workloads.</td><td>DR replication</td><td class="when">Fast failover across regions</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">S3 Tables</td><td class="def">Managed Apache Iceberg tables stored in S3 with optimized query performance and automatic maintenance.</td><td>Managed Iceberg</td><td class="when">Analytics on open tables</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">S3 Express One Zone</td><td class="def">Single-AZ S3 storage class providing single-digit millisecond latency for the most latency-sensitive workloads.</td><td>Ultra-low latency S3</td><td class="when">Single-AZ high-perf access</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">File Cache</td><td class="def">High-speed cache on AWS for data stored on-prem or in other file systems, providing sub-millisecond access.</td><td>High-speed cache</td><td class="when">Cache on-prem file data</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- NETWORKING -->
+<section class="cat c-network">
+<h2>🌐 Networking &amp; Content Delivery <span class="count">18</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">VPC</td><td class="def">Virtual Private Cloud — logically isolated virtual network in AWS with full control over IPs, subnets, routes and gateways.</td><td>Private network</td><td class="when">Isolation, security boundary</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Subnets</td><td class="def">Ranges of IP addresses within a VPC, tied to a single Availability Zone, used to segment public and private tiers.</td><td>Segmentation</td><td class="when">Public / private tiers</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Route 53</td><td class="def">Scalable authoritative DNS service with health checks and traffic-management policies for domain routing.</td><td>DNS &amp; health checks</td><td class="when">Domain, routing, failover</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">CloudFront</td><td class="def">Global content delivery network (CDN) that caches content and terminates TLS at 600+ edge locations worldwide.</td><td>CDN</td><td class="when">Global low-latency delivery</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">API Gateway</td><td class="def">Fully managed service to create, publish, secure and monitor REST, HTTP and WebSocket APIs at any scale.</td><td>API front door</td><td class="when">REST/HTTP/WebSocket APIs</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">ELB (ALB)</td><td class="def">Application Load Balancer — Layer 7 load balancer with HTTP/HTTPS content-based routing and native WebSockets.</td><td>L7 load balancer</td><td class="when">HTTP/HTTPS, path-based</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">ELB (NLB)</td><td class="def">Network Load Balancer — Layer 4 load balancer handling millions of requests per second at ultra-low latency with static IPs.</td><td>L4 load balancer</td><td class="when">High perf, TCP/UDP</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">ELB (GWLB)</td><td class="def">Gateway Load Balancer — deploys, scales and manages fleets of third-party virtual appliances (firewalls, IDS/IPS).</td><td>Firewall insertion</td><td class="when">Third-party inline appliances</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Direct Connect</td><td class="def">Dedicated private network connection from your data center or colo to AWS with consistent bandwidth up to 100 Gbps.</td><td>Dedicated link</td><td class="when">Predictable, private on-prem</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Site-to-Site VPN</td><td class="def">Encrypted IPsec tunnel from on-prem network to a VPC over the public internet, terminated at a Virtual Private Gateway or TGW.</td><td>Encrypted tunnel</td><td class="when">On-prem to AWS over internet</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Transit Gateway</td><td class="def">Regional network transit hub that interconnects thousands of VPCs, VPNs and Direct Connect gateways.</td><td>Network hub</td><td class="when">Many VPCs / accounts</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">PrivateLink</td><td class="def">Provides private connectivity between VPCs and AWS or SaaS services without traversing the public internet.</td><td>Private connectivity</td><td class="when">Service access, no internet</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Cloud WAN</td><td class="def">Managed wide-area network service that builds, monitors and manages a global network across cloud and on-prem locations from a central dashboard.</td><td>Global WAN</td><td class="when">Enterprise networking as code</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Global Accelerator</td><td class="def">Uses the AWS global network and two static anycast IPs to improve availability and performance for global users.</td><td>Static anycast IPs</td><td class="when">Faster global availability</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Network Firewall</td><td class="def">Managed stateful firewall and IPS for VPCs with fine-grained traffic filtering at Layers 3, 4 and 7.</td><td>L3/4/7 firewall</td><td class="when">Managed VPC-level firewall</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">App Mesh</td><td class="def">Service mesh (Envoy-based) providing consistent networking, observability and traffic control for microservices.</td><td>Service mesh</td><td class="when">Microservices observability</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Verified Access</td><td class="def">Zero-trust remote access to private applications without a VPN, based on identity and device posture.</td><td>ZTNA</td><td class="when">VPN-less app access</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Cloud Map</td><td class="def">Service-discovery registry that maps friendly names to dynamic cloud resources so applications can find them.</td><td>Service discovery</td><td class="when">Register &amp; find services</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- SECURITY -->
+<section class="cat c-security">
+<h2>🛡️ Security, Identity &amp; Compliance <span class="count">18</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">IAM</td><td class="def">Identity and Access Management — controls who (users, roles) can do what on which AWS resources through policies.</td><td>Access control</td><td class="when">Manage AWS resource permissions</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">IAM Identity Center</td><td class="def">Central place to manage workforce single sign-on to AWS accounts and business apps, with SAML/OIDC federation.</td><td>SSO / workforce</td><td class="when">Multi-account workforce identity</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Cognito</td><td class="def">Customer identity service that adds sign-up, sign-in and social/enterprise federation to web and mobile apps.</td><td>User auth (customer)</td><td class="when">App sign-in and federation</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">KMS</td><td class="def">Key Management Service — creates and controls encryption keys used to protect data across AWS services and your apps.</td><td>Key management</td><td class="when">Encrypt data at rest / in transit</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">CloudHSM</td><td class="def">Dedicated FIPS 140-3 validated hardware security modules in the AWS cloud for regulated key material.</td><td>Dedicated HSM</td><td class="when">FIPS / regulatory keys</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Secrets Manager</td><td class="def">Securely stores, retrieves and automatically rotates database credentials, API keys and other secrets.</td><td>Rotate secrets</td><td class="when">DB creds, API keys, tokens</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Certificate Manager</td><td class="def">Provisions, manages and deploys public and private SSL/TLS certificates to AWS services (ACM &amp; ACM PCA).</td><td>TLS certificates</td><td class="when">Managed public/private certs</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">WAF</td><td class="def">Web Application Firewall that inspects HTTP(S) requests to CloudFront, ALB, API Gateway and App Runner using managed and custom rules.</td><td>Web firewall</td><td class="when">L7 protection for CF/ALB/APIGW</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Shield</td><td class="def">Managed DDoS protection service — Standard (free, always-on) and Advanced (with attack response &amp; SLA credits).</td><td>DDoS protection</td><td class="when">Standard free; Advanced for SLA</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">GuardDuty</td><td class="def">Continuous threat-detection service that analyzes CloudTrail, VPC Flow Logs, DNS and EKS/RDS/S3 activity with ML.</td><td>Threat detection</td><td class="when">Continuous ML monitoring</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Inspector</td><td class="def">Automated, continuous vulnerability scanning for EC2, ECR container images and Lambda functions.</td><td>Vulnerability scan</td><td class="when">EC2/ECR/Lambda CVEs</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Macie</td><td class="def">ML-powered service that discovers and classifies sensitive data such as PII in S3 and alerts on unusual access.</td><td>Sensitive data (PII)</td><td class="when">Discover PII in S3</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Security Hub</td><td class="def">Cloud security posture management (CSPM) that aggregates findings from AWS services and partners into one dashboard.</td><td>Central findings</td><td class="when">Aggregate posture &amp; compliance</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Detective</td><td class="def">Analyzes and visualizes security data (logs, findings) to help investigate the root cause of potential issues.</td><td>Investigate</td><td class="when">Root cause analysis of alerts</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Firewall Manager</td><td class="def">Central management of WAF rules, Shield Advanced, VPC security groups and Network Firewall across an Organization.</td><td>Central policy</td><td class="when">Org-wide WAF/SG policy</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Access Analyzer</td><td class="def">Uses provable security to identify resources shared externally and unused IAM permissions across accounts.</td><td>Analyze permissions</td><td class="when">Find external / unused access</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Verified Permissions</td><td class="def">Fine-grained authorization service for custom applications, built on the Cedar policy language.</td><td>Fine-grained authz</td><td class="when">Cedar policy engine for apps</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Audit Manager</td><td class="def">Continuously collects evidence to help audit AWS usage against frameworks such as SOC 2, PCI DSS, HIPAA and GDPR.</td><td>Audit evidence</td><td class="when">Continuous compliance reports</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- GOVERNANCE -->
+<section class="cat c-govern">
+<h2>📋 Management, Governance &amp; Ops <span class="count">17</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Organizations</td><td class="def">Central management of multiple AWS accounts with consolidated billing and Service Control Policies (SCPs).</td><td>Multi-account</td><td class="when">Account structure &amp; SCPs</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Control Tower</td><td class="def">Sets up and governs a secure, multi-account AWS landing zone based on best-practice blueprints and guardrails.</td><td>Landing zone</td><td class="when">Governed multi-account setup</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">CloudFormation</td><td class="def">Native infrastructure-as-code service that provisions AWS resources from declarative YAML/JSON templates.</td><td>IaC (native)</td><td class="when">Declarative, repeatable stacks</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">CDK</td><td class="def">Cloud Development Kit — define infrastructure in TypeScript/Python/Java/C#/Go; synthesizes to CloudFormation.</td><td>IaC (code)</td><td class="when">Define infra in a language</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Service Catalog</td><td class="def">Lets admins create and manage catalogs of approved IT products (CFN templates) that end users can self-service.</td><td>Approved products</td><td class="when">Self-service governed templates</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Config</td><td class="def">Records AWS resource configurations over time and evaluates them against desired rules for compliance.</td><td>Resource compliance</td><td class="when">Evaluate configs vs rules</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">CloudTrail</td><td class="def">Records API activity across your AWS account for governance, compliance and operational/security auditing.</td><td>API audit log</td><td class="when">Who did what, when, where</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">CloudWatch</td><td class="def">Observability service collecting metrics, logs, traces (via X-Ray) and events, with alarms and dashboards.</td><td>Metrics/logs/alarms</td><td class="when">Observability &amp; alerting</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Systems Manager</td><td class="def">Suite of tools to view and control fleets (Session Manager, Patch Manager, Parameter Store, Run Command, Automation).</td><td>Fleet ops</td><td class="when">Patch, run cmds, params, sessions</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">OpsWorks</td><td class="def">Managed configuration management using Chef Automate or Puppet Enterprise (limited scope in 2026).</td><td>Chef/Puppet</td><td class="when">Legacy config management</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Trusted Advisor</td><td class="def">Automated checks against AWS best practices for cost, performance, security, fault tolerance and service limits.</td><td>Best practices</td><td class="when">Cost, security, perf checks</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Resource Groups</td><td class="def">Group AWS resources by tags to view, manage and automate across large fleets from one place.</td><td>Group resources</td><td class="when">Tag-based operations</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Resource Explorer</td><td class="def">Search across regions and accounts to quickly find AWS resources by name, tag or type.</td><td>Search resources</td><td class="when">Find across regions/accounts</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Cost Explorer</td><td class="def">Visualize, understand and forecast AWS cost and usage with charts, filters and Savings Plan recommendations.</td><td>Cost analysis</td><td class="when">Usage &amp; forecast trends</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Budgets</td><td class="def">Set custom cost and usage budgets and get alerts by email or SNS when actuals or forecasts exceed thresholds.</td><td>Cost control</td><td class="when">Alerts on spend / RI coverage</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Cost &amp; Usage Report</td><td class="def">Comprehensive, line-item level billing data delivered to S3 for FinOps analysis, chargeback and BI dashboards.</td><td>Detailed billing</td><td class="when">FinOps analysis, chargeback</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Health Dashboard</td><td class="def">Personalized view of AWS service health and scheduled events affecting your account and resources.</td><td>AWS health</td><td class="when">Service issues &amp; account events</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- DATABASES -->
+<section class="cat c-db">
+<h2>🗄️ Databases <span class="count">13</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">RDS</td><td class="def">Relational Database Service — managed MySQL, PostgreSQL, MariaDB, Oracle, SQL Server and Db2 with automated backups, patching, HA.</td><td>Managed relational</td><td class="when">Standard SQL databases</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Aurora</td><td class="def">Cloud-native MySQL- and PostgreSQL-compatible relational database with distributed, self-healing storage.</td><td>Cloud-native SQL</td><td class="when">High perf MySQL/PG compatible</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Aurora DSQL</td><td class="def">Serverless, distributed SQL database with active-active multi-region strong consistency and PostgreSQL compatibility.</td><td>Distributed SQL</td><td class="when">Global, active-active, serverless</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">DynamoDB</td><td class="def">Serverless key-value and document NoSQL database with single-digit ms latency at any scale, and multi-region tables.</td><td>NoSQL key-value</td><td class="when">Massive scale, low latency</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">ElastiCache</td><td class="def">Managed in-memory caching service compatible with Redis OSS/Valkey and Memcached for sub-millisecond reads.</td><td>In-memory cache</td><td class="when">Redis / Memcached / Valkey</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">MemoryDB</td><td class="def">Durable, in-memory database compatible with Redis, providing multi-AZ durability alongside microsecond reads.</td><td>Durable in-memory</td><td class="when">Redis with durability</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Neptune</td><td class="def">Fully managed graph database supporting property graph (Gremlin/openCypher) and RDF/SPARQL models.</td><td>Graph DB</td><td class="when">Relationships, knowledge graphs</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">DocumentDB</td><td class="def">Managed JSON document database with MongoDB API compatibility, scaling storage and compute independently.</td><td>Document DB</td><td class="when">MongoDB-compatible workloads</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Keyspaces</td><td class="def">Serverless, scalable managed Apache Cassandra-compatible database using CQL.</td><td>Cassandra</td><td class="when">Managed CQL-compatible store</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Timestream</td><td class="def">Serverless time-series database optimized for IoT, industrial and operational metrics with tiered storage.</td><td>Time-series</td><td class="when">IoT / metrics at scale</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">QLDB*</td><td class="def">Quantum Ledger DB — immutable, cryptographically verifiable transaction log. *Closed to new customers, retiring.</td><td>Ledger DB</td><td class="when">*Being retired</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">RDS Proxy</td><td class="def">Fully managed database proxy that pools and shares DB connections, ideal for serverless apps hitting RDS/Aurora.</td><td>Connection pooling</td><td class="when">Lambda + RDS at scale</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">DMS</td><td class="def">Database Migration Service — migrates and continuously replicates databases with minimal downtime between engines.</td><td>DB migration</td><td class="when">Homogeneous/heterogeneous moves</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- ANALYTICS -->
+<section class="cat c-analytics">
+<h2>📊 Analytics &amp; Data Engineering <span class="count">14</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Athena</td><td class="def">Serverless interactive query service that runs SQL against data in S3 (and other sources via connectors) with pay-per-query pricing.</td><td>SQL on S3</td><td class="when">Serverless ad-hoc query</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Redshift</td><td class="def">Petabyte-scale, columnar cloud data warehouse with Serverless mode and Redshift ML integrations.</td><td>Data warehouse</td><td class="when">Large-scale analytics / BI</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">EMR</td><td class="def">Elastic MapReduce — managed big-data platform for Spark, Hive, HBase, Presto, Trino and Flink on EC2/EKS/Serverless.</td><td>Big data processing</td><td class="when">Spark / Hadoop / Hive / Presto</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Glue</td><td class="def">Serverless ETL and data-integration service with a shared Data Catalog used across AWS analytics services.</td><td>ETL &amp; catalog</td><td class="when">Serverless data integration</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Lake Formation</td><td class="def">Central permissions and governance layer over data lakes on S3, integrated with Glue Catalog and Athena/EMR/Redshift.</td><td>Data lake mgmt</td><td class="when">Centralized permissions on data</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Kinesis Data Streams</td><td class="def">Real-time streaming service for high-throughput event ingestion with configurable shards and retention.</td><td>Real-time ingest</td><td class="when">Low-latency event streams</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Data Firehose</td><td class="def">Fully managed service (formerly Kinesis Firehose) to buffer, transform and load streaming data into S3, Redshift, OpenSearch and Splunk.</td><td>Streaming delivery</td><td class="when">Stream → S3/Redshift/OpenSearch</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Managed Flink</td><td class="def">Managed Service for Apache Flink — build and run real-time streaming applications with SQL or Java/Python.</td><td>Stream analytics</td><td class="when">Real-time SQL / Flink apps</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">MSK</td><td class="def">Managed Streaming for Apache Kafka — fully managed Kafka clusters (provisioned or serverless).</td><td>Managed Kafka</td><td class="when">Kafka without ops</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">OpenSearch</td><td class="def">Managed OpenSearch/Elasticsearch clusters for search, log analytics and observability, with an OpenSearch Serverless option.</td><td>Search &amp; observability</td><td class="when">Logs, search, analytics</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">QuickSight</td><td class="def">Cloud-native BI service with pay-per-session pricing and generative BI features via Amazon Q in QuickSight.</td><td>BI &amp; dashboards</td><td class="when">Self-service BI, Q&amp;A</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Data Exchange</td><td class="def">Marketplace to find, subscribe to and use third-party data sets, files and APIs directly in AWS.</td><td>3rd-party datasets</td><td class="when">Subscribe to external data</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">DataZone</td><td class="def">Data-management service to catalog, discover, share and govern data across accounts and analytics tools.</td><td>Data governance</td><td class="when">Data catalog + sharing</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Clean Rooms</td><td class="def">Lets multiple parties collaborate on combined datasets without exposing underlying raw data to each other.</td><td>Data collaboration</td><td class="when">Privacy-safe multi-party analysis</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- ML/AI -->
+<section class="cat c-ml">
+<h2>🧠 Machine Learning &amp; AI <span class="count">15</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">SageMaker AI</td><td class="def">End-to-end ML platform to build, train, tune, deploy and monitor custom machine-learning models at any scale.</td><td>Build/train/deploy</td><td class="when">End-to-end custom ML</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">SageMaker Studio</td><td class="def">Unified IDE that combines analytics (Athena, EMR, Redshift), ML (SageMaker AI) and GenAI in one workspace.</td><td>Data + AI IDE</td><td class="when">Unified analytics &amp; ML workspace</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Bedrock</td><td class="def">Fully managed service that gives API access to foundation models from Anthropic, Meta, Mistral, Amazon and others.</td><td>Foundation models</td><td class="when">GenAI via managed APIs</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Bedrock AgentCore</td><td class="def">Runtime and services to deploy, secure and scale AI agents built with any framework, integrated with Bedrock models.</td><td>AI agents runtime</td><td class="when">Deploy secure, scalable agents</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Amazon Q</td><td class="def">Generative AI assistant family — Q Developer for coding, Q Business for enterprise data, Q in QuickSight and Connect.</td><td>GenAI assistant</td><td class="when">Business + dev copilot</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Rekognition</td><td class="def">Pre-trained computer vision API for image and video: labels, faces, moderation, PPE detection, celebrity recognition.</td><td>Image / video AI</td><td class="when">Vision, objects, faces</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Textract</td><td class="def">Extracts text, handwriting, forms and tables from scanned documents and PDFs — more accurate than plain OCR.</td><td>Document extraction</td><td class="when">Forms, tables, invoices</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Comprehend</td><td class="def">NLP service for entity, key-phrase, sentiment, language and PII detection, and custom classification/entity models.</td><td>Text analysis</td><td class="when">NLP, entities, sentiment</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Transcribe</td><td class="def">Automatic speech recognition (ASR) service that converts audio into text, in real time or batch, with speaker diarization.</td><td>Speech to text</td><td class="when">Audio → text, real-time or batch</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Polly</td><td class="def">Text-to-speech service producing lifelike voices in dozens of languages, including neural and generative voices.</td><td>Text to speech</td><td class="when">Natural voice synthesis</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Translate</td><td class="def">Neural machine translation across 75+ language pairs, with real-time and batch APIs and custom terminology.</td><td>Language translation</td><td class="when">Multilingual apps &amp; content</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Lex</td><td class="def">Service to build conversational voice and text bots using the same technology behind Amazon Alexa.</td><td>Chatbots / voicebots</td><td class="when">Conversational interfaces</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Personalize</td><td class="def">Real-time recommendation service that uses ML behind Amazon.com-style personalization for your customers.</td><td>Recommendations</td><td class="when">Personalization ML</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Forecast</td><td class="def">Time-series forecasting service using ML for demand, sales, inventory and workforce planning.</td><td>Time-series forecasting</td><td class="when">Demand / sales forecasting</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Kendra</td><td class="def">Intelligent enterprise search service that uses ML to answer natural-language questions over unstructured content.</td><td>Enterprise search</td><td class="when">Semantic search across content</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- DEVELOPER TOOLS -->
+<section class="cat c-devtools">
+<h2>&lt;/&gt; Developer Tools <span class="count">13</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">CodeCommit*</td><td class="def">Managed private Git repositories hosted on AWS. *Closed to new customers July 2024; use GitHub or GitLab instead.</td><td>Git repository</td><td class="when">*Existing customers only</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">CodeBuild</td><td class="def">Fully managed continuous-integration build service that compiles source code, runs tests and produces artifacts.</td><td>Build &amp; test</td><td class="when">Managed CI build engine</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">CodeDeploy</td><td class="def">Automates code deployments to EC2, Lambda, ECS and on-prem servers with blue/green, canary and rolling strategies.</td><td>Deployment</td><td class="when">Automated deployments</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">CodePipeline</td><td class="def">Continuous delivery service that models and automates release pipelines from source → build → deploy → test.</td><td>CI/CD orchestration</td><td class="when">Wire source→build→deploy</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">CodeArtifact</td><td class="def">Managed artifact repository for npm, PyPI, Maven, NuGet, Ruby gems and generic packages, with upstream mirroring.</td><td>Package repo</td><td class="when">Secure npm/pip/Maven/NuGet</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">CodeCatalyst</td><td class="def">Unified software development service with project templates, cloud dev environments, CI/CD and issue tracking.</td><td>Unified dev</td><td class="when">Blueprints, CI, project mgmt</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Kiro</td><td class="def">Agentic, spec-driven AI IDE that turns requirements into working code, tests and infrastructure with Claude/Bedrock models.</td><td>AI-native IDE</td><td class="when">Spec-driven development</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Cloud9*</td><td class="def">Browser-based cloud IDE for writing, running and debugging code. *Closed to new customers July 2024.</td><td>Cloud IDE</td><td class="when">*Existing customers only</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">CloudShell</td><td class="def">Browser-based shell pre-authenticated with AWS CLI and common tools; free persistent home directory.</td><td>Browser shell</td><td class="when">Instant AWS CLI in browser</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">X-Ray</td><td class="def">Distributed tracing service that helps analyze and debug production and distributed applications end-to-end.</td><td>Distributed tracing</td><td class="when">Find latency &amp; failures</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">CDK</td><td class="def">Cloud Development Kit — define AWS infra using TypeScript/Python/Java/C#/Go, compiled into CloudFormation.</td><td>IaC in code</td><td class="when">Programming lang for infra</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">SAM</td><td class="def">Serverless Application Model — open-source framework and CLI for building, testing and deploying serverless apps.</td><td>Serverless IaC</td><td class="when">Build/test/deploy serverless</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">App Composer</td><td class="def">Visual, drag-and-drop designer for serverless applications that generates deployment-ready IaC.</td><td>Visual IaC</td><td class="when">Design serverless apps visually</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- APP INTEGRATION -->
+<section class="cat c-appint">
+<h2>🔗 Application Integration <span class="count">10</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">SQS</td><td class="def">Simple Queue Service — fully managed message queue for decoupling and buffering between distributed components.</td><td>Message queue</td><td class="when">Decouple, buffer spikes</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">SNS</td><td class="def">Simple Notification Service — pub/sub messaging with fan-out to email, SMS, mobile push, Lambda, SQS and HTTPS.</td><td>Pub/sub &amp; push</td><td class="when">Fan-out to many subscribers</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">EventBridge</td><td class="def">Serverless event bus for AWS services, SaaS apps and your custom apps, with schema registry and rules-based routing.</td><td>Event bus</td><td class="when">Event-driven architecture</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Step Functions</td><td class="def">Serverless workflow orchestrator that coordinates AWS services and Lambda using state machines defined in JSON.</td><td>Workflow orchestration</td><td class="when">Long-running multi-step logic</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Amazon MQ</td><td class="def">Managed message brokers for Apache ActiveMQ and RabbitMQ — for lift-shift of legacy JMS/AMQP messaging.</td><td>Managed brokers</td><td class="when">ActiveMQ / RabbitMQ legacy</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">AppFlow</td><td class="def">Fully managed integration service to securely transfer data between SaaS apps and AWS with no code.</td><td>SaaS integration</td><td class="when">No-code SaaS ↔ AWS data flow</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">API Gateway</td><td class="def">Fully managed API front door for creating, publishing and securing REST, HTTP and WebSocket APIs.</td><td>API layer</td><td class="when">REST/HTTP/WebSocket APIs</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">AppSync</td><td class="def">Managed GraphQL and Pub/Sub API service with real-time subscriptions and offline data sync for mobile/web apps.</td><td>GraphQL APIs</td><td class="when">Real-time / offline sync</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">MWAA</td><td class="def">Managed Workflows for Apache Airflow — managed Airflow environments for building data-workflow DAGs.</td><td>Managed Airflow</td><td class="when">Data workflow DAGs</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">B2B Data Interchange</td><td class="def">Fully managed EDI service that transforms X12 and EDIFACT documents into modern data formats like JSON.</td><td>EDI processing</td><td class="when">Transform X12/EDIFACT</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- MIGRATION -->
+<section class="cat c-migration">
+<h2>🚚 Migration &amp; Transfer <span class="count">10</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Migration Hub</td><td class="def">Single place to plan, track and manage application migrations across AWS migration and modernization tools.</td><td>Track migration</td><td class="when">Central migration tracking</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">MGN</td><td class="def">Application Migration Service — block-level replication to lift-and-shift physical, virtual or cloud servers to EC2.</td><td>Rehost / lift-shift</td><td class="when">Server-level replication</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">DMS</td><td class="def">Database Migration Service — one-time and continuous replication between homogeneous or heterogeneous engines.</td><td>DB migration</td><td class="when">Live DB migration &amp; replication</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Schema Conv Tool</td><td class="def">Converts database schema and application code between different database engines to support heterogeneous migrations.</td><td>DB schema convert</td><td class="when">Cross-engine schema changes</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">DataSync</td><td class="def">Automates fast, secure online transfer of files between NFS, SMB, HDFS, S3, EFS, FSx and object storage.</td><td>File transfer</td><td class="when">On-prem NFS/SMB → AWS</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Transfer Family</td><td class="def">Managed SFTP, FTPS, FTP and AS2 endpoints that store transferred files in S3 or EFS.</td><td>Managed file transfer</td><td class="when">SFTP/FTPS/FTP/AS2 to S3/EFS</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Snow Family</td><td class="def">Ruggedized offline data-transfer devices (Snowcone, Snowball) for moving TB-PB scale data or running edge workloads.</td><td>Physical transfer</td><td class="when">Large / offline datasets</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">App Discovery</td><td class="def">Application Discovery Service — collects on-prem inventory, config and utilization data to plan migrations.</td><td>Inventory on-prem</td><td class="when">Assess before migration</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Mainframe Modern.</td><td class="def">Mainframe Modernization — tools to replatform (Micro Focus) or refactor (Blu Age) legacy mainframe apps on AWS.</td><td>Mainframe migrate</td><td class="when">Replatform / refactor COBOL</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">EVS</td><td class="def">Elastic VMware Service — run VMware Cloud Foundation natively inside a VPC to migrate VMware estates.</td><td>VMware in AWS</td><td class="when">Lift-shift VCF to VPC</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- IOT -->
+<section class="cat c-iot">
+<h2>📡 IoT <span class="count">10</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">IoT Core</td><td class="def">Managed MQTT/HTTPS device gateway that connects billions of devices to AWS with mutual TLS authentication.</td><td>Device connect</td><td class="when">MQTT/HTTPS at scale</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Device Management</td><td class="def">Onboard, organize, monitor and remotely update fleets of IoT devices at scale.</td><td>Fleet mgmt</td><td class="when">Provision &amp; monitor devices</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Device Defender</td><td class="def">Continuously audits IoT configurations and monitors device behavior to detect anomalies and security issues.</td><td>Device security</td><td class="when">Audit &amp; anomaly detection</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">IoT Events</td><td class="def">Detects and reacts to events from IoT sensors and applications using simple detector-model logic.</td><td>Event detection</td><td class="when">Respond to sensor patterns</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Greengrass</td><td class="def">Open-source edge runtime that lets devices act locally on the data they generate while still using the cloud.</td><td>Edge runtime</td><td class="when">Local compute &amp; ML on device</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">SiteWise</td><td class="def">Collects, models and monitors industrial equipment data at scale, integrating with OPC-UA and other protocols.</td><td>Industrial data</td><td class="when">Model factory data</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">TwinMaker</td><td class="def">Creates 3D operational digital twins of real-world systems by connecting data from multiple sources.</td><td>Digital twins</td><td class="when">3D operational twins</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">FleetWise</td><td class="def">Collects, transforms and transfers vehicle telemetry data to the cloud for fleet analytics and diagnostics.</td><td>Vehicle data</td><td class="when">Automotive telemetry</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">IoT Analytics</td><td class="def">Analytics service pre-built for IoT data — cleans, enriches and queries device data without managing infrastructure.</td><td>IoT analytics</td><td class="when">Enrich &amp; query device data</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FreeRTOS</td><td class="def">Open-source real-time operating system for microcontrollers, with libraries for secure connectivity to AWS.</td><td>Microcontroller OS</td><td class="when">MCU / IoT device development</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- MEDIA -->
+<section class="cat c-media">
+<h2>🎬 Media Services <span class="count">10</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">MediaLive</td><td class="def">Broadcast-grade live video encoding service that converts live streams for delivery to TVs and connected devices.</td><td>Live encoding</td><td class="when">Broadcast / streaming live</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">MediaConvert</td><td class="def">File-based video transcoding service for VOD, producing broadcast-quality output in multiple formats.</td><td>File transcode</td><td class="when">VOD multi-format output</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">MediaPackage</td><td class="def">Just-in-time video packaging and origination service for live and VOD content, with DRM options.</td><td>Packaging / origin</td><td class="when">Just-in-time packaging</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">MediaStore</td><td class="def">High-performance storage optimized for low-latency media workflows (video origin storage).</td><td>Media origin store</td><td class="when">Low-latency video storage</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">MediaTailor</td><td class="def">Server-side ad insertion and channel assembly service for personalized, monetized live and VOD streams.</td><td>Ad insertion</td><td class="when">Server-side personalized ads</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">MediaConnect</td><td class="def">Reliable, secure live video transport service for contribution feeds between studios, cloud and distribution.</td><td>Live transport</td><td class="when">Reliable feed contribution</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">IVS</td><td class="def">Interactive Video Service — low-latency live streaming built for interactive experiences and chat.</td><td>Interactive live</td><td class="when">Low-latency live streaming apps</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Kinesis Video</td><td class="def">Streams video from connected devices to AWS for analytics, ML, playback and other processing.</td><td>Video ingest</td><td class="when">Video devices → AWS</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Nimble Studio*</td><td class="def">Cloud-based content-creation studio for VFX/animation teams. *Being retired; replaced by Deadline Cloud.</td><td>VFX/render farm</td><td class="when">*Being retired</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Deadline Cloud</td><td class="def">Fully managed render-farm service (formerly Thinkbox Deadline) for CG, VFX and simulation pipelines.</td><td>Render pipeline</td><td class="when">Managed render farm for studios</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- BUSINESS APPS -->
+<section class="cat c-biz">
+<h2>💼 Business Applications <span class="count">10</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Connect</td><td class="def">Omnichannel cloud contact center with voice, chat, tasks, forecasting and generative AI agent assistance.</td><td>Cloud contact center</td><td class="when">Omnichannel customer service</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Chime SDK</td><td class="def">Real-time messaging, audio, video and screen-share building blocks to embed communications in your apps.</td><td>Meetings/voice/video</td><td class="when">Embed comms in apps</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">SES</td><td class="def">Simple Email Service — high-deliverability transactional and marketing email at scale.</td><td>Transactional email</td><td class="when">App / marketing email</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Pinpoint / EUM</td><td class="def">Amazon Pinpoint / End User Messaging — multi-channel outbound (SMS, push, email, voice) and campaign analytics.</td><td>SMS / push / email</td><td class="when">Multi-channel customer messaging</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">WorkMail</td><td class="def">Managed business email and calendaring service with support for Outlook, IMAP and mobile clients.</td><td>Business email</td><td class="when">Managed email &amp; calendar</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">WorkDocs*</td><td class="def">Secure document collaboration and sharing service. *Being retired; migrate to partner solutions.</td><td>Document collab</td><td class="when">*Being retired</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Supply Chain</td><td class="def">Cloud-based supply-chain-management app that unifies data and uses ML for demand and inventory insights.</td><td>Supply chain mgmt</td><td class="when">Demand + inventory visibility</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">AppFabric</td><td class="def">Aggregates and normalizes logs from SaaS apps, enables SSO into them and adds generative AI productivity across them.</td><td>SaaS security</td><td class="when">Connect &amp; secure SaaS apps</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Q Business</td><td class="def">Generative AI assistant grounded in your company's data (docs, wikis, tickets) with fine-grained access controls.</td><td>Enterprise GenAI</td><td class="when">Ask across company data safely</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Wickr*</td><td class="def">End-to-end encrypted enterprise messaging with ephemeral messages. *Being retired end 2026.</td><td>Secure messaging</td><td class="when">*Being retired</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- END USER COMPUTING -->
+<section class="cat c-euc">
+<h2>🖥️ End User Computing <span class="count">5</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">WorkSpaces</td><td class="def">Fully managed desktop-as-a-service delivering Windows or Linux virtual desktops from AWS.</td><td>Virtual desktops</td><td class="when">Managed DaaS</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">WorkSpaces Web</td><td class="def">Fully managed secure browser service that isolates internal web apps from unmanaged devices.</td><td>Browser access</td><td class="when">Isolated internal web apps</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">AppStream 2.0</td><td class="def">Streams native desktop applications from AWS to any HTML5 browser without rewriting them.</td><td>App streaming</td><td class="when">Stream desktop apps to browser</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Thin Client</td><td class="def">Purpose-built AWS-branded hardware endpoint for connecting to WorkSpaces or AppStream 2.0.</td><td>HW endpoint</td><td class="when">Low-cost DaaS device</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">WorkLink*</td><td class="def">Provided secure mobile access to internal web content. *Discontinued.</td><td>Mobile web</td><td class="when">*Discontinued</td><td><span class="fit"><span>S</span><span>M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- CONTAINERS/SERVERLESS RECAP -->
+<section class="cat c-container">
+<h2>📦 Containers &amp; Serverless <span class="count">8</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">ECS</td><td class="def">AWS-native container orchestration service that schedules and manages Docker containers on EC2 or Fargate.</td><td>Docker orchestration</td><td class="when">Simple, AWS-native</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">EKS</td><td class="def">Managed Kubernetes control plane compatible with upstream Kubernetes APIs, running on EC2, Fargate or Auto Mode.</td><td>Kubernetes</td><td class="when">K8s standard/hybrid</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Fargate</td><td class="def">Serverless compute engine used with ECS and EKS so you can run containers without provisioning nodes.</td><td>Serverless containers</td><td class="when">No node ops</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">ECR</td><td class="def">Elastic Container Registry — fully managed private (and public) Docker/OCI container image registry.</td><td>Container registry</td><td class="when">Private/public image registry</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">App Runner</td><td class="def">Fully managed service that builds and runs containerized web apps or APIs directly from source or an image.</td><td>Serverless web apps</td><td class="when">Deploy container from repo</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Lambda</td><td class="def">Serverless functions triggered by events; billed per request and GB-second, with built-in scaling.</td><td>Serverless functions</td><td class="when">Short event-driven code</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">SAM</td><td class="def">Serverless Application Model — open-source shorthand IaC and CLI for local development, testing and deployment.</td><td>Serverless framework</td><td class="when">Build/test serverless locally</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Copilot CLI</td><td class="def">Command-line tool that builds, releases and operates production-ready containerized apps on ECS/Fargate/App Runner.</td><td>ECS deployment</td><td class="when">Containerize apps quickly</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- BLOCKCHAIN / QUANTUM -->
+<section class="cat c-blockchain">
+<h2>🔬 Blockchain, Quantum &amp; Robotics <span class="count">6</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Managed Blockchain</td><td class="def">Managed access to Ethereum and Hyperledger Fabric networks, with node APIs for reading and writing blockchain data.</td><td>Blockchain networks</td><td class="when">Ethereum / Hyperledger access</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">QLDB*</td><td class="def">Quantum Ledger Database — immutable, cryptographically verifiable ledger. *Closed to new customers, retiring.</td><td>Ledger DB</td><td class="when">*Being retired</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Braket</td><td class="def">Managed service for exploring quantum computing algorithms on real quantum hardware and simulators.</td><td>Quantum computing</td><td class="when">Explore quantum algorithms</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">RoboMaker*</td><td class="def">Managed robot-simulation service used with ROS. *Discontinued in 2022.</td><td>Robot simulation</td><td class="when">*Discontinued</td><td><span class="fit"><span>S</span><span>M</span><span>L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Ground Station</td><td class="def">Fully managed satellite ground station as a service — schedule antenna contacts and downlink satellite data to AWS.</td><td>Satellite comms</td><td class="when">Downlink satellite data</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">SimSpace Weaver*</td><td class="def">Managed service for building large-scale spatial simulations across many EC2 instances. *Being retired.</td><td>Spatial sim</td><td class="when">*Being retired</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+</div>
+
+<div class="lower">
+  <div class="panel">
+    <h3>Solution Architect Decision Guide</h3>
+    <div style="font-size:11.5px; line-height:1.7;">
+      <p><b>1. Compute</b> — EC2 (control) · ECS/EKS (containers) · Fargate (serverless containers) · Lambda (event-driven) · Batch (jobs)</p>
+      <p><b>2. Storage</b> — S3 (objects) · EBS (block) · EFS (shared NFS) · FSx (Windows/Lustre/ONTAP) · Glacier (archive)</p>
+      <p><b>3. Database</b> — RDS/Aurora (SQL) · DynamoDB (NoSQL) · ElastiCache/MemoryDB (in-memory) · Redshift (warehouse) · Neptune (graph)</p>
+      <p><b>4. Network</b> — VPC · Route 53 · ELB · CloudFront · Transit Gateway · Direct Connect / VPN</p>
+      <p><b>5. Security</b> — IAM + Identity Center · KMS · Secrets Manager · WAF/Shield · GuardDuty · Security Hub</p>
+      <p><b>6. Observability</b> — CloudWatch · CloudTrail · X-Ray · Config</p>
+      <p><b>7. Governance</b> — Organizations · Control Tower · Service Catalog · CloudFormation/CDK</p>
+      <p><b>8. Integration</b> — SQS · SNS · EventBridge · Step Functions · API Gateway</p>
+      <p><b>9. Migration</b> — Migration Hub · MGN (servers) · DMS (databases) · DataSync / Transfer Family</p>
+      <p><b>10. AI / ML</b> — Bedrock · AgentCore · SageMaker · Q · Rekognition / Textract / Comprehend</p>
+    </div>
+  </div>
+
+  <div class="panel arch">
+    <h3>Reference Architecture — Modern Web Application</h3>
+    <div class="flow">Users
+  │
+  ▼
+Route 53 (DNS) ──► CloudFront (CDN)
+                     │
+                     ▼
+                 WAF + Shield
+                     │
+                     ▼
+           ┌──── VPC ────────────────────┐
+           │  Public subnets ► ALB / NLB │
+           │       │                     │
+           │       ▼                     │
+           │  Private subnets            │
+           │  EC2 · ECS · EKS · Fargate  │
+           │       │                     │
+           │       ▼                     │
+           │  Data: RDS · Aurora ·       │
+           │  DynamoDB · ElastiCache · S3│
+           └─────────────────────────────┘
+                     │
+                     ▼
+KMS · Secrets Manager · IAM · CloudTrail · CloudWatch</div>
+    <p class="arch note"><b>Serverless variant:</b> CloudFront → API Gateway → Lambda → DynamoDB, with EventBridge/SQS for async and Step Functions for workflow.</p>
+    <p class="arch note"><b>Data/ML variant:</b> Sources → Kinesis/MSK → S3 lake → Glue → Athena/Redshift → SageMaker / Bedrock → QuickSight.</p>
+  </div>
+
+  <div class="panel why">
+    <h3>How to read this reference</h3>
+    <ul style="font-size:11.5px">
+      <li><b>Definition</b> — plain-language description of what the service is and does.</li>
+      <li><b>Use case</b> — the shortest tag for the primary job.</li>
+      <li><b>When to choose</b> — trigger conditions that push you toward this service.</li>
+      <li><b>Fit</b> — S/M/L boxes ticked = natural fit at that org size.</li>
+      <li><b>Cost</b> — LOW = pennies to low hundreds; MED = hundreds to low thousands; HIGH = thousands+ or committed capacity. Actual spend is workload-dependent.</li>
+      <li>Services with <b>*</b> are closed to new customers, deprecated or retiring.</li>
+    </ul>
+    <h3 style="margin-top:14px">Why AWS?</h3>
+    <ul style="font-size:11.5px">
+      <li>240+ services across 20+ categories</li>
+      <li>37+ Regions, 100+ AZs globally</li>
+      <li>Pay-as-you-go, RIs &amp; Savings Plans</li>
+      <li>Well-Architected Framework as standard</li>
+      <li>Leading GenAI: Bedrock, AgentCore, Q, SageMaker</li>
+    </ul>
+  </div>
+</div>
+
+<footer>AWS Complete Product &amp; Solution Architect Reference · 2026 edition with Definition, Fit &amp; Cost columns.</footer>
+
+</div>
+</body>
+</html>

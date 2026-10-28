@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Palo Alto Networks Complete Product &amp; Solution Architect Reference</title>
+<style>
+  :root {
+    --pan-orange: #FA582D;
+    --pan-orange-dark: #C13B15;
+    --ink: #1A1A2E;
+    --paper: #F5F5F5;
+    --card: #FFFFFF;
+    --line: #E5E5E5;
+    --muted: #6B7280;
+    --def: #334155;
+    --strata: #FA582D;
+    --prisma: #1E40AF;
+    --cortex: #7C3AED;
+    --unit42: #0D9488;
+    --ngfw: #DC2626;
+    --cloud: #2563EB;
+    --sase: #7C2D12;
+    --cost-low: #16A34A;
+    --cost-med: #D97706;
+    --cost-high: #FA582D;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); font-family: -apple-system, "Segoe UI", Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .sheet { max-width: 1800px; margin: 0 auto; padding: 24px; }
+
+  header {
+    background: linear-gradient(135deg, var(--pan-orange-dark) 0%, var(--pan-orange) 100%);
+    color: white;
+    padding: 22px 28px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 90px 1fr auto;
+    gap: 22px;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+  .logo { font-weight: 800; font-size: 24px; letter-spacing: -1px; line-height: 1; }
+  .logo .shield { color: #FFD700; display: block; font-size: 14px; margin-top: 2px; }
+  header h1 { margin: 0 0 4px 0; font-size: 26px; }
+  header .sub { margin: 0; opacity: 0.85; font-size: 13px; }
+  header .sub b { color: #FFD700; font-weight: 600; }
+  .badge {
+    text-align: right;
+    border-left: 1px solid rgba(255,255,255,0.2);
+    padding-left: 22px;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  .badge .big { font-size: 18px; font-weight: 700; color: #FFD700; display: block; }
+
+  .legend {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    font-size: 11.5px;
+    align-items: center;
+  }
+  .legend .item { display: flex; align-items: center; gap: 6px; }
+  .legend strong { color: var(--pan-orange-dark); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .cat {
+    background: var(--card);
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .cat > h2 {
+    margin: 0;
+    padding: 10px 14px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cat > h2 .count {
+    margin-left: auto;
+    font-size: 11px;
+    background: rgba(255,255,255,0.25);
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-weight: 500;
+  }
+  .cat table { width: 100%; border-collapse: collapse; font-size: 11.5px; table-layout: fixed; }
+  .cat thead th {
+    background: #FAFAFA;
+    text-align: left;
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--line);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .cat tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #F1F1F1;
+    vertical-align: top;
+    line-height: 1.4;
+  }
+  .cat tbody tr:last-child td { border-bottom: none; }
+
+  .col-svc  { width: 12%; }
+  .col-def  { width: 28%; }
+  .col-use  { width: 15%; }
+  .col-when { width: 20%; }
+  .col-fit  { width: 13%; }
+  .col-cost { width: 12%; }
+
+  .svc { font-weight: 700; color: var(--ink); }
+  .def { color: var(--def); }
+  .when { color: var(--muted); }
+
+  .fit {
+    display: inline-flex;
+    gap: 3px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10px;
+  }
+  .fit span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    padding: 2px 0;
+    border: 1px solid #D1D5DB;
+    border-radius: 3px;
+    background: #FAFAFA;
+    color: #9CA3AF;
+  }
+  .fit span.on {
+    background: var(--pan-orange-dark);
+    color: white;
+    border-color: var(--pan-orange-dark);
+    font-weight: 700;
+  }
+
+  .cost {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    color: white;
+    min-width: 46px;
+    text-align: center;
+  }
+  .cost.L { background: var(--cost-low); }
+  .cost.M { background: var(--cost-med); }
+  .cost.H { background: var(--cost-high); }
+
+  .c-ngfw h2 { background: var(--ngfw); }
+  .c-strata h2 { background: var(--strata); }
+  .c-cloud h2 { background: var(--cloud); }
+  .c-sase h2 { background: var(--sase); }
+  .c-cortex h2 { background: var(--cortex); }
+  .c-prisma h2 { background: var(--prisma); }
+  .c-unit42 h2 { background: var(--unit42); }
+
+  .lower {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr 0.7fr;
+    gap: 14px;
+    margin-top: 18px;
+  }
+  @media (max-width: 1100px) { .lower { grid-template-columns: 1fr; } }
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .panel h3 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: var(--pan-orange-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .panel h3::before {
+    content: "";
+    display: inline-block;
+    width: 4px; height: 16px;
+    background: #FFD700;
+    border-radius: 2px;
+  }
+  .why ul { padding-left: 18px; margin: 4px 0; font-size: 12px; line-height: 1.65; }
+  .why li::marker { color: #FFD700; }
+  .arch .flow {
+    background: #F8FAFC;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 8px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10.5px;
+    white-space: pre-wrap;
+    color: #334155;
+  }
+  .arch .note { color: var(--muted); font-size: 10.5px; }
+  footer { margin-top: 18px; text-align: center; font-size: 10.5px; color: var(--muted); padding: 10px; }
+  @media print {
+    body { background: white; }
+    .sheet { max-width: none; padding: 8px; }
+    .cat, .panel, header { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<header>
+  <div class="logo">paloalto<span class="shield">▣</span></div>
+  <div>
+    <h1>Palo Alto Networks Complete Product &amp; Solution Architect Reference</h1>
+    <p class="sub">Product · <b>Definition</b> · Use Case · When to Choose · Enterprise Fit · Cost Tier</p>
+  </div>
+  <div class="badge">
+    <span class="big">3 Platforms</span>
+    Strata · Prisma · Cortex · 2026 edition
+  </div>
+</header>
+
+<div class="legend">
+  <div class="item"><strong>Fit:</strong></div>
+  <div class="item"><span class="fit"><span class="on">S</span><span>M</span><span>L</span></span> Small / SMB</div>
+  <div class="item"><span class="fit"><span>S</span><span class="on">M</span><span>L</span></span> Mid-market</div>
+  <div class="item"><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span> Large enterprise</div>
+  <div class="item"><strong style="margin-left:10px">Cost:</strong>
+    <span class="cost L">LOW</span>
+    <span class="cost M">MED</span>
+    <span class="cost H">HIGH</span>
+  </div>
+  <div class="item" style="color:var(--muted); font-size:10.5px">Cost = typical hardware + subscription footprint at moderate deployment. Products with <b>*</b> are legacy or being phased out.</div>
+</div>
+
+<div class="grid">
+
+<!-- NEXT-GEN FIREWALLS (HARDWARE) -->
+<section class="cat c-ngfw">
+<h2>🔥 Next-Generation Firewalls (Hardware) <span class="count">12</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">PA-400 Series</td><td class="def">Compact ML-Powered NGFWs for branch offices, retail locations, and midsize businesses. Includes PA-410, PA-415, PA-440, PA-445, PA-450, PA-455, PA-460 [citation:4][citation:10].</td><td>Branch / SMB firewall</td><td class="when">Small sites, retail, branch</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">PA-500 Series</td><td class="def">Mid-range NGFWs for campus and small data center deployments with advanced security features.</td><td>Campus firewall</td><td class="when">Mid-size enterprise, campus</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">PA-800 Series</td><td class="def">High-performance NGFWs for enterprise edge and small data centers.</td><td>Enterprise edge</td><td class="when">Enterprise perimeter security</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">PA-1400 Series</td><td class="def">Next-gen firewall series for large enterprise and data center deployments.</td><td>Data center firewall</td><td class="when">Large enterprise, data center</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">PA-1500 Series</td><td class="def">High-performance NGFWs for large enterprise and service provider environments.</td><td>High-perf firewall</td><td class="when">High-throughput enterprise</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">PA-3200 Series</td><td class="def">Enterprise-grade NGFWs for data center and internet edge with high throughput.</td><td>Data center / edge</td><td class="when">Large data centers</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">PA-3400 Series</td><td class="def">Next-gen firewalls for large enterprise and service provider networks.</td><td>High-end firewall</td><td class="when">Carrier-grade security</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">PA-3500 Series</td><td class="def">Flagship NGFWs for the largest enterprise and service provider deployments.</td><td>Flagship firewall</td><td class="when">Largest scale, highest throughput</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">PA-5200 Series</td><td class="def">High-performance NGFW series for large data centers and service providers.</td><td>Data center / SP</td><td class="when">High-capacity data center</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">PA-5400 Series</td><td class="def">Next-gen firewalls for large enterprise and service provider data centers.</td><td>High-end DC firewall</td><td class="when">Mission-critical data center</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">PA-5500 Series</td><td class="def">High-performance NGFWs for the most demanding data center and SP environments.</td><td>Ultra-high performance</td><td class="when">Largest-scale deployments</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">PA-7000 Series</td><td class="def">Modular chassis-based NGFWs for the largest enterprise and service provider networks.</td><td>Chassis firewall</td><td class="when">Carrier-scale, modular</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- VIRTUAL & CLOUD FIREWALLS -->
+<section class="cat c-strata">
+<h2>☁️ Virtual &amp; Cloud Firewalls <span class="count">8</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">VM-Series</td><td class="def">Virtual firewalls for inline network security on multi- and hybrid-cloud environments [citation:7].</td><td>Cloud firewall</td><td class="when">Public/private cloud protection</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">CN-Series</td><td class="def">Container-native firewalls for Kubernetes environments, providing inline security for container traffic [citation:7].</td><td>Container firewall</td><td class="when">Kubernetes, container security</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Cloud NGFW</td><td class="def">Managed cloud-native firewall for AWS and Azure, delivered as a service [citation:1].</td><td>Managed cloud FW</td><td class="when">Cloud-native, managed</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Prisma AIRS</td><td class="def">AI Runtime Security — protects the entire AI ecosystem, including AI models and applications [citation:7][citation:8].</td><td>AI security</td><td class="when">AI/ML workload protection</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">GlobalProtect</td><td class="def">Remote access security that protects the mobile workforce regardless of location [citation:2].</td><td>Remote access</td><td class="when">Mobile workforce, remote users</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Cloud-Delivered Security Services</td><td class="def">Cloud-based subscription services including Advanced WildFire, DNS Security, URL Filtering, and more [citation:3][citation:8].</td><td>Threat prevention</td><td class="when">Add-on security subscriptions</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">SD-WAN</td><td class="def">Software-defined WAN for optimized branch connectivity with integrated security [citation:1][citation:3].</td><td>SD-WAN</td><td class="when">Branch networking, WAN optimization</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Prisma Access</td><td class="def">Cloud-based Secure Access Service Edge (SASE) for secure access to applications and data [citation:1][citation:7].</td><td>SASE</td><td class="when">Cloud-delivered network security</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- MANAGEMENT & OPERATIONS -->
+<section class="cat c-cloud">
+<h2>⚙️ Management &amp; Operations <span class="count">6</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Panorama</td><td class="def">Centralized security management for network-wide traffic visibility and simplified configuration [citation:1][citation:2].</td><td>Central management</td><td class="when">Multi-firewall management</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Strata Cloud Manager</td><td class="def">AI-powered network security management solution for unified policy and operations [citation:1][citation:7].</td><td>Cloud management</td><td class="when">AI-driven network management</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Strata Logging Service</td><td class="def">Cloud-based logging and telemetry service for security data retention and analysis [citation:1].</td><td>Logging &amp; telemetry</td><td class="when">Centralized logging, compliance</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Enterprise DLP</td><td class="def">Data loss prevention subscription for identifying and protecting sensitive data.</td><td>Data protection</td><td class="when">Compliance, data governance</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">IoT Security</td><td class="def">Subscription service for discovering and securing IoT devices on the network [citation:7].</td><td>IoT security</td><td class="when">IoT device visibility &amp; control</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">SaaS Security</td><td class="def">API and inline security for SaaS applications to detect and prevent threats [citation:7].</td><td>SaaS security</td><td class="when">SaaS application protection</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- PRISMA CLOUD (CNAPP) -->
+<section class="cat c-prisma">
+<h2>🛡️ Prisma Cloud (CNAPP) <span class="count">12</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Prisma Cloud</td><td class="def">Cloud-native application protection platform (CNAPP) protecting applications across public, private, hybrid, and multicloud environments [citation:5][citation:11].</td><td>CNAPP</td><td class="when">Multi-cloud security</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Cloud Security Posture Management (CSPM)</td><td class="def">Monitors cloud posture, detects misconfigurations, and ensures compliance [citation:5].</td><td>CSPM</td><td class="when">Cloud compliance, misconfiguration detection</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Cloud Infrastructure Entitlement Management (CIEM)</td><td class="def">Controls permissions and identities across multicloud environments [citation:5].</td><td>CIEM</td><td class="when">Identity governance in cloud</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Data Security Posture Management (DSPM)</td><td class="def">Discovers, classifies, and protects data in cloud environments to prevent exfiltration [citation:5].</td><td>DSPM</td><td class="when">Data discovery, privacy compliance</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">AI Security Posture Management (AI-SPM)</td><td class="def">Gain visibility and control over AI models, data, and the AI supply chain [citation:5].</td><td>AI-SPM</td><td class="when">AI security governance</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Agentless Workload Scanning</td><td class="def">Scans hosts, containers, Kubernetes, and serverless for vulnerabilities and threats without agents [citation:5].</td><td>Workload scanning</td><td class="when">Quick vulnerability assessment</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Host Security</td><td class="def">Secures cloud VMs for any public or private cloud [citation:5].</td><td>VM security</td><td class="when">Cloud VM protection</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Container Security</td><td class="def">Secures containers and Kubernetes platforms on any cloud [citation:5].</td><td>Container security</td><td class="when">K8s, container runtime protection</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Serverless Security</td><td class="def">Secures serverless functions across the full application lifecycle [citation:5].</td><td>Serverless security</td><td class="when">Lambda, Functions protection</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Web Application &amp; API Security</td><td class="def">Protects web applications and APIs across any cloud [citation:5].</td><td>WAAS</td><td class="when">Web app and API protection</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">IaC Security</td><td class="def">Identifies and fixes misconfigurations in Terraform, CloudFormation, ARM, and Kubernetes templates [citation:5].</td><td>IaC scanning</td><td class="when">Shift-left security</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">CI/CD Security</td><td class="def">Hardens CI/CD pipelines and protects the application development environment [citation:5].</td><td>Pipeline security</td><td class="when">DevSecOps pipeline hardening</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- CORTEX (SECOPS) -->
+<section class="cat c-cortex">
+<h2>🧠 Cortex (Security Operations) <span class="count">10</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Cortex XSIAM</td><td class="def">AI-driven security operations platform that natively embeds Agentic AI for autonomous incident response [citation:6][citation:7].</td><td>SecOps platform</td><td class="when">AI-driven SOC transformation</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Cortex AgentiX</td><td class="def">The industry's most secure platform to build, deploy, and govern AI agent workforces, trained on 1.2B+ real-world executions [citation:6][citation:12].</td><td>AI agent platform</td><td class="when">Autonomous SecOps agents</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Cortex XDR</td><td class="def">Integrates network, endpoint, cloud, and third-party data with behavioral analytics to stop sophisticated attacks [citation:2][citation:7].</td><td>XDR</td><td class="when">Extended detection &amp; response</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Cortex XSOAR</td><td class="def">Security orchestration, automation, and response for orchestrating incident response workflows [citation:2][citation:7].</td><td>SOAR</td><td class="when">Automated incident response</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Cortex Xpanse</td><td class="def">Attack surface management for discovering and controlling internet-facing assets [citation:6][citation:7].</td><td>ASM</td><td class="when">External attack surface visibility</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Cortex XDL</td><td class="def">Extended Data Lake with Federated Search for querying external data across AWS, GCP, and Azure [citation:6].</td><td>Data lake</td><td class="when">Long-term data retention, investigation</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Threat Intelligence Agent</td><td class="def">Prebuilt AI agent that aggregates and enriches threat intelligence to uncover related cases [citation:12].</td><td>Threat intel</td><td class="when">Threat enrichment, investigation</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Email Investigation Agent</td><td class="def">Automates full-spectrum email threat response, from search to containment [citation:12].</td><td>Email security</td><td class="when">Phishing, email threat response</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Endpoint Investigation Agent</td><td class="def">Delivers rapid analysis, forensics collection, and host containment across EDR platforms [citation:12].</td><td>Endpoint response</td><td class="when">Endpoint incident response</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Cloud Security Agent</td><td class="def">Secures cloud environments from posture to detection and response [citation:12].</td><td>Cloud response</td><td class="when">Cloud incident response</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- SASE / PRISMA ACCESS -->
+<section class="cat c-sase">
+<h2>🌐 Prisma Access (SASE) <span class="count">6</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Prisma Access</td><td class="def">Cloud-based Secure Access Service Edge (SASE) for secure access to applications and data from anywhere [citation:1][citation:7].</td><td>SASE</td><td class="when">Cloud-delivered network security</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Prisma Access Browser</td><td class="def">Enterprise browser with integrated security for safe web access.</td><td>Secure browser</td><td class="when">Web access security</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Prisma SD-WAN</td><td class="def">Cloud-delivered SD-WAN for branch and WAN connectivity [citation:1].</td><td>SD-WAN</td><td class="when">Branch connectivity, WAN optimization</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Prisma Access for Users</td><td class="def">Protects mobile users and remote workers with cloud-based security.</td><td>Remote user security</td><td class="when">Mobile workforce protection</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Prisma Access for Networks</td><td class="def">Secures branch offices and retail locations with cloud-delivered security.</td><td>Branch security</td><td class="when">Branch office protection</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">ZTNA</td><td class="def">Zero Trust Network Access for secure, identity-based application access.</td><td>Zero Trust access</td><td class="when">Replace VPN, least-privilege access</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- UNIT 42 -->
+<section class="cat c-unit42">
+<h2>🔍 Unit 42 (Threat Intel &amp; Consulting) <span class="count">5</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Unit 42 Threat Intelligence</td><td class="def">Cybersecurity research and threat intelligence services providing actionable insights [citation:3][citation:7].</td><td>Threat intel</td><td class="when">Proactive threat awareness</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Unit 42 Incident Response</td><td class="def">Expert incident response services for breach investigation and recovery [citation:3][citation:7].</td><td>Incident response</td><td class="when">Active breach, forensic investigation</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Unit 42 Cyber Risk Management</td><td class="def">Services for assessing and managing cyber risk posture [citation:3].</td><td>Risk management</td><td class="when">Risk assessment, board reporting</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Unit 42 Data Security Posture</td><td class="def">Data security posture management services [citation:3].</td><td>DSPM services</td><td class="when">Data security assessment</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Unit 42 Security Consulting</td><td class="def">Advisory and consulting services for security architecture and strategy [citation:3].</td><td>Consulting</td><td class="when">Security strategy, architecture</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+</div>
+
+<div class="lower">
+  <div class="panel">
+    <h3>Solution Architect Decision Guide</h3>
+    <div style="font-size:11.5px; line-height:1.7;">
+      <p><b>1. Network Security (Strata)</b> — PA-400 (branch) · PA-800 (edge) · PA-3200/3400 (DC) · PA-7000 (chassis) · VM-Series (cloud) · CN-Series (K8s) [citation:4][citation:10]</p>
+      <p><b>2. Cloud Security (Prisma)</b> — Prisma Cloud (CNAPP) · CSPM · CIEM · DSPM · AI-SPM · Workload Protection [citation:5]</p>
+      <p><b>3. SecOps (Cortex)</b> — XSIAM (AI SOC) · AgentiX (AI agents) · XDR · XSOAR · Xpanse (ASM) [citation:6][citation:12]</p>
+      <p><b>4. SASE</b> — Prisma Access (SASE) · Prisma SD-WAN · ZTNA · GlobalProtect [citation:1][citation:7]</p>
+      <p><b>5. Management</b> — Panorama (central) · Strata Cloud Manager (cloud) · Strata Logging Service [citation:1][citation:2]</p>
+      <p><b>6. AI Security</b> — Prisma AIRS (AI runtime) · AI-SPM (posture) · Cortex AgentiX (SecOps AI) [citation:5][citation:8]</p>
+      <p><b>7. Threat Intel</b> — Unit 42 (research, IR, consulting) [citation:3]</p>
+    </div>
+  </div>
+
+  <div class="panel arch">
+    <h3>Reference Architecture — Zero Trust Enterprise</h3>
+    <div class="flow">Users &amp; Devices
+  │
+  ▼
+GlobalProtect / Prisma Access (SASE)
+  │
+  ▼
+ZTNA (Zero Trust Network Access)
+  │
+  ▼
+┌─────────────┴─────────────┐
+│  On-Prem     │    Cloud     │
+│  PA-Series   │  VM-Series   │
+│  NGFWs       │  Cloud NGFW  │
+└─────────────┬─────────────┘
+              │
+              ▼
+     ┌──── Cortex XSIAM ────┐
+     │  • XDR (endpoint)     │
+     │  • XSOAR (automation) │
+     │  • Xpanse (ASM)       │
+     │  • AgentiX (AI agents)│
+     └───────────────────────┘
+              │
+              ▼
+     Prisma Cloud (CNAPP) ─── Code to Cloud Security
+              │
+              ▼
+     Unit 42 (Threat Intel + IR)</div>
+    <p class="arch note"><b>Branch variant:</b> PA-400 Series + Prisma SD-WAN + GlobalProtect for secure branch connectivity.</p>
+    <p class="arch note"><b>Cloud-native variant:</b> VM-Series + CN-Series + Prisma Cloud + Cortex XDR for multi-cloud security.</p>
+  </div>
+
+  <div class="panel why">
+    <h3>How to read this reference</h3>
+    <ul style="font-size:11.5px">
+      <li><b>Definition</b> — plain-language description of what the product is and does.</li>
+      <li><b>Use case</b> — the shortest tag for the primary job.</li>
+      <li><b>When to choose</b> — trigger conditions that push you toward this product.</li>
+      <li><b>Fit</b> — S/M/L boxes ticked = natural fit at that org size.</li>
+      <li><b>Cost</b> — LOW = entry-level; MED = professional; HIGH = enterprise or carrier-grade. Hardware + subscription costs vary by throughput and deployment.</li>
+      <li>Products marked with <b>*</b> are legacy or being phased out.</li>
+    </ul>
+    <h3 style="margin-top:14px">Why Palo Alto Networks?</h3>
+    <ul style="font-size:11.5px">
+      <li>3 integrated platforms: Strata, Prisma, Cortex [citation:3]</li>
+      <li>ML-Powered NGFWs: industry leader [citation:2][citation:9]</li>
+      <li>Cortex XSIAM: AI-driven SOC transformation [citation:6]</li>
+      <li>Cortex AgentiX: industry's first AI agent workforce for SecOps [citation:12]</li>
+      <li>Prisma Cloud: comprehensive CNAPP [citation:5]</li>
+      <li>Unit 42: elite threat intelligence and IR [citation:3]</li>
+    </ul>
+  </div>
+</div>
+
+<footer>Palo Alto Networks Complete Product &amp; Solution Architect Reference · 2026 edition with Definition, Fit &amp; Cost columns.</footer>
+
+</div>
+</body>
+</html>

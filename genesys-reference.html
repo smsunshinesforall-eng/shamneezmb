@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Genesys Complete Product &amp; Solution Architect Reference</title>
+<style>
+  :root {
+    --genesys-blue: #2E4D8E;
+    --genesys-blue-dark: #1A2F5A;
+    --ink: #1A1A2E;
+    --paper: #F5F5F5;
+    --card: #FFFFFF;
+    --line: #E5E5E5;
+    --muted: #6B7280;
+    --def: #334155;
+    --cloud: #2E4D8E;
+    --ai: #7C3AED;
+    --wem: #0D9488;
+    --digital: #1E40AF;
+    --voice: #D97706;
+    --legacy: #6B7280;
+    --cost-low: #16A34A;
+    --cost-med: #D97706;
+    --cost-high: #2E4D8E;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); font-family: -apple-system, "Segoe UI", Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .sheet { max-width: 1800px; margin: 0 auto; padding: 24px; }
+
+  header {
+    background: linear-gradient(135deg, var(--genesys-blue-dark) 0%, var(--genesys-blue) 100%);
+    color: white;
+    padding: 22px 28px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 90px 1fr auto;
+    gap: 22px;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+  .logo { font-weight: 800; font-size: 24px; letter-spacing: -1px; line-height: 1; }
+  .logo .cloud { color: #FFD700; display: block; font-size: 14px; margin-top: 2px; }
+  header h1 { margin: 0 0 4px 0; font-size: 26px; }
+  header .sub { margin: 0; opacity: 0.85; font-size: 13px; }
+  header .sub b { color: #FFD700; font-weight: 600; }
+  .badge {
+    text-align: right;
+    border-left: 1px solid rgba(255,255,255,0.2);
+    padding-left: 22px;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  .badge .big { font-size: 18px; font-weight: 700; color: #FFD700; display: block; }
+
+  .legend {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    font-size: 11.5px;
+    align-items: center;
+  }
+  .legend .item { display: flex; align-items: center; gap: 6px; }
+  .legend strong { color: var(--genesys-blue-dark); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .cat {
+    background: var(--card);
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .cat > h2 {
+    margin: 0;
+    padding: 10px 14px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cat > h2 .count {
+    margin-left: auto;
+    font-size: 11px;
+    background: rgba(255,255,255,0.25);
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-weight: 500;
+  }
+  .cat table { width: 100%; border-collapse: collapse; font-size: 11.5px; table-layout: fixed; }
+  .cat thead th {
+    background: #FAFAFA;
+    text-align: left;
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--line);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .cat tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #F1F1F1;
+    vertical-align: top;
+    line-height: 1.4;
+  }
+  .cat tbody tr:last-child td { border-bottom: none; }
+
+  .col-svc  { width: 12%; }
+  .col-def  { width: 28%; }
+  .col-use  { width: 15%; }
+  .col-when { width: 20%; }
+  .col-fit  { width: 13%; }
+  .col-cost { width: 12%; }
+
+  .svc { font-weight: 700; color: var(--ink); }
+  .def { color: var(--def); }
+  .when { color: var(--muted); }
+
+  .fit {
+    display: inline-flex;
+    gap: 3px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10px;
+  }
+  .fit span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    padding: 2px 0;
+    border: 1px solid #D1D5DB;
+    border-radius: 3px;
+    background: #FAFAFA;
+    color: #9CA3AF;
+  }
+  .fit span.on {
+    background: var(--genesys-blue-dark);
+    color: white;
+    border-color: var(--genesys-blue-dark);
+    font-weight: 700;
+  }
+
+  .cost {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    color: white;
+    min-width: 46px;
+    text-align: center;
+  }
+  .cost.L { background: var(--cost-low); }
+  .cost.M { background: var(--cost-med); }
+  .cost.H { background: var(--cost-high); }
+
+  .c-cloud h2 { background: var(--cloud); }
+  .c-ai h2 { background: var(--ai); }
+  .c-wem h2 { background: var(--wem); }
+  .c-digital h2 { background: var(--digital); }
+  .c-voice h2 { background: var(--voice); }
+  .c-legacy h2 { background: var(--legacy); }
+
+  .lower {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr 0.7fr;
+    gap: 14px;
+    margin-top: 18px;
+  }
+  @media (max-width: 1100px) { .lower { grid-template-columns: 1fr; } }
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .panel h3 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: var(--genesys-blue-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .panel h3::before {
+    content: "";
+    display: inline-block;
+    width: 4px; height: 16px;
+    background: #FFD700;
+    border-radius: 2px;
+  }
+  .why ul { padding-left: 18px; margin: 4px 0; font-size: 12px; line-height: 1.65; }
+  .why li::marker { color: #FFD700; }
+  .arch .flow {
+    background: #F8FAFC;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 8px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10.5px;
+    white-space: pre-wrap;
+    color: #334155;
+  }
+  .arch .note { color: var(--muted); font-size: 10.5px; }
+  footer { margin-top: 18px; text-align: center; font-size: 10.5px; color: var(--muted); padding: 10px; }
+  @media print {
+    body { background: white; }
+    .sheet { max-width: none; padding: 8px; }
+    .cat, .panel, header { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<header>
+  <div class="logo">genesys<span class="cloud">▲</span></div>
+  <div>
+    <h1>Genesys Complete Product &amp; Solution Architect Reference</h1>
+    <p class="sub">Product · <b>Definition</b> · Use Case · When to Choose · Enterprise Fit · Cost Tier</p>
+  </div>
+  <div class="badge">
+    <span class="big">Genesys Cloud CX</span>
+    AI-Powered Experience Orchestration · 2026 edition
+  </div>
+</header>
+
+<div class="legend">
+  <div class="item"><strong>Fit:</strong></div>
+  <div class="item"><span class="fit"><span class="on">S</span><span>M</span><span>L</span></span> Small / SMB</div>
+  <div class="item"><span class="fit"><span>S</span><span class="on">M</span><span>L</span></span> Mid-market</div>
+  <div class="item"><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span> Large enterprise</div>
+  <div class="item"><strong style="margin-left:10px">Cost:</strong>
+    <span class="cost L">LOW</span>
+    <span class="cost M">MED</span>
+    <span class="cost H">HIGH</span>
+  </div>
+  <div class="item" style="color:var(--muted); font-size:10.5px">Cost = typical subscription footprint at moderate deployment. Products with <b>*</b> are legacy or being phased out.</div>
+</div>
+
+<div class="grid">
+
+<!-- GENESYS CLOUD CX EDITIONS -->
+<section class="cat c-cloud">
+<h2>☁️ Genesys Cloud CX Editions <span class="count">6</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Genesys Cloud CX 1</td><td class="def">Voice-only contact center package with speech-enabled IVR, call routing, outbound campaigns, unified communications, interaction recording, and native bots [citation:1].</td><td>Voice contact center</td><td class="when">Voice-centric, entry-level contact center</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Genesys Cloud CX 2</td><td class="def">Omnichannel package adding digital channels (SMS, WhatsApp, email, chat), omnichannel routing, quality assurance, compliance, knowledge management, and predictive engagement [citation:1].</td><td>Omnichannel contact center</td><td class="when">Multi-channel customer engagement</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Genesys Cloud CX 3</td><td class="def">Full Workforce Engagement Management (WEM) package with employee performance, resource management, AI-powered forecasting and scheduling, speech and text analytics [citation:1].</td><td>Omnichannel + WEM</td><td class="when">Workforce optimization priority</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Genesys Cloud CX 4</td><td class="def">Most comprehensive package adding Customer Journey Management, 30 AI Experience Tokens per named agent, virtual agents, social listening, Supervisor Copilot, and Virtual Supervisor [citation:1][citation:10].</td><td>AI-powered omnichannel</td><td class="when">Advanced AI and journey orchestration</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">CX 2 Digital</td><td class="def">Digital-only package for organizations that need digital interaction management with quality assurance and compliance [citation:5][citation:6].</td><td>Digital-only channels</td><td class="when">Digital-first, no voice requirement</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">CX 3 Digital</td><td class="def">Digital-only package with full WEM capabilities including employee performance, resource management, and forecasting and scheduling [citation:5][citation:6].</td><td>Digital + WEM</td><td class="when">Digital channels with workforce optimization</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- AI-POWERED EXPERIENCE ORCHESTRATION -->
+<section class="cat c-ai">
+<h2>🧠 AI-Powered Experience Orchestration <span class="count">10</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Genesys Cloud Navigator</td><td class="def">AI-native front door for customer experience that uses conversational understanding, history, and enterprise context to determine customer intent instead of static IVR menus [citation:3].</td><td>Intelligent routing</td><td class="when">Replace static IVR, intent-based routing</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Genesys Cloud Orchestrator</td><td class="def">Maintains journey state and coordinates next-best actions across AI agents, human employees, and enterprise systems as conditions change [citation:3].</td><td>Journey orchestration</td><td class="when">Cross-system workflow coordination</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Contextual Intelligence</td><td class="def">Creates persistent enterprise memory by connecting real-time signals with customer identity, history, business events, and journey context [citation:3].</td><td>Customer memory</td><td class="when">Personalization, context continuity</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">AI Control Plane</td><td class="def">Governance layer providing centralized discovery, identity, policy, and observability controls for AI agents and autonomous decisions [citation:3].</td><td>AI governance</td><td class="when">Enterprise AI oversight, compliance</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Agent Copilot</td><td class="def">Real-time AI assistant that guides agents with insights, suggests next-best actions, and automates post-call tasks like wrap-up codes and summaries [citation:13].</td><td>Agent assistance</td><td class="when">Reduce handle time, improve agent efficiency</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Supervisor Copilot</td><td class="def">AI assistant for supervisors providing insights and recommendations for team management [citation:1].</td><td>Supervisor assistance</td><td class="when">Team performance optimization</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Virtual Agent (Agentic)</td><td class="def">AI-powered virtual agents that handle customer interactions autonomously, enhanced with Scaled Cognition's APT-2 large action model for improved reasoning and execution [citation:8].</td><td>Self-service AI</td><td class="when">Automate customer resolutions</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Predictive Routing</td><td class="def">Machine learning-powered routing that matches customers to the best agent based on business outcomes (satisfaction, efficiency, revenue) [citation:2].</td><td>Outcome-based routing</td><td class="when">Optimize match between customer and agent</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Predictive Engagement</td><td class="def">Proactively observes and analyzes customer behaviors on websites to predict what they're trying to achieve and engage in real time [citation:2].</td><td>Proactive engagement</td><td class="when">Website visitor conversion, proactive support</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">AI Experience Tokens</td><td class="def">Consumption tokens required for certain AI features; 250 named / 350 concurrent tokens included per organization per month [citation:1][citation:6].</td><td>AI consumption</td><td class="when">Scaling AI feature usage</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- DIGITAL & OMNIHCANNEL -->
+<section class="cat c-digital">
+<h2>💬 Digital &amp; Omnichannel <span class="count">8</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Digital Channels</td><td class="def">Support for SMS, WhatsApp, email, web chat, social media (Facebook Messenger, Apple Business Chat, WeChat), and messaging channels [citation:2][citation:5].</td><td>Multi-channel messaging</td><td class="when">Customers need digital engagement</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Omnichannel Routing</td><td class="def">Unified routing across voice and digital channels with consistent customer experience [citation:1].</td><td>Unified routing</td><td class="when">Blended voice and digital interactions</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Native Bots</td><td class="def">Pre-built bots that connect customers to self-service processes or agent skills, rendered across all channels from a single design [citation:2].</td><td>Self-service bots</td><td class="when">Automate common inquiries</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Voicebots</td><td class="def">AI-powered conversational IVR using automatic speech recognition to understand customer intent and assist agents [citation:2].</td><td>Conversational IVR</td><td class="when">Upgrade existing IVR applications</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Chatbots</td><td class="def">Live chat on websites with proactive pop-up capabilities to guide customer web journeys [citation:2].</td><td>Website chat</td><td class="when">Web-based customer support</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Social Listening &amp; Engagement</td><td class="def">Monitor and engage customers on social media platforms with AI-powered insights [citation:1].</td><td>Social engagement</td><td class="when">Brand monitoring, social customer service</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Outbound Campaigns</td><td class="def">Proactive outbound dialing and campaign management for sales and notifications [citation:1].</td><td>Outbound dialing</td><td class="when">Proactive customer contact</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Knowledge Management</td><td class="def">Centralized knowledge base for agents and self-service with AI-powered search [citation:1].</td><td>Knowledge base</td><td class="when">Consistent answers across channels</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- WORKFORCE ENGAGEMENT MANAGEMENT -->
+<section class="cat c-wem">
+<h2>👥 Workforce Engagement Management (WEM) <span class="count">8</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Workforce Management (WFM)</td><td class="def">AI-powered forecasting and scheduling with shift bidding, time-off requests, and schedule notifications via mobile [citation:2].</td><td>Workforce scheduling</td><td class="when">Optimize staffing and scheduling</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Quality Assurance</td><td class="def">Automated quality management with recording, scoring models, and evaluation forms for agent performance [citation:2].</td><td>Quality monitoring</td><td class="when">Ensure service quality and compliance</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Employee Performance</td><td class="def">Performance management suite integrating QA and WFM for coaching and development [citation:2].</td><td>Agent coaching</td><td class="when">Improve agent skills and performance</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Gamification</td><td class="def">Game mechanics, recognition, and social concepts to motivate agents and improve engagement [citation:2].</td><td>Agent motivation</td><td class="when">Boost agent morale and performance</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Speech &amp; Text Analytics</td><td class="def">AI-powered analytics extracting insights from voice and text interactions [citation:1].</td><td>Interaction analytics</td><td class="when">Discover trends, compliance monitoring</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Resource Management</td><td class="def">Track and manage employee schedule adherence and shrinkage [citation:2].</td><td>Resource tracking</td><td class="when">Real-time adherence monitoring</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Journey Management</td><td class="def">Visualizes and optimizes customer journeys across channels, stitching together data for analysis [citation:13].</td><td>Journey analytics</td><td class="when">Cross-channel journey optimization</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Customized Analytics</td><td class="def">Pre-built and customizable dashboards, data warehousing, and external data import [citation:1].</td><td>Custom reporting</td><td class="when">Advanced analytics requirements</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- VOICE & TELEPHONY -->
+<section class="cat c-voice">
+<h2>📞 Voice &amp; Telephony <span class="count">6</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Genesys Cloud Voice</td><td class="def">Built-in cloud telephony service providing reliable, resilient, and scalable voice without hidden fees [citation:1].</td><td>Cloud telephony</td><td class="when">Managed telephony from Genesys</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">BYOC (Bring Your Own Carrier)</td><td class="def">Use existing carrier contracts with Genesys Cloud for telephony [citation:1].</td><td>Custom telephony</td><td class="when">Existing carrier relationships</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Speech-Enabled IVR</td><td class="def">Intelligent voice response system with natural language understanding [citation:1].</td><td>Voice self-service</td><td class="when">Automate voice interactions</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Interaction Recording</td><td class="def">Call recording for quality assurance and compliance [citation:1].</td><td>Call recording</td><td class="when">Compliance, quality monitoring</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Unified Communications</td><td class="def">Voice and collaboration capabilities using the same platform as the contact center [citation:1].</td><td>UC integration</td><td class="when">Unify contact center and UC</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Hourly Interacting</td><td class="def">Economical hourly pricing for users who don't need full contact center access [citation:1].</td><td>Flexible licensing</td><td class="when">Infrequent users, back-office</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- LEGACY & ADD-ONS -->
+<section class="cat c-legacy">
+<h2>🔧 Legacy &amp; Add-Ons <span class="count">8</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">PureConnect</td><td class="def">All-in-one omnichannel contact center solution available on-premises or cloud, with integrated applications and single point of management [citation:7].</td><td>All-in-one contact center</td><td class="when">Legacy deployments, on-prem preference</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Genesys Multicloud CX</td><td class="def">Enterprise-grade contact center platform with AI elements working together, designed for thousands of customers simultaneously [citation:2].</td><td>Enterprise contact center</td><td class="when">Large-scale, multi-cloud deployments</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">CX Cloud from Genesys and Salesforce</td><td class="def">Prebuilt integration bringing CRM and CCaaS solutions together [citation:1].</td><td>CRM integration</td><td class="when">Salesforce CRM environment</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Unified Experience from Genesys and ServiceNow</td><td class="def">Co-built solution unifying front- and back-office operations [citation:1].</td><td>ITSM integration</td><td class="when">ServiceNow ITSM environment</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">AppFoundry Marketplace</td><td class="def">Prebuilt integrations and apps including CRM, UC, BI, bots, and more [citation:1].</td><td>Integration marketplace</td><td class="when">Extending platform capabilities</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Work Automation Synchronization</td><td class="def">Boost productivity for back-office tasks alongside contact center operations [citation:1].</td><td>Back-office automation</td><td class="when">Extending to back-office workflows</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">BYOI (Bring Your Own Interactions)</td><td class="def">Consolidate interactions from external sources into Genesys Cloud for centralized analysis and AI/WEM capabilities [citation:1].</td><td>Interaction consolidation</td><td class="when">Multiple interaction systems</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Digital Add-On</td><td class="def">Add digital channels for specific users on top of lower-tier licenses [citation:1].</td><td>Flexible licensing</td><td class="when">Mixed voice/digital user base</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+</div>
+
+<div class="lower">
+  <div class="panel">
+    <h3>Solution Architect Decision Guide</h3>
+    <div style="font-size:11.5px; line-height:1.7;">
+      <p><b>1. Contact Center Edition</b> — CX1 (voice) · CX2 (omnichannel) · CX3 (WEM) · CX4 (AI orchestration) · Digital variants </p>
+      <p><b>2. AI Orchestration</b> — Navigator (intent) · Orchestrator (journey) · Contextual Intelligence (memory) · AI Control Plane (governance) </p>
+      <p><b>3. AI Features</b> — Agent Copilot · Virtual Agent · Predictive Routing · Predictive Engagement · Supervisor Copilot </p>
+      <p><b>4. Digital Channels</b> — SMS · WhatsApp · Email · Chat · Social · Voicebots · Chatbots </p>
+      <p><b>5. WEM</b> — WFM (scheduling) · QA (quality) · Employee Performance · Gamification · Speech &amp; Text Analytics </p>
+      <p><b>6. Voice &amp; Telephony</b> — Genesys Cloud Voice · BYOC · Speech-Enabled IVR · Interaction Recording · UC </p>
+      <p><b>7. Legacy &amp; Add-Ons</b> — PureConnect (on-prem) · Multicloud CX · Salesforce/ServiceNow integrations · AppFoundry </p>
+    </div>
+  </div>
+
+  <div class="panel arch">
+    <h3>Reference Architecture — AI-Powered Experience Orchestration</h3>
+    <div class="flow">Customer Contact (Voice · Digital · Social)
+  │
+  ▼
+Genesys Cloud Navigator (AI-native front door)
+  │
+  ▼
+Contextual Intelligence (Persistent enterprise memory)
+  │
+  ▼
+Genesys Cloud Orchestrator (Journey state + coordination)
+  │
+  ▼
+┌─────────────┴─────────────┐
+│  AI Agents   │  Human     │
+│  Virtual Agent│  Employees │
+│  Chatbots    │  Agent      │
+│  Voicebots   │  Copilot    │
+└─────────────┬─────────────┘
+              │
+              ▼
+     AI Control Plane (Governance)
+              │
+              ▼
+     Workforce Engagement Management
+     (WFM · QA · Analytics · Gamification)
+              │
+              ▼
+     Digital Channels · Voice · Social · Knowledge</div>
+    <p class="arch note"><b>Voice-only variant:</b> CX1 + Speech-Enabled IVR + Native Bots + Interaction Recording.</p>
+    <p class="arch note"><b>Omnichannel variant:</b> CX2 + Digital Channels + Omnichannel Routing + Quality Assurance + Predictive Engagement.</p>
+    <p class="arch note"><b>AI orchestration variant:</b> CX4 + Navigator + Orchestrator + Contextual Intelligence + AI Control Plane + Virtual Agent + Agent Copilot.</p>
+  </div>
+
+  <div class="panel why">
+    <h3>How to read this reference</h3>
+    <ul style="font-size:11.5px">
+      <li><b>Definition</b> — plain-language description of what the product is and does.</li>
+      <li><b>Use case</b> — the shortest tag for the primary job.</li>
+      <li><b>When to choose</b> — trigger conditions that push you toward this product.</li>
+      <li><b>Fit</b> — S/M/L boxes ticked = natural fit at that org size.</li>
+      <li><b>Cost</b> — LOW = entry-level; MED = professional; HIGH = enterprise. Actual cost is deployment-dependent (user count, AI token usage, telephony).</li>
+      <li>Products marked with <b>*</b> are legacy or being phased out.</li>
+    </ul>
+    <h3 style="margin-top:14px">Why Genesys?</h3>
+    <ul style="font-size:11.5px">
+      <li>AI-Powered Experience Orchestration leader</li>
+      <li>Complete CCaaS: voice, digital, WEM, AI in one platform</li>
+      <li>Agentic AI: Navigator, Orchestrator, Contextual Intelligence</li>
+      <li>Gartner: 80% of common issues resolved by agentic AI by 2029 [citation:3]</li>
+      <li>Flexible licensing: Named, Concurrent, Hourly</li>
+      <li>90% of customers met by fair use policy [citation:1]</li>
+    </ul>
+  </div>
+</div>
+
+<footer>Genesys Complete Product &amp; Solution Architect Reference · 2026 edition with Definition, Fit &amp; Cost columns.</footer>
+
+</div>
+</body>
+</html>

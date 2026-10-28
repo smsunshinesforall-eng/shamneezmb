@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fortinet Complete Product & Security Fabric Reference</title>
+<style>
+  :root {
+    --forti-red: #DA291C;
+    --forti-red-dark: #A81B10;
+    --forti-black: #1A1A1A;
+    --forti-dark: #232323;
+    --ink: #0F1720;
+    --paper: #F6F5F3;
+    --card: #FFFFFF;
+    --line: #E4E4DE;
+    --muted: #6B7280;
+    --def: #334155;
+    --network: #DA291C;
+    --sase: #B91C1C;
+    --sdwan: #C2410C;
+    --appsec: #7C2D12;
+    --secops: #1E293B;
+    --iam: #0F766E;
+    --endpoint: #0891B2;
+    --email: #4338CA;
+    --mgmt: #6D28D9;
+    --ot: #059669;
+    --comms: #DB2777;
+    --services: #475569;
+    --cost-low: #16A34A;
+    --cost-med: #D97706;
+    --cost-high: #DC2626;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); font-family: -apple-system, "Segoe UI", Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .sheet { max-width: 1800px; margin: 0 auto; padding: 24px; }
+
+  header {
+    background: linear-gradient(135deg, var(--forti-black) 0%, var(--forti-dark) 100%);
+    color: white;
+    padding: 22px 28px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    gap: 22px;
+    align-items: center;
+    margin-bottom: 18px;
+    border-left: 6px solid var(--forti-red);
+  }
+  .logo {
+    font-weight: 800;
+    font-size: 30px;
+    letter-spacing: -0.5px;
+    line-height: 1;
+    color: white;
+  }
+  .logo .dot { color: var(--forti-red); }
+  .logo .fabric { display: block; font-size: 11px; letter-spacing: 2px; color: var(--forti-red); margin-top: 4px; text-transform: uppercase; font-weight: 600; }
+  header h1 { margin: 0 0 4px 0; font-size: 26px; }
+  header .sub { margin: 0; opacity: 0.85; font-size: 13px; }
+  header .sub b { color: var(--forti-red); font-weight: 600; }
+  .badge {
+    text-align: right;
+    border-left: 1px solid rgba(255,255,255,0.2);
+    padding-left: 22px;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  .badge .big { font-size: 18px; font-weight: 700; color: var(--forti-red); display: block; }
+
+  .legend {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    font-size: 11.5px;
+    align-items: center;
+  }
+  .legend .item { display: flex; align-items: center; gap: 6px; }
+  .legend strong { color: var(--forti-black); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .cat {
+    background: var(--card);
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .cat > h2 {
+    margin: 0;
+    padding: 10px 14px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cat > h2 .count {
+    margin-left: auto;
+    font-size: 11px;
+    background: rgba(255,255,255,0.25);
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-weight: 500;
+  }
+  .cat table { width: 100%; border-collapse: collapse; font-size: 11.5px; table-layout: fixed; }
+  .cat thead th {
+    background: #FAFAF7;
+    text-align: left;
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--line);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .cat tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #F1F0EB;
+    vertical-align: top;
+    line-height: 1.4;
+  }
+  .cat tbody tr:last-child td { border-bottom: none; }
+
+  .col-svc  { width: 13%; }
+  .col-def  { width: 28%; }
+  .col-use  { width: 14%; }
+  .col-when { width: 20%; }
+  .col-fit  { width: 13%; }
+  .col-cost { width: 12%; }
+
+  .svc { font-weight: 700; color: var(--ink); }
+  .def { color: var(--def); }
+  .when { color: var(--muted); }
+
+  .fit {
+    display: inline-flex;
+    gap: 3px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10px;
+  }
+  .fit span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    padding: 2px 0;
+    border: 1px solid #D1D5DB;
+    border-radius: 3px;
+    background: #FAFAFA;
+    color: #9CA3AF;
+  }
+  .fit span.on {
+    background: var(--forti-black);
+    color: white;
+    border-color: var(--forti-black);
+    font-weight: 700;
+  }
+
+  .cost {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    color: white;
+    min-width: 46px;
+    text-align: center;
+  }
+  .cost.L { background: var(--cost-low); }
+  .cost.M { background: var(--cost-med); }
+  .cost.H { background: var(--cost-high); }
+
+  .c-network h2  { background: var(--network); }
+  .c-sdwan h2    { background: var(--sdwan); }
+  .c-sase h2     { background: var(--sase); }
+  .c-appsec h2   { background: var(--appsec); }
+  .c-secops h2   { background: var(--secops); }
+  .c-iam h2      { background: var(--iam); }
+  .c-endpoint h2 { background: var(--endpoint); }
+  .c-email h2    { background: var(--email); }
+  .c-mgmt h2     { background: var(--mgmt); }
+  .c-ot h2       { background: var(--ot); }
+  .c-comms h2    { background: var(--comms); }
+  .c-services h2 { background: var(--services); }
+
+  .lower {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr 0.7fr;
+    gap: 14px;
+    margin-top: 18px;
+  }
+  @media (max-width: 1100px) { .lower { grid-template-columns: 1fr; } }
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .panel h3 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: var(--forti-black);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .panel h3::before {
+    content: "";
+    display: inline-block;
+    width: 4px; height: 16px;
+    background: var(--forti-red);
+    border-radius: 2px;
+  }
+  .why ul { padding-left: 18px; margin: 4px 0; font-size: 12px; line-height: 1.65; }
+  .why li::marker { color: var(--forti-red); }
+  .arch .flow {
+    background: #F9FAFB;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 8px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10.5px;
+    white-space: pre-wrap;
+    color: #334155;
+  }
+  .arch .note { color: var(--muted); font-size: 10.5px; }
+  footer { margin-top: 18px; text-align: center; font-size: 10.5px; color: var(--muted); padding: 10px; }
+  @media print {
+    body { background: white; }
+    .sheet { max-width: none; padding: 8px; }
+    .cat, .panel, header { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<header>
+  <div class="logo">FÍRTINET<span class="dot">.</span><span class="fabric">Security Fabric</span></div>
+  <div>
+    <h1>Fortinet Complete Product &amp; Security Fabric Reference</h1>
+    <p class="sub">Product · <b>Definition</b> · Use Case · When to Choose · Enterprise Fit · Cost Tier — the full Fortinet portfolio in one page</p>
+  </div>
+  <div class="badge">
+    <span class="big">50+ Products</span>
+    12 Domains · One Fabric<br>2026 edition
+  </div>
+</header>
+
+<div class="legend">
+  <div class="item"><strong>Fit:</strong></div>
+  <div class="item"><span class="fit"><span class="on">S</span><span>M</span><span>L</span></span> Small / SMB</div>
+  <div class="item"><span class="fit"><span>S</span><span class="on">M</span><span>L</span></span> Mid-market</div>
+  <div class="item"><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span> Large enterprise</div>
+  <div class="item"><strong style="margin-left:10px">Cost:</strong>
+    <span class="cost L">LOW</span>
+    <span class="cost M">MED</span>
+    <span class="cost H">HIGH</span>
+  </div>
+  <div class="item" style="color:var(--muted); font-size:10.5px">Cost = typical annual licensing footprint at moderate usage. Fortinet often bundles via FortiFlex points.</div>
+</div>
+
+<div class="grid">
+
+<!-- NETWORK SECURITY / NGFW -->
+<section class="cat c-network">
+<h2>🛡️ Network Security &amp; NGFW <span class="count">8</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">FortiGate NGFW</td><td class="def">Next-Generation Firewall powered by custom SPU/NP ASICs and FortiOS — combines firewall, IPS, VPN, app control, SSL inspection and SD-WAN.</td><td>Perimeter firewall</td><td class="when">Branch, campus, DC, cloud edge</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiOS</td><td class="def">Common operating system running across all FortiGate hardware, VMs and cloud form factors — the platform for the Security Fabric.</td><td>Firewall OS</td><td class="when">Included with every FortiGate</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">FortiGate VM</td><td class="def">Virtual FortiGate appliance for VMware, Hyper-V, KVM, Nutanix, Xen — same FortiOS as the hardware.</td><td>Virtual firewall</td><td class="when">Private cloud / virtualized DC</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiGate Public Cloud</td><td class="def">FortiGate NGFW delivered as a BYOL or PAYG VM on AWS, Azure, GCP, OCI and Alibaba, with cloud-native integrations.</td><td>Cloud firewall</td><td class="when">Hybrid / multi-cloud egress</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">FortiGate CNF</td><td class="def">Cloud-Native Firewall — fully managed FortiGate as a SaaS service inside AWS or Azure, no VM to operate.</td><td>Managed cloud FW</td><td class="when">Simplify cloud FW ops</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">FortiCarrier</td><td class="def">Specialized FortiGate build for mobile network operators with GTP/SCTP/CGNAT and MVNO features.</td><td>Telco / MNO firewall</td><td class="when">4G/5G core &amp; roaming security</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">FortiProxy</td><td class="def">Secure web gateway (SWG) that inspects, caches and filters user web traffic with URL, DLP and CASB controls.</td><td>Secure web gateway</td><td class="when">Web filtering &amp; caching at scale</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiDDoS-F</td><td class="def">Purpose-built, ASIC-accelerated appliance that mitigates volumetric and application-layer DDoS attacks with behavior-based detection.</td><td>DDoS mitigation</td><td class="when">Public services / carrier edge</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- SD-WAN & LAN EDGE -->
+<section class="cat c-sdwan">
+<h2>🌐 Secure Networking — SD-WAN &amp; LAN Edge <span class="count">7</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Secure SD-WAN</td><td class="def">Integrated SD-WAN capability inside every FortiGate — application-aware routing, WAN steering and self-healing overlays with native NGFW.</td><td>SD-WAN</td><td class="when">Replace MPLS, connect branches</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiSwitch</td><td class="def">Family of managed Ethernet access, PoE and data-center switches secured and managed through FortiGate/FortiManager.</td><td>Network switches</td><td class="when">Fabric-managed LAN</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiAP / FortiWiFi</td><td class="def">Indoor and outdoor wireless access points (Wi-Fi 6/6E/7) managed by FortiGate or FortiCloud with integrated security policies.</td><td>Wi-Fi access points</td><td class="when">Secure wireless in branches</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiAP-U Series</td><td class="def">Universal APs with a dedicated security scanning radio for continuous WIPS/WIDS and location analytics.</td><td>High-security Wi-Fi</td><td class="when">Regulated verticals, PCI, healthcare</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">FortiExtender</td><td class="def">4G/5G LTE WAN extender for primary or backup WAN connectivity, managed as part of the Security Fabric.</td><td>Cellular WAN</td><td class="when">Failover, kiosks, IoT sites</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiAIOps</td><td class="def">AI/ML network operations service that correlates telemetry across FortiGate, FortiSwitch and FortiAP to detect and troubleshoot LAN issues.</td><td>Network AI/Ops</td><td class="when">Reduce LAN incident MTTR</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiNAC</td><td class="def">Network Access Control — profiles wired and wireless endpoints, enforces access policies and orchestrates response to threats.</td><td>NAC</td><td class="when">IoT/BYOD visibility &amp; control</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- SASE / ZTNA -->
+<section class="cat c-sase">
+<h2>☁️ Unified SASE &amp; Zero Trust <span class="count">6</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">FortiSASE</td><td class="def">Cloud-delivered SASE service combining SWG, CASB, ZTNA, DLP, FWaaS and secure SD-WAN on a single-vendor platform.</td><td>Unified SASE</td><td class="when">Secure hybrid workforce</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">FortiClient</td><td class="def">Unified endpoint agent providing VPN/ZTNA, EPP, vulnerability scanning and telemetry back into the Security Fabric.</td><td>Endpoint agent</td><td class="when">Standard corporate endpoints</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">FortiZTNA</td><td class="def">Zero Trust Network Access — per-app, identity- and posture-based access delivered by FortiOS or FortiSASE, replacing traditional VPN.</td><td>ZTNA</td><td class="when">VPN-less private app access</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiCASB</td><td class="def">Cloud Access Security Broker for SaaS visibility, DLP, misconfiguration detection and compliance across major apps.</td><td>SaaS CASB</td><td class="when">Shadow-IT &amp; SaaS DLP</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiCASB-SSPM</td><td class="def">SaaS Security Posture Management — continuous configuration &amp; compliance assessment for SaaS tenants (M365, Salesforce, etc.).</td><td>SSPM</td><td class="when">Harden SaaS configurations</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiIsolator</td><td class="def">Remote browser isolation — renders untrusted web content in a disposable container so no active code touches the endpoint.</td><td>Browser isolation</td><td class="when">High-risk users, VIP protection</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- APPLICATION & CLOUD SECURITY -->
+<section class="cat c-appsec">
+<h2>🧩 Application &amp; Cloud Security <span class="count">9</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">FortiWeb</td><td class="def">Web Application &amp; API Protection (WAAP) — signature and ML-based WAF, bot mitigation and API discovery/protection.</td><td>WAF / WAAP</td><td class="when">Protect web apps &amp; APIs</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiADC</td><td class="def">Application delivery controller for L4-L7 load balancing, GSLB, SSL offload and app acceleration.</td><td>ADC / Load balancer</td><td class="when">HA and scale for critical apps</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiGSLB</td><td class="def">Global Server Load Balancing service that steers users to the healthiest and closest application instance across sites.</td><td>Global load balancing</td><td class="when">Multi-region app resilience</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiAppSec Cloud</td><td class="def">SaaS-delivered application security suite bundling WAF, bot management, DDoS and API security.</td><td>Cloud WAAP</td><td class="when">SaaS app protection, no appliance</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiCNAPP</td><td class="def">Cloud-Native Application Protection Platform (Lacework-based) — CSPM, CWP, CIEM, agentless workload &amp; container scanning with attack-path analytics.</td><td>CNAPP</td><td class="when">Multi-cloud posture &amp; runtime</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">FortiDevSec</td><td class="def">DevSecOps platform integrating SAST, SCA, secrets scanning and container image checks into CI/CD pipelines.</td><td>Shift-left AppSec</td><td class="when">Secure code &amp; pipelines</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiDAST</td><td class="def">Dynamic Application Security Testing — SaaS scanner for running web apps and APIs with authenticated &amp; multi-step flows.</td><td>DAST</td><td class="when">Runtime app testing</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiDDoS</td><td class="def">Legacy hardware DDoS platform (now FortiDDoS-F) for L3/4/7 volumetric and behavioral DDoS mitigation.</td><td>DDoS mitigation</td><td class="when">On-prem DDoS scrubbing</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">FortiAIGate</td><td class="def">Security gateway for enterprise use of generative AI — inspects prompts and responses, enforces DLP and blocks jailbreaks/injections.</td><td>AI/LLM gateway</td><td class="when">Govern GenAI usage</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- SECURITY OPERATIONS -->
+<section class="cat c-secops">
+<h2>🔍 Security Operations (SecOps) <span class="count">10</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">FortiAnalyzer</td><td class="def">Central log management, reporting and analytics for the Security Fabric — foundation for SOC dashboards and compliance reports.</td><td>Log analytics</td><td class="when">Every Fortinet deployment</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiSIEM</td><td class="def">Multi-vendor SIEM with CMDB, UEBA and MITRE ATT&amp;CK-based correlation across security, network and IT systems.</td><td>SIEM</td><td class="when">Centralized detection &amp; compliance</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">FortiSOAR</td><td class="def">Security Orchestration, Automation and Response — playbook engine, case management and 500+ connectors to automate SOC work.</td><td>SOAR</td><td class="when">Scale a SOC without more staff</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">FortiEDR</td><td class="def">Endpoint Detection &amp; Response with behavior-based prevention, real-time blocking of post-execution malware and automated playbooks.</td><td>EDR</td><td class="when">Modern endpoint threats</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiXDR</td><td class="def">Extended Detection &amp; Response — correlates telemetry from FortiEDR, FortiGate, FortiMail, FortiSandbox, cloud and identity for cross-domain investigations.</td><td>XDR</td><td class="when">Consolidate SOC visibility</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">FortiNDR</td><td class="def">Network Detection &amp; Response using deep learning &amp; ML on full-packet or metadata traffic to detect anomalies and threats.</td><td>NDR</td><td class="when">See threats network-only tools miss</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">FortiSandbox</td><td class="def">Advanced-threat sandbox that detonates suspicious files/URLs in VMs and returns verdicts to FortiGate/Mail/Web/Client.</td><td>Sandboxing</td><td class="when">Zero-day / unknown files</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">FortiDeceptor</td><td class="def">Deception platform placing decoys and lures across IT/OT/IoT to detect attacker lateral movement early with high-fidelity alerts.</td><td>Deception</td><td class="when">Detect lateral movement</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">FortiRecon</td><td class="def">Continuous Threat Exposure Management (CTEM) — external attack-surface monitoring, brand protection and dark-web threat intel.</td><td>Attack surface / CTEM</td><td class="when">See yourself as attackers do</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">SOCaaS</td><td class="def">Fortinet SOC-as-a-Service — 24×7 managed detection and response staffed by Fortinet analysts on top of FortiAnalyzer/SIEM.</td><td>MDR / SOCaaS</td><td class="when">No in-house SOC</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- IDENTITY -->
+<section class="cat c-iam">
+<h2>🔐 Identity &amp; Access Management <span class="count">5</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">FortiAuthenticator</td><td class="def">Identity broker providing RADIUS, LDAP, SAML/OIDC, guest access, MFA and certificate services for the Security Fabric.</td><td>Auth / IdP</td><td class="when">Central AuthN for Fabric &amp; apps</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiToken</td><td class="def">Multi-factor authentication tokens — hardware, mobile (TOTP/push) and cloud-delivered second factor tightly integrated with FortiGate.</td><td>MFA tokens</td><td class="when">Add MFA to Fortinet stack</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">FortiPAM</td><td class="def">Privileged Access Management — session brokering, credential vaulting, recording and just-in-time access for admin accounts.</td><td>PAM</td><td class="when">Control &amp; audit privileged users</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">FortiIdentity Cloud</td><td class="def">Cloud-delivered identity and MFA service (successor branding for FortiToken/FortiAuthenticator cloud tiers).</td><td>Identity as a service</td><td class="when">SaaS IdP/MFA, no appliance</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiTrust User</td><td class="def">Per-user subscription bundling identity/ZTNA/MFA entitlements across the Fabric, simplifying user-based licensing.</td><td>Per-user identity bundle</td><td class="when">User-centric licensing preference</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- ENDPOINT & DATA -->
+<section class="cat c-endpoint">
+<h2>💻 Endpoint &amp; Data Protection <span class="count">6</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">FortiClient EMS</td><td class="def">Endpoint Management Server for FortiClient — centralized policy, ZTNA control, vulnerability scanning and Fabric integration.</td><td>Endpoint mgmt</td><td class="when">Manage FortiClient at scale</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">FortiEDR</td><td class="def">Behavior-based EDR/EPP that prevents ransomware and file-less attacks in real time and rolls back changes automatically.</td><td>EDR / EPP</td><td class="when">Replace legacy AV</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiDLP</td><td class="def">Data Loss Prevention platform (formerly Next DLP) with agent-based visibility into insider risk and data movement across endpoints, cloud and web.</td><td>DLP / insider risk</td><td class="when">Protect sensitive data everywhere</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">FortiSAT</td><td class="def">Security Awareness &amp; Training — phishing simulations and curriculum to reduce human risk (former Fortinet Training Institute for Users).</td><td>Awareness training</td><td class="when">Reduce phishing susceptibility</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">FortiData</td><td class="def">Data-security service that discovers, classifies and protects structured/unstructured data across cloud and on-prem repositories.</td><td>Data security posture</td><td class="when">Know where sensitive data lives</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">FortiDevice</td><td class="def">Device fingerprinting and posture assessment used by the Fabric to gate ZTNA and NAC decisions.</td><td>Device posture</td><td class="when">Enrich ZTNA/NAC decisions</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- EMAIL & WEB -->
+<section class="cat c-email">
+<h2>📧 Email &amp; Web Security <span class="count">4</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">FortiMail</td><td class="def">Secure email gateway with anti-spam, anti-phishing, sandboxing, DLP, encryption and click-time URL protection.</td><td>Email security</td><td class="when">Protect on-prem or M365/Gmail</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiMail Cloud</td><td class="def">SaaS-delivered FortiMail — same protection stack without hardware, sized per mailbox.</td><td>Cloud email security</td><td class="when">M365/Gmail without appliance</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiProxy</td><td class="def">Secure web proxy for URL/content filtering, DLP, sandboxing and web caching for outbound user traffic.</td><td>Secure web gateway</td><td class="when">Explicit proxy at HQ / DC</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiCache</td><td class="def">Video and web caching appliance used by ISPs and large enterprises to accelerate delivery and reduce WAN load.</td><td>Web caching</td><td class="when">Bandwidth-constrained sites</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- MANAGEMENT & ANALYTICS -->
+<section class="cat c-mgmt">
+<h2>🧭 Management, Analytics &amp; AI <span class="count">8</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">FortiManager</td><td class="def">Centralized configuration and policy manager for FortiGate, FortiSwitch, FortiAP and the wider Fabric — multi-tenant for MSSPs.</td><td>Fabric management</td><td class="when">More than a few FortiGates</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiPortal</td><td class="def">MSSP/enterprise self-service portal delivering per-tenant visibility, reporting and change requests on top of FortiManager/Analyzer.</td><td>MSSP portal</td><td class="when">Managed-service delivery</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiMonitor</td><td class="def">Digital Experience Monitoring (DEM) — proactive monitoring of network, applications and cloud paths from user perspective.</td><td>DEM / uptime</td><td class="when">SaaS &amp; SD-WAN experience</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiCloud</td><td class="def">Unified cloud services portal for Fortinet identity, asset registration, subscriptions and cloud-delivered management planes.</td><td>Fortinet cloud portal</td><td class="when">Every Fortinet customer</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">FortiGuard</td><td class="def">FortiGuard AI-Powered Services — the threat-intel and content-security subscriptions (IPS, AV, URL, DNS, App Control, etc.) that arm every Fortinet product.</td><td>Threat intel &amp; content</td><td class="when">Bundled with every device</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiAI</td><td class="def">Family of generative AI assistants embedded across the Fabric (FortiAI-Assist, FortiAI-Protect, FortiAI-SecureAI) for SOC guidance and automation.</td><td>GenAI SOC assistant</td><td class="when">Accelerate analyst response</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiFlex</td><td class="def">Points-based flexible licensing program that lets customers activate, deactivate and shift entitlements across Fortinet products on demand.</td><td>Consumption licensing</td><td class="when">Fluctuating deployments</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiConverter</td><td class="def">Automated configuration migration tool/service that converts policies from Cisco, Check Point, Palo Alto, etc. into FortiGate.</td><td>Config migration</td><td class="when">Migrating from another vendor</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- OT / INDUSTRIAL -->
+<section class="cat c-ot">
+<h2>🏭 OT &amp; Industrial Security <span class="count">5</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">FortiGate Rugged</td><td class="def">Ruggedized, DIN-rail FortiGate hardware certified for harsh temperature, vibration and industrial environments (IEC 61850-3, IEEE 1613).</td><td>Industrial NGFW</td><td class="when">Substations, plants, transport</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">FortiSwitch Rugged</td><td class="def">Industrial Ethernet switches with wide temperature range and industrial certifications, managed via FortiGate/FortiManager.</td><td>Industrial switching</td><td class="when">ICS/SCADA networks</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">FortiAP Outdoor / Rugged</td><td class="def">Outdoor and industrial Wi-Fi access points for factories, campuses and mesh backhaul in tough environments.</td><td>Rugged Wi-Fi</td><td class="when">Warehouses, yards, outdoor</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">FortiGuard OT Service</td><td class="def">FortiGuard subscription providing OT-specific IPS signatures, asset library and virtual patching for ICS/SCADA protocols.</td><td>OT threat intel</td><td class="when">Any OT-connected FortiGate</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiNAC-OT</td><td class="def">FortiNAC profile-set for industrial devices, giving visibility and micro-segmentation of OT/IoT assets.</td><td>OT NAC</td><td class="when">Segment IT/OT networks</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- COMMS & VIDEO -->
+<section class="cat c-comms">
+<h2>📞 Communications &amp; Video <span class="count">5</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">FortiVoice</td><td class="def">Business phone systems and IP PBX with call routing, IVR, voicemail and mobility, on-prem or cloud.</td><td>IP PBX / UC</td><td class="when">SMB voice replacement</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">FortiFone</td><td class="def">IP handsets (desk, cordless, conference) purpose-built to work with FortiVoice.</td><td>IP phones</td><td class="when">FortiVoice deployments</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">FortiCamera</td><td class="def">IP surveillance cameras (indoor, outdoor, dome, PTZ) integrated with FortiRecorder for physical security.</td><td>IP cameras</td><td class="when">Bundled physical security</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiRecorder</td><td class="def">Network video recorder (NVR) for FortiCamera streams with local &amp; cloud storage and motion analytics.</td><td>NVR</td><td class="when">Small &amp; mid site surveillance</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiCentral</td><td class="def">Desktop and mobile app to view live and recorded FortiCamera feeds and manage FortiRecorder appliances.</td><td>Surveillance viewer</td><td class="when">Operator viewing UI</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- SERVICES & TESTING -->
+<section class="cat c-services">
+<h2>🛠️ Services, Testing &amp; Programs <span class="count">6</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">FortiCare</td><td class="def">Global technical support subscription — telephone, portal, RMA and firmware; sold in tiers (24×7, Premium, Elite).</td><td>Support</td><td class="when">Bundled with every device</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FortiCare Elite</td><td class="def">Highest-tier support: named engineers, quicker SLAs, ATP (Advanced Technical Professional) and proactive health checks.</td><td>Premium support</td><td class="when">Critical / regulated environments</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">FortiTester</td><td class="def">Traffic and security testing appliance for validating throughput, IPS, firewall, WAF and SD-WAN performance.</td><td>Perf / security testing</td><td class="when">Pre-deployment validation, labs</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">FortiGuard AI Services</td><td class="def">Umbrella brand for the AI-powered FortiGuard subscription bundles (Enterprise Protection, ATP, SASE, OT, etc.).</td><td>Subscription bundles</td><td class="when">Enable capabilities on devices</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Fortinet Training Institute</td><td class="def">Certification &amp; training program (NSE / FCP / FCSS / FCX) and free curricula for customers, partners and academies.</td><td>Certifications</td><td class="when">Build in-house Fortinet skills</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">FortiEngage</td><td class="def">Fortinet's partner program (formerly Engage) tiering resellers, MSSPs and integrators with deal registration and rebates.</td><td>Partner program</td><td class="when">Buying via a partner</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+</div>
+
+<div class="lower">
+  <div class="panel">
+    <h3>Security Fabric Decision Guide</h3>
+    <div style="font-size:11.5px; line-height:1.7;">
+      <p><b>1. Perimeter &amp; Segmentation</b> — FortiGate NGFW (HW/VM/CNF) · FortiProxy · FortiDDoS-F</p>
+      <p><b>2. Secure Networking</b> — Secure SD-WAN · FortiSwitch · FortiAP · FortiExtender · FortiAIOps · FortiNAC</p>
+      <p><b>3. Hybrid Workforce</b> — FortiSASE · FortiClient · FortiZTNA · FortiCASB · FortiIsolator</p>
+      <p><b>4. Application &amp; Cloud</b> — FortiWeb · FortiADC · FortiGSLB · FortiCNAPP · FortiDevSec · FortiDAST · FortiAIGate</p>
+      <p><b>5. Security Operations</b> — FortiAnalyzer · FortiSIEM · FortiSOAR · FortiEDR/XDR · FortiNDR · FortiSandbox · FortiDeceptor · FortiRecon · SOCaaS</p>
+      <p><b>6. Identity</b> — FortiAuthenticator · FortiToken · FortiPAM · FortiIdentity Cloud · FortiTrust</p>
+      <p><b>7. Endpoint &amp; Data</b> — FortiClient EMS · FortiEDR · FortiDLP · FortiSAT</p>
+      <p><b>8. Email &amp; Web</b> — FortiMail · FortiMail Cloud · FortiProxy · FortiCache</p>
+      <p><b>9. Management &amp; AI</b> — FortiManager · FortiAnalyzer · FortiPortal · FortiCloud · FortiGuard · FortiAI · FortiFlex</p>
+      <p><b>10. OT / IoT</b> — FortiGate Rugged · FortiSwitch Rugged · FortiAP Outdoor · FortiNAC-OT · FortiGuard OT</p>
+      <p><b>11. Comms &amp; Video</b> — FortiVoice · FortiFone · FortiCamera · FortiRecorder · FortiCentral</p>
+      <p><b>12. Services</b> — FortiCare · FortiTester · FortiGuard AI Services · Training Institute · FortiEngage partners</p>
+    </div>
+  </div>
+
+  <div class="panel arch">
+    <h3>Reference Architecture — Enterprise Security Fabric</h3>
+    <div class="flow">Internet
+  │
+  ▼
+FortiDDoS-F ──► FortiGate NGFW (Edge)
+                     │
+                     ├── FortiWeb / FortiADC (App tier)
+                     ├── FortiMail (Email)
+                     ├── FortiSandbox (Zero-day)
+                     │
+   ┌─────── Campus / Branch / DC ────────┐
+   │  FortiSwitch · FortiAP · FortiNAC   │
+   │  Secure SD-WAN overlays             │
+   │  FortiClient endpoints              │
+   └─────────────────────────────────────┘
+                     │
+                     ▼
+      FortiSASE (remote users) ── ZTNA / SWG / CASB
+                     │
+                     ▼
+   FortiCNAPP  ·  FortiGate CNF  (multi-cloud)
+                     │
+                     ▼
+FortiAnalyzer ─► FortiSIEM ─► FortiSOAR ─► FortiXDR
+      │              │             │
+      └────────── FortiAI Assist / SOCaaS ─────────┘
+                     │
+Identity: FortiAuthenticator · FortiToken · FortiPAM
+Management: FortiManager · FortiCloud · FortiPortal
+Intel: FortiGuard AI-Powered Services</div>
+    <p class="arch note"><b>Unified SASE variant:</b> FortiSASE fronts remote users; policy sync via FortiManager to on-prem FortiGates for consistent enforcement.</p>
+    <p class="arch note"><b>OT variant:</b> FortiGate Rugged + FortiSwitch Rugged + FortiNAC-OT segment ICS zones (Purdue L2/L3); FortiGuard OT intel feeds FortiSIEM.</p>
+  </div>
+
+  <div class="panel why">
+    <h3>How to read this reference</h3>
+    <ul style="font-size:11.5px">
+      <li><b>Definition</b> — plain-language description of the product.</li>
+      <li><b>Use case</b> — the shortest tag for its primary job.</li>
+      <li><b>When to choose</b> — trigger conditions that push you toward it.</li>
+      <li><b>Fit</b> — S/M/L ticked = natural fit at that org size.</li>
+      <li><b>Cost</b> — LOW = few $K/yr; MED = tens of $K/yr; HIGH = $100K+/yr or hardware-heavy. Bundling via FortiFlex can shift totals.</li>
+    </ul>
+    <h3 style="margin-top:14px">Why Fortinet?</h3>
+    <ul style="font-size:11.5px">
+      <li>50%+ market share in shipped firewalls</li>
+      <li>Custom SPU/NP ASICs = high perf per $</li>
+      <li>Single OS (FortiOS) across HW/VM/cloud</li>
+      <li>Security Fabric — 500+ Fabric-Ready integrations</li>
+      <li>FortiGuard AI threat intel updated continuously</li>
+      <li>FortiFlex consumption licensing across the portfolio</li>
+      <li>Leader in Gartner MQ for Hybrid Mesh Firewall (2026)</li>
+    </ul>
+  </div>
+</div>
+
+<footer>Fortinet Complete Product &amp; Security Fabric Reference · 2026 edition · Product names and categories reflect current Fortinet documentation.</footer>
+
+</div>
+</body>
+</html>

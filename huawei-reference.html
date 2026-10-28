@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Huawei Complete Product & Solution Architect Reference</title>
+<style>
+  :root {
+    --hua-red: #CF0A2C;
+    --hua-red-dark: #8B0000;
+    --ink: #1A1A2E;
+    --paper: #F5F5F5;
+    --card: #FFFFFF;
+    --line: #E5E5E5;
+    --muted: #6B7280;
+    --def: #334155;
+    --ict: #CF0A2C;
+    --device: #B91C1C;
+    --cloud: #1E40AF;
+    --energy: #16A34A;
+    --auto: #7C2D12;
+    --compute: #7C3AED;
+    --network: #0D9488;
+    --storage: #D97706;
+    --software: #2563EB;
+    --ai: #E3008C;
+    --cost-low: #16A34A;
+    --cost-med: #D97706;
+    --cost-high: #CF0A2C;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); font-family: -apple-system, "Segoe UI", Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .sheet { max-width: 1800px; margin: 0 auto; padding: 24px; }
+
+  header {
+    background: linear-gradient(135deg, var(--hua-red-dark) 0%, var(--hua-red) 100%);
+    color: white;
+    padding: 22px 28px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 90px 1fr auto;
+    gap: 22px;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+  .logo { font-weight: 800; font-size: 26px; letter-spacing: -1px; line-height: 1; }
+  .logo .petal { color: #FFD700; display: block; font-size: 14px; margin-top: 2px; }
+  header h1 { margin: 0 0 4px 0; font-size: 26px; }
+  header .sub { margin: 0; opacity: 0.85; font-size: 13px; }
+  header .sub b { color: #FFD700; font-weight: 600; }
+  .badge {
+    text-align: right;
+    border-left: 1px solid rgba(255,255,255,0.2);
+    padding-left: 22px;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  .badge .big { font-size: 18px; font-weight: 700; color: #FFD700; display: block; }
+
+  .legend {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    font-size: 11.5px;
+    align-items: center;
+  }
+  .legend .item { display: flex; align-items: center; gap: 6px; }
+  .legend strong { color: var(--hua-red-dark); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .cat {
+    background: var(--card);
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .cat > h2 {
+    margin: 0;
+    padding: 10px 14px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cat > h2 .count {
+    margin-left: auto;
+    font-size: 11px;
+    background: rgba(255,255,255,0.25);
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-weight: 500;
+  }
+  .cat table { width: 100%; border-collapse: collapse; font-size: 11.5px; table-layout: fixed; }
+  .cat thead th {
+    background: #FAFAFA;
+    text-align: left;
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--line);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .cat tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #F1F1F1;
+    vertical-align: top;
+    line-height: 1.4;
+  }
+  .cat tbody tr:last-child td { border-bottom: none; }
+
+  .col-svc  { width: 12%; }
+  .col-def  { width: 28%; }
+  .col-use  { width: 15%; }
+  .col-when { width: 20%; }
+  .col-fit  { width: 13%; }
+  .col-cost { width: 12%; }
+
+  .svc { font-weight: 700; color: var(--ink); }
+  .def { color: var(--def); }
+  .when { color: var(--muted); }
+
+  .fit {
+    display: inline-flex;
+    gap: 3px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10px;
+  }
+  .fit span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    padding: 2px 0;
+    border: 1px solid #D1D5DB;
+    border-radius: 3px;
+    background: #FAFAFA;
+    color: #9CA3AF;
+  }
+  .fit span.on {
+    background: var(--hua-red-dark);
+    color: white;
+    border-color: var(--hua-red-dark);
+    font-weight: 700;
+  }
+
+  .cost {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    color: white;
+    min-width: 46px;
+    text-align: center;
+  }
+  .cost.L { background: var(--cost-low); }
+  .cost.M { background: var(--cost-med); }
+  .cost.H { background: var(--cost-high); }
+
+  .c-ict h2 { background: var(--ict); }
+  .c-device h2 { background: var(--device); }
+  .c-cloud h2 { background: var(--cloud); }
+  .c-energy h2 { background: var(--energy); }
+  .c-auto h2 { background: var(--auto); }
+  .c-compute h2 { background: var(--compute); }
+  .c-network h2 { background: var(--network); }
+  .c-storage h2 { background: var(--storage); }
+  .c-software h2 { background: var(--software); }
+  .c-ai h2 { background: var(--ai); }
+
+  .lower {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr 0.7fr;
+    gap: 14px;
+    margin-top: 18px;
+  }
+  @media (max-width: 1100px) { .lower { grid-template-columns: 1fr; } }
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .panel h3 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: var(--hua-red-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .panel h3::before {
+    content: "";
+    display: inline-block;
+    width: 4px; height: 16px;
+    background: #FFD700;
+    border-radius: 2px;
+  }
+  .why ul { padding-left: 18px; margin: 4px 0; font-size: 12px; line-height: 1.65; }
+  .why li::marker { color: #FFD700; }
+  .arch .flow {
+    background: #F8FAFC;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 8px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10.5px;
+    white-space: pre-wrap;
+    color: #334155;
+  }
+  .arch .note { color: var(--muted); font-size: 10.5px; }
+  footer { margin-top: 18px; text-align: center; font-size: 10.5px; color: var(--muted); padding: 10px; }
+  @media print {
+    body { background: white; }
+    .sheet { max-width: none; padding: 8px; }
+    .cat, .panel, header { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<header>
+  <div class="logo">HUAWEI<span class="petal">◈</span></div>
+  <div>
+    <h1>Huawei Complete Product &amp; Solution Architect Reference</h1>
+    <p class="sub">Product · <b>Definition</b> · Use Case · When to Choose · Enterprise Fit · Cost Tier</p>
+  </div>
+  <div class="badge">
+    <span class="big">5 Core Domains</span>
+    ICT · Device · Cloud · Energy · Auto · 2026 edition
+  </div>
+</header>
+
+<div class="legend">
+  <div class="item"><strong>Fit:</strong></div>
+  <div class="item"><span class="fit"><span class="on">S</span><span>M</span><span>L</span></span> Small / startup</div>
+  <div class="item"><span class="fit"><span>S</span><span class="on">M</span><span>L</span></span> Mid-market</div>
+  <div class="item"><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span> Large enterprise</div>
+  <div class="item"><strong style="margin-left:10px">Cost:</strong>
+    <span class="cost L">LOW</span>
+    <span class="cost M">MED</span>
+    <span class="cost H">HIGH</span>
+  </div>
+  <div class="item" style="color:var(--muted); font-size:10.5px">Cost = typical hardware + software footprint at moderate deployment. Products with <b>*</b> are legacy or being phased out.</div>
+</div>
+
+<div class="grid">
+
+<!-- ICT INFRASTRUCTURE -->
+<section class="cat c-ict">
+<h2>🌐 ICT Infrastructure <span class="count">16</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">5G-A (5.5G)</td><td class="def">Advanced 5G with 10G-level rates, millisecond latency, integrated sensing and communication (ISAC), and AI autonomous networks.</td><td>Next-gen mobile</td><td class="when">High-bandwidth, low-latency connectivity</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">F5G-A (Optical)</td><td class="def">All-optical switching and OTN technologies building "1-millisecond urban computing circles" for low-latency data delivery.</td><td>Optical networking</td><td class="when">Data centers, smart highways, power</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">NearLink</td><td class="def">New-generation short-range wireless standard outperforming Bluetooth/Wi-Fi in latency, rate, power, connection count, and positioning.</td><td>Short-range wireless</td><td class="when">Smart cockpits, digital keys, IoT sensors</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Space-Earth Integrated</td><td class="def">Integration of low-orbit satellites, space-based networks, and terrestrial 5G for seamless global coverage.</td><td>Satellite comms</td><td class="when">Remote areas, oceans, aviation, emergency</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">CloudEngine Switches</td><td class="def">Data center and campus network switches with high-density, low-latency switching for AI and cloud workloads.</td><td>Network switching</td><td class="when">Data centers, campus networks</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">NetEngine Routers</td><td class="def">High-performance routers for carrier backbone, metro, and enterprise WAN networks.</td><td>Routing</td><td class="when">Carrier backbone, enterprise WAN</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">AirEngine Wi-Fi</td><td class="def">Enterprise Wi-Fi 6/7 access points and controllers for high-density wireless connectivity.</td><td>Enterprise Wi-Fi</td><td class="when">Campus, office, industrial Wi-Fi</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">OptiXtrans</td><td class="def">Optical transport network (OTN) platform for high-capacity, long-distance data transmission.</td><td>Optical transport</td><td class="when">DCI, metro, long-haul</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">OceanStor Storage</td><td class="def">Enterprise storage systems including all-flash, hybrid, and distributed storage for various workloads.</td><td>Enterprise storage</td><td class="when">Data centers, backup, HPC</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">OceanProtect</td><td class="def">Backup and disaster recovery storage solution for data protection.</td><td>Backup &amp; DR</td><td class="when">Data protection, compliance</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Huawei Cloud Stack</td><td class="def">Hybrid cloud solution enabling enterprises to build private clouds with public cloud capabilities.</td><td>Hybrid cloud</td><td class="when">On-prem cloud, data sovereignty</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">DC OptiX</td><td class="def">Data center interconnect (DCI) solution with single-wavelength 200G bandwidth for connecting data centers.</td><td>DCI networking</td><td class="when">Multi-data-center connectivity</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">iMaster NCE</td><td class="def">Autonomous network management and control platform with AI-driven O&M for network automation.</td><td>Network automation</td><td class="when">AI-powered network management</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Campus Network</td><td class="def">Integrated campus networking solution combining switches, Wi-Fi, and management for enterprise campuses.</td><td>Campus networking</td><td class="when">Enterprise campus, education, healthcare</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">WAN Solution</td><td class="def">Enterprise WAN connectivity with SD-WAN capabilities for branch and multi-cloud networking.</td><td>WAN connectivity</td><td class="when">Branch offices, multi-cloud</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Microwave</td><td class="def">Microwave transmission solutions for backhaul and last-mile connectivity where fiber is unavailable.</td><td>Microwave backhaul</td><td class="when">Fiber-unavailable areas</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- COMPUTING / ASCEND -->
+<section class="cat c-compute">
+<h2>🖥️ Computing &amp; Ascend AI <span class="count">10</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Ascend AI Processors</td><td class="def">Huawei's AI processor family based on Da Vinci architecture, providing AI computing for training and inference.</td><td>AI compute</td><td class="when">AI training, inference workloads</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Atlas AI Modules</td><td class="def">AI modules for endpoint AI scenarios like object recognition and image classification in cameras, robots, drones.</td><td>Endpoint AI</td><td class="when">Edge AI, embedded AI</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Atlas AI Accelerator Cards</td><td class="def">AI inference and video analysis accelerator cards for servers.</td><td>AI acceleration</td><td class="when">Server AI inference, video analytics</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Atlas Smart Edge</td><td class="def">Edge AI computing devices with strong performance, small footprint, and environmental adaptability.</td><td>Edge AI compute</td><td class="when">Edge inference, industrial AI</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Atlas AI Servers</td><td class="def">AI servers for data center inference, deep learning model development and training.</td><td>AI servers</td><td class="when">AI data center workloads</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Atlas AI Clusters</td><td class="def">AI computing clusters with massive AI power and scalability for large model training.</td><td>AI clusters</td><td class="when">LLM training, large-scale AI</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Kunpeng Processors</td><td class="def">ARM-based server processors for general-purpose computing in data centers and cloud.</td><td>Server compute</td><td class="when">ARM-based server workloads</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">TaiShan Servers</td><td class="def">ARM-based servers powered by Kunpeng processors for cloud, big data, and distributed storage.</td><td>ARM servers</td><td class="when">Cloud, big data, ARM ecosystem</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">FusionServer</td><td class="def">x86-based servers for general enterprise computing workloads.</td><td>x86 servers</td><td class="when">Standard enterprise workloads</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">HPC Solutions</td><td class="def">High-performance computing solutions for scientific research and engineering simulation.</td><td>HPC</td><td class="when">Scientific computing, simulation</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- HUAWEI CLOUD -->
+<section class="cat c-cloud">
+<h2>☁️ Huawei Cloud <span class="count">12</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">ECS (Elastic Cloud Server)</td><td class="def">Scalable virtual computing resources in Huawei Cloud with various CPU, memory, and GPU configurations.</td><td>Virtual servers</td><td class="when">General cloud compute</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">CCE (Cloud Container Engine)</td><td class="def">Managed Kubernetes container service for deploying and managing containerized applications.</td><td>Kubernetes</td><td class="when">Container orchestration</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FunctionGraph</td><td class="def">Serverless computing service for running code without managing servers.</td><td>Serverless functions</td><td class="when">Event-driven, short-lived code</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">OBS (Object Storage Service)</td><td class="def">Massively scalable object storage for unstructured data.</td><td>Object storage</td><td class="when">Unstructured data, backups</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">EVS (Elastic Volume Service)</td><td class="def">Block storage volumes for cloud servers.</td><td>Block storage</td><td class="when">Persistent cloud volumes</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">RDS (Relational Database Service)</td><td class="def">Managed relational databases (MySQL, PostgreSQL, SQL Server) with automated backups and scaling.</td><td>Managed SQL</td><td class="when">Standard SQL databases</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">GaussDB</td><td class="def">Huawei's enterprise-grade distributed relational database with high availability and performance.</td><td>Enterprise SQL</td><td class="when">Mission-critical SQL workloads</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">DDS (Document Database Service)</td><td class="def">Managed MongoDB-compatible document database.</td><td>Document DB</td><td class="when">MongoDB-compatible workloads</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">DWS (Data Warehouse Service)</td><td class="def">Petabyte-scale cloud data warehouse for analytics and BI.</td><td>Data warehouse</td><td class="when">Large-scale analytics</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">ModelArts</td><td class="def">End-to-end AI development platform for building, training, and deploying models.</td><td>AI platform</td><td class="when">Custom AI/ML development</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Pangu Large Model</td><td class="def">Huawei's large AI model covering NLP, computer vision, time-series prediction, scientific computing, and embodied intelligence.</td><td>Foundation AI</td><td class="when">Industry AI applications</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Cloud Stack</td><td class="def">Hybrid cloud solution for building private clouds with public cloud capabilities.</td><td>Hybrid cloud</td><td class="when">On-prem cloud, data sovereignty</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- DIGITAL POWER -->
+<section class="cat c-energy">
+<h2>⚡ Digital Power <span class="count">10</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">FusionSolar</td><td class="def">Smart PV and energy storage system (ESS) solution for utility, commercial, and residential solar applications.</td><td>Solar PV + storage</td><td class="when">Renewable energy generation</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Smart String Grid Forming ESS</td><td class="def">All-scenario grid forming energy storage platform for utility, microgrid, C&I, and residential applications.</td><td>Grid forming storage</td><td class="when">Grid stability, renewable integration</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">LUNA S1-7kWh</td><td class="def">Residential energy storage system with 15-year warranty and expandable capacity up to 252 kWh.</td><td>Home storage</td><td class="when">Residential solar + storage</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Home Energy Management 6.0</td><td class="def">Residential energy management solution covering green power generation and intelligent consumption.</td><td>Home energy mgmt</td><td class="when">Smart home energy</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Liquid-Cooled Ultra-Fast Charging</td><td class="def">Ultra-fast EV charging solution with liquid cooling for high-power charging stations.</td><td>EV charging</td><td class="when">Highway, fleet charging</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Smart Charging Network</td><td class="def">Integrated EV charging network solution with intelligent management.</td><td>Charging network</td><td class="when">Public charging infrastructure</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Data Center Facility</td><td class="def">Power solutions for data centers including UPS, power distribution, and thermal management.</td><td>DC power</td><td class="when">Data center power infrastructure</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Site Power Facility</td><td class="def">Power solutions for telecom sites enabling operators to evolve from energy consumers to prosumers.</td><td>Site power</td><td class="when">Telecom site power</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Smart Power Supply</td><td class="def">Converted power solution for large DC power applications.</td><td>Power conversion</td><td class="when">Large DC power systems</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Residential PV</td><td class="def">Residential solar PV solutions for home energy generation.</td><td>Home solar</td><td class="when">Residential solar</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- INTELLIGENT AUTOMOTIVE -->
+<section class="cat c-auto">
+<h2>🚗 Intelligent Automotive Solutions <span class="count">12</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Qiankun ADS 5</td><td class="def">Autonomous driving solution with WEWA 2.0 architecture, multi-agent cloud simulation, and online reinforcement learning.</td><td>Autonomous driving</td><td class="when">Advanced ADAS/AD systems</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Qiankun OS</td><td class="def">Industry-first autonomous driving OS with deterministic scheduling engine and full-link security model.</td><td>AD OS</td><td class="when">Autonomous driving platform</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">HUAWEI XMC Digital Chassis</td><td class="def">Six-in-one digital chassis engine integrating drive, brake, steering, suspension, body, and thermal management.</td><td>Digital chassis</td><td class="when">Intelligent vehicle control</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">HarmonySpace 6</td><td class="def">Smart cockpit system with next-gen in-cabin perception, intelligent interaction, and mobile entertainment.</td><td>Smart cockpit</td><td class="when">Connected car cockpit</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">AMS Multimodal Perception</td><td class="def">In-cabin AI multimodal perception system with cameras, IR, and high-precision NearLink sensors.</td><td>Cabin perception</td><td class="when">Occupant monitoring, safety</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">LCoS AR-HUD</td><td class="def">Dual-focal-plane AR-HUD with 4.5m near focus and 130-inch far focus spanning 3 lanes.</td><td>AR HUD</td><td class="when">Advanced HUD display</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">XPIXEL Smart Headlights</td><td class="def">Megapixel color smart headlight modules for projection and communication.</td><td>Smart lighting</td><td class="when">Advanced vehicle lighting</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">XSCENE LCoS Projector</td><td class="def">In-vehicle LCoS projection light engine for entertainment and information display.</td><td>Vehicle projection</td><td class="when">In-car entertainment</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">LiDAR (896-line)</td><td class="def">Highest global production spec 896-line dual-path image-level LiDAR for long-range detection.</td><td>Vehicle LiDAR</td><td class="when">Autonomous driving perception</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Millimeter-Wave Radar</td><td class="def">Distributed millimeter-wave radar for all-weather detection and tracking.</td><td>Vehicle radar</td><td class="when">ADAS perception</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">DTOF Solid-State LiDAR</td><td class="def">High-precision solid-state LiDAR for short-to-medium range detection.</td><td>Solid-state LiDAR</td><td class="when">Close-range perception</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">CAS5-O Collision Avoidance</td><td class="def">All-around collision avoidance system covering speed, direction, target, weather, scenario, and time domains.</td><td>Safety systems</td><td class="when">Vehicle safety</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- CONSUMER DEVICES -->
+<section class="cat c-device">
+<h2>📱 Consumer Devices <span class="count">14</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Mate Series</td><td class="def">Flagship smartphones with advanced cameras, performance, and HarmonyOS integration.</td><td>Premium smartphones</td><td class="when">Flagship mobile experience</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">P Series (Pura)</td><td class="def">Photography-focused flagship smartphones with advanced camera systems.</td><td>Camera phones</td><td class="when">Mobile photography priority</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">nova Series</td><td class="def">Mid-range smartphones with stylish design and good performance.</td><td>Mid-range phones</td><td class="when">Value-focused smartphone</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Y Series</td><td class="def">Entry-level smartphones for basic needs.</td><td>Entry phones</td><td class="when">Budget-conscious users</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">MateBook</td><td class="def">Laptops with sleek design, performance, and multi-device collaboration with Huawei phones.</td><td>Laptops</td><td class="when">Productivity, multi-device ecosystem</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">MatePad</td><td class="def">Tablets with large displays and productivity features.</td><td>Tablets</td><td class="when">Media consumption, productivity</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">WATCH GT Series</td><td class="def">Smartwatches with long battery life, health monitoring, and fitness tracking.</td><td>Smartwatches</td><td class="when">Fitness and health tracking</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">WATCH Ultimate</td><td class="def">Premium smartwatches with advanced materials and features for extreme sports.</td><td>Premium watches</td><td class="when">Luxury and adventure sports</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">WATCH D Series</td><td class="def">Smartwatches with blood pressure monitoring and health management features.</td><td>Health watches</td><td class="when">Health monitoring priority</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">WATCH FIT Series</td><td class="def">Lightweight fitness-focused smartwatches with long battery life.</td><td>Fitness bands</td><td class="when">Fitness tracking, lightweight</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">WATCH Buds</td><td class="def">Smartwatch with built-in wireless earbuds.</td><td>Watch + earbuds</td><td class="when">All-in-one wearable</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">FreeBuds</td><td class="def">True wireless earbuds with active noise cancellation and high-quality audio.</td><td>Wireless earbuds</td><td class="when">Mobile audio, ANC</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Monitors</td><td class="def">Desktop monitors for productivity and entertainment.</td><td>Displays</td><td class="when">Desktop display</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Smart Screen</td><td class="def">Smart display for home communication and entertainment.</td><td>Smart displays</td><td class="when">Home hub, video calls</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- SOFTWARE & OS -->
+<section class="cat c-software">
+<h2>💻 Software &amp; Operating Systems <span class="count">8</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">HarmonyOS</td><td class="def">Self-developed distributed operating system for phones, tablets, vehicle machines, home appliances, and industrial devices.</td><td>Device OS</td><td class="when">Multi-device collaboration</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">HarmonyOS NEXT</td><td class="def">Pure HarmonyOS with independent kernel, compiler, and app framework; no external compatibility layers.</td><td>Pure OS</td><td class="when">Full HarmonyOS experience</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">openEuler</td><td class="def">Open-source OS for servers, cloud, edge, and industrial control with high stability and national cryptography support.</td><td>Server OS</td><td class="when">Servers, cloud, edge computing</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Ark Engine</td><td class="def">Application engine delivering smooth performance, efficient memory, and anti-aging capabilities.</td><td>App framework</td><td class="when">HarmonyOS app development</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">HMS Core</td><td class="def">Huawei Mobile Services providing app ecosystem services for developers.</td><td>App services</td><td class="when">Huawei device app development</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">AppGallery</td><td class="def">Huawei's app distribution platform for HarmonyOS and Android apps.</td><td>App store</td><td class="when">Distributing apps to Huawei users</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Cangjie Programming Language</td><td class="def">Huawei's self-developed programming language for HarmonyOS and cross-platform development.</td><td>Dev language</td><td class="when">Native HarmonyOS development</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">DevEco Studio</td><td class="def">Integrated development environment for HarmonyOS app development.</td><td>IDE</td><td class="when">HarmonyOS app development</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- AI & INNOVATION -->
+<section class="cat c-ai">
+<h2>🧠 AI &amp; Innovation <span class="count">8</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Pangu Large Model</td><td class="def">Huawei's large AI model system covering NLP, computer vision, time-series prediction, scientific computing, and embodied intelligence.</td><td>Foundation AI</td><td class="when">Industry AI applications</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Pangu NLP</td><td class="def">Natural language processing models for text understanding and generation.</td><td>Text AI</td><td class="when">NLP applications</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Pangu CV</td><td class="def">Computer vision models for image and video analysis.</td><td>Vision AI</td><td class="when">Image/video understanding</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Pangu Scientific Computing</td><td class="def">AI models for scientific computing and simulation acceleration.</td><td>Scientific AI</td><td class="when">Research, simulation</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Pangu Embodied Intelligence</td><td class="def">AI models for robotics and embodied intelligence applications.</td><td>Robotics AI</td><td class="when">Robotics, autonomous systems</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">ModelArts</td><td class="def">End-to-end AI development platform for building, training, and deploying models.</td><td>AI platform</td><td class="when">Custom AI/ML development</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">MindSpore</td><td class="def">Huawei's open-source AI framework for training and inference.</td><td>AI framework</td><td class="when">Custom AI model development</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">CANN</td><td class="def">Compute Architecture for Neural Networks — Huawei's AI computing software stack for Ascend processors.</td><td>AI software stack</td><td class="when">Ascend AI development</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+</div>
+
+<div class="lower">
+  <div class="panel">
+    <h3>Solution Architect Decision Guide</h3>
+    <div style="font-size:11.5px; line-height:1.7;">
+      <p><b>1. ICT Infrastructure</b> — 5G-A (mobile) · F5G-A (optical) · NearLink (short-range) · CloudEngine (switching) · NetEngine (routing)</p>
+      <p><b>2. Computing</b> — Ascend (AI) · Kunpeng (ARM) · TaiShan (ARM servers) · FusionServer (x86) · Atlas (AI products)</p>
+      <p><b>3. Cloud</b> — ECS (compute) · OBS (storage) · GaussDB (database) · ModelArts (AI platform) · Pangu (AI models)</p>
+      <p><b>4. Digital Power</b> — FusionSolar (PV+ESS) · Grid Forming ESS · LUNA S1 (home storage) · EV charging</p>
+      <p><b>5. Automotive</b> — ADS 5 (autonomous driving) · HarmonySpace 6 (cockpit) · XMC (chassis) · LiDAR/radar (perception)</p>
+      <p><b>6. Consumer</b> — Mate/P/nova/Y (phones) · MateBook (laptops) · MatePad (tablets) · WATCH/FreeBuds (wearables)</p>
+      <p><b>7. Software</b> — HarmonyOS (device OS) · openEuler (server OS) · HMS Core (app services) · DevEco (IDE)</p>
+      <p><b>8. AI</b> — Pangu (foundation models) · ModelArts (platform) · MindSpore (framework) · CANN (compute stack)</p>
+    </div>
+  </div>
+
+  <div class="panel arch">
+    <h3>Reference Architecture — Full-Scenario Intelligent System</h3>
+    <div class="flow">Perception Layer
+  │
+  ├── Ascend AI Modules (endpoint AI)
+  ├── LiDAR / Radar (automotive)
+  ├── NearLink Sensors (short-range)
+  └── 5G-A / F5G-A (connectivity)
+                     │
+                     ▼
+              Compute Layer
+    ┌─────────────┴─────────────┐
+    │ Kunpeng (ARM) │ Ascend (AI) │
+    │ TaiShan Servers │ Atlas Clusters │
+    └─────────────┬─────────────┘
+                     │
+                     ▼
+         ┌──── Huawei Cloud ────┐
+         │  ModelArts (AI dev)   │
+         │  Pangu (foundation)   │
+         │  GaussDB (database)   │
+         │  OBS (storage)        │
+         └───────────────────────┘
+                     │
+                     ▼
+         HarmonyOS / openEuler (OS layer)
+                     │
+                     ▼
+         Consumer Devices · Automotive · Digital Power · Enterprise</div>
+    <p class="arch note"><b>AI variant:</b> Ascend + Atlas → ModelArts → Pangu → Industry applications (NLP, CV, scientific computing).</p>
+    <p class="arch note"><b>Automotive variant:</b> LiDAR/Radar → ADS 5 → HarmonySpace 6 → XMC chassis → Intelligent vehicle.</p>
+  </div>
+
+  <div class="panel why">
+    <h3>How to read this reference</h3>
+    <ul style="font-size:11.5px">
+      <li><b>Definition</b> — plain-language description of what the product line is and does.</li>
+      <li><b>Use case</b> — the shortest tag for the primary application.</li>
+      <li><b>When to choose</b> — trigger conditions that push you toward this product.</li>
+      <li><b>Fit</b> — S/M/L boxes ticked = natural fit at that deployment scale.</li>
+      <li><b>Cost</b> — LOW = entry-level; MED = professional; HIGH = enterprise or carrier-grade. Actual cost is deployment-dependent.</li>
+      <li>Products marked with <b>*</b> are legacy or being phased out.</li>
+    </ul>
+    <h3 style="margin-top:14px">Why Huawei?</h3>
+    <ul style="font-size:11.5px">
+      <li>5 core business domains: ICT, Device, Cloud, Energy, Auto</li>
+      <li>Full-stack: chips → OS → cloud → applications</li>
+      <li>HarmonyOS: 1 billion+ devices, world's 3rd OS</li>
+      <li>Pangu: industry-focused large AI models</li>
+      <li>Automotive: 100亿+ km assisted driving</li>
+      <li>Digital Power: 3.9M+ households, 30K+ installers</li>
+    </ul>
+  </div>
+</div>
+
+<footer>Huawei Complete Product &amp; Solution Architect Reference · 2026 edition with Definition, Fit &amp; Cost columns.</footer>
+
+</div>
+</body>
+</html>

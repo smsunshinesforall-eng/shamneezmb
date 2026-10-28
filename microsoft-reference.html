@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Microsoft Azure Complete Product & Solution Architect Reference</title>
+<style>
+  :root {
+    --azure-blue: #0078D4;
+    --azure-blue-dark: #005A9E;
+    --ink: #1A1A2E;
+    --paper: #F5F7FA;
+    --card: #FFFFFF;
+    --line: #E1E6ED;
+    --muted: #64748B;
+    --def: #334155;
+    --compute: #0078D4;
+    --storage: #107C10;
+    --network: #7B2D8E;
+    --security: #D13438;
+    --govern: #D97706;
+    --db: #6B2FA0;
+    --analytics: #00A1E0;
+    --ml: #E3008C;
+    --devtools: #2563EB;
+    --appint: #C2185B;
+    --migration: #16A34A;
+    --iot: #059669;
+    --media: #DB2777;
+    --biz: #8B4513;
+    --euc: #475569;
+    --container: #0D9488;
+    --vmware: #6B21A8;
+    --cost-low: #16A34A;
+    --cost-med: #D97706;
+    --cost-high: #D13438;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); font-family: -apple-system, "Segoe UI", Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .sheet { max-width: 1800px; margin: 0 auto; padding: 24px; }
+
+  header {
+    background: linear-gradient(135deg, var(--azure-blue-dark) 0%, var(--azure-blue) 100%);
+    color: white;
+    padding: 22px 28px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 90px 1fr auto;
+    gap: 22px;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+  .logo { font-weight: 800; font-size: 28px; letter-spacing: -1px; line-height: 1; }
+  .logo .cloud { color: #50E6FF; display: block; font-size: 14px; margin-top: 2px; }
+  header h1 { margin: 0 0 4px 0; font-size: 26px; }
+  header .sub { margin: 0; opacity: 0.85; font-size: 13px; }
+  header .sub b { color: #50E6FF; font-weight: 600; }
+  .badge {
+    text-align: right;
+    border-left: 1px solid rgba(255,255,255,0.2);
+    padding-left: 22px;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  .badge .big { font-size: 18px; font-weight: 700; color: #50E6FF; display: block; }
+
+  .legend {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    font-size: 11.5px;
+    align-items: center;
+  }
+  .legend .item { display: flex; align-items: center; gap: 6px; }
+  .legend strong { color: var(--azure-blue-dark); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .cat {
+    background: var(--card);
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .cat > h2 {
+    margin: 0;
+    padding: 10px 14px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cat > h2 .count {
+    margin-left: auto;
+    font-size: 11px;
+    background: rgba(255,255,255,0.25);
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-weight: 500;
+  }
+  .cat table { width: 100%; border-collapse: collapse; font-size: 11.5px; table-layout: fixed; }
+  .cat thead th {
+    background: #F8FAFC;
+    text-align: left;
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--line);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .cat tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #F1F5F9;
+    vertical-align: top;
+    line-height: 1.4;
+  }
+  .cat tbody tr:last-child td { border-bottom: none; }
+
+  /* Column widths — 6 columns */
+  .col-svc  { width: 12%; }
+  .col-def  { width: 28%; }
+  .col-use  { width: 15%; }
+  .col-when { width: 20%; }
+  .col-fit  { width: 13%; }
+  .col-cost { width: 12%; }
+
+  .svc { font-weight: 700; color: var(--ink); }
+  .def { color: var(--def); }
+  .when { color: var(--muted); }
+
+  .fit {
+    display: inline-flex;
+    gap: 3px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10px;
+  }
+  .fit span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    padding: 2px 0;
+    border: 1px solid #D1D5DB;
+    border-radius: 3px;
+    background: #FAFAFA;
+    color: #9CA3AF;
+  }
+  .fit span.on {
+    background: var(--azure-blue-dark);
+    color: white;
+    border-color: var(--azure-blue-dark);
+    font-weight: 700;
+  }
+
+  .cost {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    color: white;
+    min-width: 46px;
+    text-align: center;
+  }
+  .cost.L { background: var(--cost-low); }
+  .cost.M { background: var(--cost-med); }
+  .cost.H { background: var(--cost-high); }
+
+  .c-compute h2   { background: var(--compute); }
+  .c-storage h2   { background: var(--storage); }
+  .c-network h2   { background: var(--network); }
+  .c-security h2  { background: var(--security); }
+  .c-govern h2    { background: var(--govern); }
+  .c-db h2        { background: var(--db); }
+  .c-analytics h2 { background: var(--analytics); }
+  .c-ml h2        { background: var(--ml); }
+  .c-devtools h2  { background: var(--devtools); }
+  .c-appint h2    { background: var(--appint); }
+  .c-migration h2 { background: var(--migration); }
+  .c-iot h2       { background: var(--iot); }
+  .c-media h2     { background: var(--media); }
+  .c-biz h2       { background: var(--biz); }
+  .c-euc h2       { background: var(--euc); }
+  .c-container h2 { background: var(--container); }
+  .c-vmware h2    { background: var(--vmware); }
+
+  .lower {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr 0.7fr;
+    gap: 14px;
+    margin-top: 18px;
+  }
+  @media (max-width: 1100px) { .lower { grid-template-columns: 1fr; } }
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .panel h3 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: var(--azure-blue-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .panel h3::before {
+    content: "";
+    display: inline-block;
+    width: 4px; height: 16px;
+    background: #50E6FF;
+    border-radius: 2px;
+  }
+  .why ul { padding-left: 18px; margin: 4px 0; font-size: 12px; line-height: 1.65; }
+  .why li::marker { color: #50E6FF; }
+  .arch .flow {
+    background: #F8FAFC;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 8px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10.5px;
+    white-space: pre-wrap;
+    color: #334155;
+  }
+  .arch .note { color: var(--muted); font-size: 10.5px; }
+  footer { margin-top: 18px; text-align: center; font-size: 10.5px; color: var(--muted); padding: 10px; }
+  @media print {
+    body { background: white; }
+    .sheet { max-width: none; padding: 8px; }
+    .cat, .panel, header { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<header>
+  <div class="logo">azure<span class="cloud">▲</span></div>
+  <div>
+    <h1>Microsoft Azure Complete Product &amp; Solution Architect Reference</h1>
+    <p class="sub">Service · <b>Definition</b> · Use Case · When to Choose · Enterprise Fit · Cost Tier</p>
+  </div>
+  <div class="badge">
+    <span class="big">200+ Services</span>
+    20+ Categories · 2026 edition
+  </div>
+</header>
+
+<div class="legend">
+  <div class="item"><strong>Fit:</strong></div>
+  <div class="item"><span class="fit"><span class="on">S</span><span>M</span><span>L</span></span> Small / startup</div>
+  <div class="item"><span class="fit"><span>S</span><span class="on">M</span><span>L</span></span> Mid-market</div>
+  <div class="item"><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span> Large enterprise</div>
+  <div class="item"><strong style="margin-left:10px">Cost:</strong>
+    <span class="cost L">LOW</span>
+    <span class="cost M">MED</span>
+    <span class="cost H">HIGH</span>
+  </div>
+  <div class="item" style="color:var(--muted); font-size:10.5px">Cost = typical spend footprint at moderate usage. Services with <b>*</b> are deprecated or being retired.</div>
+</div>
+
+<div class="grid">
+
+<!-- COMPUTE -->
+<section class="cat c-compute">
+<h2>⚙️ Compute <span class="count">18</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Virtual Machines</td><td class="def">On-demand, scalable computing resources with full control over the operating system, storage and networking configuration.</td><td>IaaS virtual servers</td><td class="when">OS control, lift-and-shift</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">VM Scale Sets</td><td class="def">Groups of load-balanced VMs that automatically scale up or down based on demand, with fault domain isolation.</td><td>Auto-scaling VM groups</td><td class="when">Variable load, stateless tiers</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure Batch</td><td class="def">Managed service for large-scale parallel and high-performance computing (HPC) jobs across thousands of VMs.</td><td>Batch / HPC jobs</td><td class="when">Parallel workloads, rendering</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">App Service</td><td class="def">Fully managed platform for building, deploying and scaling web apps, REST APIs and mobile backends.</td><td>Web apps / APIs</td><td class="when">Managed web hosting, PaaS</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Functions</td><td class="def">Event-driven serverless compute that runs code in response to triggers without managing infrastructure.</td><td>Serverless functions</td><td class="when">Event-driven, short-lived code</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Logic Apps</td><td class="def">Cloud platform for building automated workflows and integrating apps, data and services with a visual designer.</td><td>Workflow automation</td><td class="when">No-code orchestration</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure Kubernetes Service</td><td class="def">Managed Kubernetes control plane that simplifies deploying, managing and scaling containerized applications.</td><td>Kubernetes</td><td class="when">K8s standard, portability</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure Container Apps</td><td class="def">Serverless container platform built on Kubernetes with scale-to-zero, Dapr integration and revision-based traffic splitting.</td><td>Serverless containers</td><td class="when">Microservices, no K8s ops</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Container Instances</td><td class="def">Fastest way to run a container in Azure without managing VMs or adopting a higher-level orchestrator.</td><td>Simple containers</td><td class="when">Single containers, quick tasks</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure Spring Apps</td><td class="def">Fully managed service for running Spring Boot and Steeltoe applications with built-in service discovery and config.</td><td>Java Spring apps</td><td class="when">Spring Boot microservices</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Service Fabric</td><td class="def">Distributed systems platform for packaging, deploying and managing scalable microservices and containers.</td><td>Microservices platform</td><td class="when">Stateful microservices, actors</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Dedicated Host</td><td class="def">Physical servers dedicated to your organization, giving you control over maintenance and placement of VMs.</td><td>Dedicated hardware</td><td class="when">Compliance, licensing (BYOL)</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Spot VMs</td><td class="def">Unused Azure capacity available at significant discounts, with the ability to evict when capacity is needed.</td><td>Cost-optimized compute</td><td class="when">Fault-tolerant, batch jobs</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure CycleCloud</td><td class="def">Tool for creating, managing and optimizing HPC clusters on Azure with schedulers like Slurm, PBS and Grid Engine.</td><td>HPC cluster mgmt</td><td class="when">Scientific / research HPC</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure Compute Fleet</td><td class="def">Provisions thousands of mixed-size VMs for large-scale, distributed computing with cost optimization via Spot.</td><td>Large VM fleets</td><td class="when">Massive parallel workloads</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure Red Hat OpenShift</td><td class="def">Fully managed OpenShift service jointly operated by Microsoft and Red Hat for enterprise Kubernetes.</td><td>Managed OpenShift</td><td class="when">OpenShift standard</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure VMware Solution</td><td class="def">Run VMware vSphere workloads natively on Azure with full VMware compatibility and hybrid connectivity.</td><td>VMware on Azure</td><td class="when">Migrate VMware estates</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Cloud Services*</td><td class="def">Classic PaaS for web and worker roles. *Legacy; use App Service or Container Apps instead.</td><td>Legacy PaaS</td><td class="when">*Legacy only</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- STORAGE -->
+<section class="cat c-storage">
+<h2>💾 Storage <span class="count">14</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Blob Storage</td><td class="def">Massively scalable object storage for unstructured data, with Hot, Cool, Cold and Archive access tiers.</td><td>Object storage</td><td class="when">Unstructured data, data lake</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure Files</td><td class="def">Fully managed SMB and NFS file shares accessible from cloud or on-premises.</td><td>Managed file shares</td><td class="when">SMB/NFS shared access</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Managed Disks</td><td class="def">High-performance, durable block storage volumes for Azure VMs, with SSD, HDD and Premium options.</td><td>Block storage</td><td class="when">Persistent VM disks</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Queue Storage</td><td class="def">Simple message queue for large workloads, with storage-backed queues for asynchronous communication.</td><td>Message queues</td><td class="when">Simple async messaging</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Table Storage</td><td class="def">NoSQL key-attribute store for structured, non-relational data with schemaless design.</td><td>NoSQL key-value</td><td class="when">Simple NoSQL, low cost</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Data Lake Storage</td><td class="def">Blob Storage optimized for analytics with hierarchical namespace for file-system semantics.</td><td>Data lake</td><td class="when">Analytics, big data workloads</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Archive Storage</td><td class="def">Lowest-cost Blob tier for data accessed rarely, with retrieval times of hours.</td><td>Archive / compliance</td><td class="when">Long-term retention</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure NetApp Files</td><td class="def">Enterprise-grade NFS and SMB file storage powered by NetApp ONTAP, for demanding workloads.</td><td>High-perf file storage</td><td class="when">NetApp ONTAP, SAP HANA</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure Managed Lustre</td><td class="def">Fully managed parallel file system for high-performance computing and AI/ML workloads.</td><td>HPC file system</td><td class="when">HPC, AI training data</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Elastic SAN</td><td class="def">Cloud-native storage area network with dynamic performance scaling and end-to-end SAN-like experience.</td><td>Cloud SAN</td><td class="when">Centralized block storage at scale</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Backup</td><td class="def">Centralized, policy-based backup for Azure VMs, databases, files and workloads, with long-term retention.</td><td>Backup service</td><td class="when">Cross-workload backup policy</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Data Box</td><td class="def">Physical devices for offline data transfer to Azure, from terabytes to petabytes.</td><td>Offline transfer</td><td class="when">Large / offline datasets</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure Storage Mover</td><td class="def">Managed migration service that moves on-premises files and objects to Azure Storage.</td><td>Storage migration</td><td class="when">File/object → Azure</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure HPC Cache</td><td class="def">Cache for high-performance computing (HPC) workloads that accelerates access to data stored in Azure Blob or on-premises.</td><td>HPC cache</td><td class="when">Accelerate HPC data access</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- NETWORKING -->
+<section class="cat c-network">
+<h2>🌐 Networking &amp; Content Delivery <span class="count">16</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Virtual Network</td><td class="def">Isolated, private network in Azure with full control over IP ranges, subnets, routes and security.</td><td>Private network</td><td class="when">Isolation, segmentation</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure DNS</td><td class="def">Hosting service for DNS domains with high availability and integration with other Azure services.</td><td>DNS hosting</td><td class="when">Domain, traffic routing</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure Front Door</td><td class="def">Global, scalable entry point for web applications with CDN, WAF, SSL offload and intelligent routing.</td><td>Global CDN + LB</td><td class="when">Global web apps, WAF</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Load Balancer</td><td class="def">Layer 4 load balancer for distributing traffic across VMs and services with high availability.</td><td>L4 load balancing</td><td class="when">TCP/UDP, internal/external</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Application Gateway</td><td class="def">Layer 7 load balancer with URL-based routing, SSL termination, autoscaling and WAF integration.</td><td>L7 load balancing</td><td class="when">HTTP/HTTPS, path routing</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">VPN Gateway</td><td class="def">Encrypted IPsec tunnels between on-premises networks and Azure VNets.</td><td>Site-to-site VPN</td><td class="when">On-prem → Azure over internet</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">ExpressRoute</td><td class="def">Private, dedicated network connection from on-premises to Azure with predictable bandwidth and lower latency.</td><td>Dedicated link</td><td class="when">Private, high-bandwidth on-prem</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Virtual WAN</td><td class="def">Unified networking service that brings together networking, security and routing functionality across branches.</td><td>Global WAN</td><td class="when">Branch connectivity at scale</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure Firewall</td><td class="def">Managed, cloud-native network security service with high availability and unrestricted scalability.</td><td>Network firewall</td><td class="when">Centralized VNet protection</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Web Application Firewall</td><td class="def">Protects web applications from common exploits like SQL injection and XSS with managed rules.</td><td>Web firewall</td><td class="when">L7 protection for App Gateway/Front Door</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">DDoS Protection</td><td class="def">Always-on DDoS mitigation service for Azure resources, with Standard and Premium tiers.</td><td>DDoS protection</td><td class="when">Standard free; Premium for SLA</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Private Link</td><td class="def">Private access to Azure services and customer/partner services over a private endpoint in your VNet.</td><td>Private connectivity</td><td class="when">Service access, no internet</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">NAT Gateway</td><td class="def">Managed outbound NAT service for VNet subnets with high scalability and predictable performance.</td><td>Outbound NAT</td><td class="when">Outbound internet for VMs</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure DNS Private Zones</td><td class="def">DNS zones for name resolution within VNets without custom DNS servers.</td><td>Internal DNS</td><td class="when">Private name resolution</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure Lighthouse</td><td class="def">Enables service providers to manage Azure resources across multiple tenants with delegated access.</td><td>Cross-tenant mgmt</td><td class="when">MSP / managed service</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure Virtual WAN Hub</td><td class="def">Central hub for connecting VNets, VPNs and ExpressRoute circuits with transitive routing.</td><td>Hub-and-spoke hub</td><td class="when">Many VNets / branches</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- SECURITY -->
+<section class="cat c-security">
+<h2>🛡️ Security, Identity &amp; Compliance <span class="count">18</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Microsoft Entra ID</td><td class="def">Cloud-based identity and access management service (formerly Azure AD) for workforce and customer identities.</td><td>IAM / SSO</td><td class="when">Identity, conditional access</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Entra External ID</td><td class="def">Customer identity and access management (CIAM) for external-facing apps with social and local account sign-in.</td><td>Customer auth</td><td class="when">External user sign-in</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Entra Domain Services</td><td class="def">Managed domain services (domain join, group policy, LDAP) without deploying domain controllers.</td><td>Managed AD</td><td class="when">Legacy apps needing AD</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Key Vault</td><td class="def">Securely stores and manages secrets, encryption keys and certificates with hardware security module (HSM) options.</td><td>Secrets &amp; keys</td><td class="when">Store secrets, certificates</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Managed HSM</td><td class="def">FIPS 140-3 Level 3 validated HSM for cryptographic key operations in regulated environments.</td><td>Dedicated HSM</td><td class="when">Compliance, key custody</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Defender for Cloud</td><td class="def">Cloud security posture management (CSPM) and workload protection across Azure, hybrid and multicloud.</td><td>Security posture</td><td class="when">Unified security management</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Microsoft Sentinel</td><td class="def">Cloud-native SIEM and SOAR that collects security data across the enterprise and uses AI for threat detection.</td><td>SIEM / SOAR</td><td class="when">Security analytics &amp; response</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Microsoft Purview</td><td class="def">Unified data governance and compliance platform for data discovery, classification and protection.</td><td>Data governance</td><td class="when">Compliance, data mapping</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure Information Protection</td><td class="def">Classifies and protects documents and emails with labels and encryption.</td><td>Data protection</td><td class="when">Sensitivity labels</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Confidential Ledger</td><td class="def">Tamperproof, unstructured data store hosted in trusted execution environments with cryptographic verification.</td><td>Confidential ledger</td><td class="when">Audit trails, tamperproof records</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure DDoS Protection</td><td class="def">Always-on traffic monitoring and DDoS mitigation for Azure resources.</td><td>DDoS mitigation</td><td class="when">Standard free; Premium for enhanced</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure Firewall</td><td class="def">Managed network security service with FQDN filtering, threat intelligence and central management.</td><td>Network firewall</td><td class="when">VNet-level firewall policy</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Web Application Firewall</td><td class="def">Protects web apps with managed rule sets against OWASP top 10 threats.</td><td>L7 WAF</td><td class="when">App Gateway / Front Door protection</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Policy</td><td class="def">Enforces organizational rules and standards across Azure resources with audit and deny effects.</td><td>Compliance enforcement</td><td class="when">Governance at scale</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure Blueprints</td><td class="def">Defines repeatable sets of Azure resources, policies and roles for compliant environments.</td><td>Environment templates</td><td class="when">Compliant provisioning</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure Arc</td><td class="def">Extends Azure management and governance to on-premises, multicloud and edge resources.</td><td>Hybrid management</td><td class="when">Manage non-Azure resources</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Sphere</td><td class="def">End-to-end IoT security solution with certified hardware, OS and cloud services.</td><td>IoT security</td><td class="when">Secure IoT devices</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Dedicated HSM</td><td class="def">Dedicated hardware security modules for cryptographic key operations with full control.</td><td>Dedicated HSM</td><td class="when">Regulated key custody</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- GOVERNANCE -->
+<section class="cat c-govern">
+<h2>📋 Management, Governance &amp; Ops <span class="count">16</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Azure Monitor</td><td class="def">Comprehensive observability service collecting metrics, logs, traces and alerts across Azure and hybrid resources.</td><td>Observability</td><td class="when">Metrics, logs, alerts, dashboards</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Advisor</td><td class="def">Personalized recommendations for cost, performance, reliability, security and operational excellence.</td><td>Best practices</td><td class="when">Optimize Azure resources</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure Resource Manager</td><td class="def">Management layer that enables you to deploy, manage and organize Azure resources with templates and tags.</td><td>Resource mgmt</td><td class="when">IaC, resource organization</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">ARM Templates</td><td class="def">Declarative JSON templates for infrastructure-as-code provisioning of Azure resources.</td><td>IaC (JSON)</td><td class="when">Declarative, repeatable deployments</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure Policy</td><td class="def">Enforces organizational rules and standards across Azure resources with audit and deny effects.</td><td>Compliance enforcement</td><td class="when">Governance at scale</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure Automation</td><td class="def">Process automation and configuration management with runbooks, state configuration and update management.</td><td>Automation</td><td class="when">Runbook automation, patching</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure Update Manager</td><td class="def">Centralized management of OS updates for Azure and hybrid machines with assessment and scheduling.</td><td>Patch management</td><td class="when">OS patching at scale</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure Service Health</td><td class="def">Personalized view of Azure service health, planned maintenance and health advisories.</td><td>Service status</td><td class="when">Track Azure issues</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Cost Management + Billing</td><td class="def">Cost analysis, budgeting, forecasting and optimization recommendations for Azure spend.</td><td>Cost control</td><td class="when">FinOps, chargeback, budgets</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure Advisor</td><td class="def">Personalized best-practice recommendations across cost, security, reliability, performance and operational excellence.</td><td>Optimization</td><td class="when">Continuous improvement</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure Monitor Logs</td><td class="def">Log Analytics workspace for collecting, analyzing and visualizing log data at scale.</td><td>Log analytics</td><td class="when">Centralized logging, KQL queries</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Managed Grafana</td><td class="def">Fully managed Grafana dashboards for visualizing Azure Monitor and other data sources.</td><td>Dashboards</td><td class="when">Grafana dashboards without ops</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Resource Graph</td><td class="def">Explores and queries Azure resources at scale with Kusto Query Language (KQL).</td><td>Resource query</td><td class="when">Inventory, compliance queries</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure Deployment Environments</td><td class="def">Self-service deployment environments for development teams with project-based templates.</td><td>Dev environments</td><td class="when">Standardized dev environments</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure Chaos Studio</td><td class="def">Chaos engineering service to test application resilience by injecting faults.</td><td>Resilience testing</td><td class="when">Validate fault tolerance</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Managed Applications</td><td class="def">Offers cloud solutions that are easy for consumers to deploy and operate within their own subscriptions.</td><td>ISV offerings</td><td class="when">Publish managed apps</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- DATABASES -->
+<section class="cat c-db">
+<h2>🗄️ Databases <span class="count">14</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Azure SQL Database</td><td class="def">Fully managed SQL Server engine with built-in intelligence, serverless compute and Hyperscale options.</td><td>Managed SQL</td><td class="when">SQL Server workloads, PaaS</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure SQL Managed Instance</td><td class="def">PaaS with near-100% SQL Server compatibility, VNet integration and instance-scoped features.</td><td>SQL Server lift-shift</td><td class="when">Instance-level SQL features</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">SQL Server on VMs</td><td class="def">Full SQL Server control on Azure VMs, with automated patching, backup and high availability options.</td><td>IaaS SQL Server</td><td class="when">OS-level SQL Server control</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure Cosmos DB</td><td class="def">Globally distributed, multi-model NoSQL database with single-digit ms latency and multiple APIs (SQL, MongoDB, Cassandra, Gremlin, Table).</td><td>NoSQL / global</td><td class="when">Global distribution, multi-model</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure Database for PostgreSQL</td><td class="def">Managed PostgreSQL with Flexible Server for control and Single Server (legacy) for simplicity.</td><td>Managed PostgreSQL</td><td class="when">PostgreSQL workloads</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Database for MySQL</td><td class="def">Managed MySQL service with Flexible Server for production workloads.</td><td>Managed MySQL</td><td class="when">MySQL workloads</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Database for MariaDB</td><td class="def">Managed MariaDB community edition. *Being retired; migrate to Azure Database for MySQL.</td><td>Managed MariaDB</td><td class="when">*Being retired</td><td><span class="fit"><span>S</span><span>M</span><span>L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Cache for Redis</td><td class="def">Fully managed in-memory Redis cache for sub-millisecond data access and session management.</td><td>In-memory cache</td><td class="when">Redis cache, session store</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Managed Redis</td><td class="def">Enterprise-grade Redis with higher availability, clustering and geo-replication (replacing Enterprise tiers).</td><td>Enterprise Redis</td><td class="when">Redis Enterprise features</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure Managed Instance for Apache Cassandra</td><td class="def">Fully managed Cassandra datacenters for scale-out NoSQL workloads with Azure integration.</td><td>Managed Cassandra</td><td class="when">Cassandra workloads</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure DocumentDB</td><td class="def">Fully managed MongoDB-compatible document database built on PostgreSQL.</td><td>Document DB</td><td class="when">MongoDB-compatible workloads</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure Database Migration Service</td><td class="def">Migrates databases to Azure with minimal downtime, supporting homogeneous and heterogeneous migrations.</td><td>DB migration</td><td class="when">Database migration to Azure</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure SQL Edge</td><td class="def">SQL database engine for IoT and edge devices with data streaming and AI capabilities.</td><td>Edge database</td><td class="when">IoT edge data processing</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure Confidential Ledger</td><td class="def">Tamperproof ledger for recording transactions with cryptographic verification.</td><td>Ledger</td><td class="when">Audit trails, records</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- ANALYTICS -->
+<section class="cat c-analytics">
+<h2>📊 Analytics &amp; Data Engineering <span class="count">14</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Azure Synapse Analytics</td><td class="def">Unified analytics service integrating data integration, enterprise data warehousing and big data analytics.</td><td>Data warehouse</td><td class="when">Large-scale analytics / BI</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure Data Factory</td><td class="def">Cloud-based ETL and data integration service for orchestrating data movement and transformation.</td><td>ETL / orchestration</td><td class="when">Data pipelines, integration</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Databricks</td><td class="def">Unified Apache Spark-based analytics platform with collaborative notebooks and MLflow integration.</td><td>Spark analytics</td><td class="when">Spark, ML, lakehouse</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure HDInsight</td><td class="def">Managed Hadoop, Spark, Hive, Kafka and HBase clusters for big data processing.</td><td>Big data clusters</td><td class="when">Hadoop/Spark ecosystem</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure Data Explorer</td><td class="def">Fast, fully managed analytics service for real-time exploration of large volumes of telemetry and log data.</td><td>Telemetry analytics</td><td class="when">Logs, IoT, time-series</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Stream Analytics</td><td class="def">Serverless real-time analytics for streaming data from IoT devices, applications and events.</td><td>Stream processing</td><td class="when">Real-time streaming analytics</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Event Hubs</td><td class="def">Big data streaming platform and event ingestion service with millions of events per second.</td><td>Event streaming</td><td class="when">High-throughput event ingestion</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Analysis Services</td><td class="def">Enterprise-grade analytics engine for semantic data models (tabular).</td><td>Semantic models</td><td class="when">BI semantic layer</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Microsoft Fabric</td><td class="def">All-in-one analytics platform unifying Power BI, Data Factory, Synapse, Data Activator and more with OneLake.</td><td>Unified analytics</td><td class="when">End-to-end analytics SaaS</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Power BI</td><td class="def">Business analytics service for visualizing data and sharing insights across organizations.</td><td>BI &amp; dashboards</td><td class="when">Self-service BI, reports</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Power BI Embedded</td><td class="def">Embeds Power BI reports and dashboards into custom applications.</td><td>Embedded BI</td><td class="when">Analytics in apps</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Data Share</td><td class="def">Simple, safe data sharing service with governance controls and snapshots.</td><td>Data sharing</td><td class="when">Share data across orgs</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Open Datasets</td><td class="def">Curated open datasets for weather, demographics, transport and more to accelerate ML.</td><td>Open data</td><td class="when">ML development datasets</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Data Lake Analytics*</td><td class="def">Distributed analytics service using U-SQL. *Retiring; migrate to Synapse or Databricks.</td><td>U-SQL analytics</td><td class="when">*Being retired</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- ML/AI -->
+<section class="cat c-ml">
+<h2>🧠 Machine Learning &amp; AI <span class="count">14</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Azure Machine Learning</td><td class="def">End-to-end ML platform to build, train, deploy and manage models at scale with MLOps capabilities.</td><td>Build/train/deploy</td><td class="when">End-to-end custom ML</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure OpenAI Service</td><td class="def">Access to OpenAI's GPT, DALL-E and Embeddings models with Azure security, compliance and regional availability.</td><td>Foundation models</td><td class="when">GenAI via managed APIs</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure AI Services</td><td class="def">Pre-built AI capabilities including Vision, Language, Speech, Translator, Document Intelligence and more.</td><td>Pre-built AI APIs</td><td class="when">Add AI without ML expertise</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure AI Search</td><td class="def">Enterprise search with AI-powered indexing, semantic ranking and vector search for RAG patterns.</td><td>AI search / RAG</td><td class="when">Semantic search, vector DB</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure AI Document Intelligence</td><td class="def">Extracts text, structure, tables and key-value pairs from documents (formerly Form Recognizer).</td><td>Document extraction</td><td class="when">Forms, invoices, IDs</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure AI Language</td><td class="def">Natural language processing for sentiment analysis, entity recognition, summarization and conversation.</td><td>Text analytics</td><td class="when">NLP, text understanding</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure AI Speech</td><td class="def">Speech-to-text, text-to-speech, translation and speaker recognition services.</td><td>Speech services</td><td class="when">Voice interfaces, transcription</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure AI Vision</td><td class="def">Image analysis, OCR, face detection and custom vision models for visual AI.</td><td>Vision AI</td><td class="when">Image/video understanding</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure AI Translator</td><td class="def">Neural machine translation across 100+ languages with custom translator.</td><td>Text translation</td><td class="when">Multilingual apps</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure AI Bot Service</td><td class="def">Platform for building conversational AI bots with integration to multiple channels.</td><td>Chatbots</td><td class="when">Conversational interfaces</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure AI Content Safety</td><td class="def">Detects harmful content (hate, violence, sexual, self-harm) in text and images.</td><td>Content moderation</td><td class="when">Safe AI, UGC moderation</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure AI Face</td><td class="def">Face detection, recognition and verification with responsible AI controls.</td><td>Facial analysis</td><td class="when">Face detection, verification</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Microsoft Foundry</td><td class="def">Unified platform for AI development with model catalog, prompt flow and evaluation tools.</td><td>AI development</td><td class="when">AI app development platform</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure AI Immersive Reader</td><td class="def">Embeds reading and comprehension tools into applications with text-to-speech and translation.</td><td>Reading accessibility</td><td class="when">Reading assistance in apps</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- DEVELOPER TOOLS -->
+<section class="cat c-devtools">
+<h2>&lt;/&gt; Developer Tools <span class="count">12</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Azure DevOps</td><td class="def">Suite of development tools including Boards, Repos, Pipelines, Test Plans and Artifacts.</td><td>DevOps platform</td><td class="when">End-to-end DevOps workflow</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Repos</td><td class="def">Private Git repositories with pull requests, branch policies and code reviews.</td><td>Git hosting</td><td class="when">Private Git repos</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure Pipelines</td><td class="def">CI/CD service that builds, tests and deploys code to any platform with YAML pipelines.</td><td>CI/CD</td><td class="when">Build and release automation</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure Artifacts</td><td class="def">Package repository for NuGet, npm, Maven, Python and universal packages with upstream sources.</td><td>Package repo</td><td class="when">Private package feeds</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure Boards</td><td class="def">Work tracking with Kanban boards, backlogs, sprints and queries for agile teams.</td><td>Work tracking</td><td class="when">Agile project management</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure Test Plans</td><td class="def">Manual and exploratory testing tools with test case management.</td><td>Test management</td><td class="when">Manual testing, test plans</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure DevTest Labs</td><td class="def">Creates labs for testing and development with cost controls and policies.</td><td>Dev/test environments</td><td class="when">Controlled dev/test VMs</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure App Testing</td><td class="def">Load and performance testing service for web apps and APIs.</td><td>Load testing</td><td class="when">Performance validation</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Deployment Environments</td><td class="def">Self-service deployment environments for development teams with templates.</td><td>Dev environments</td><td class="when">Standardized dev environments</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure Cloud Shell</td><td class="def">Browser-based shell with Azure CLI, PowerShell and pre-installed tools; free persistent home directory.</td><td>Browser shell</td><td class="when">Instant CLI access</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Visual Studio Code</td><td class="def">Lightweight, extensible code editor with rich Azure integration.</td><td>IDE</td><td class="when">Cross-platform development</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure Copilot</td><td class="def">AI assistant that helps manage Azure resources with natural language and contextual guidance.</td><td>AI-assisted ops</td><td class="when">AI help in Azure portal</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- APP INTEGRATION -->
+<section class="cat c-appint">
+<h2>🔗 Application Integration <span class="count">10</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Service Bus</td><td class="def">Enterprise message broker with queues and publish-subscribe topics for reliable asynchronous messaging.</td><td>Enterprise messaging</td><td class="when">Reliable messaging, transactions</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Event Grid</td><td class="def">Fully managed event routing service for event-driven architectures with pub/sub semantics.</td><td>Event routing</td><td class="when">Event-driven integration</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Event Hubs</td><td class="def">Big data streaming platform for event ingestion at millions of events per second.</td><td>Event streaming</td><td class="when">High-throughput ingest</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Logic Apps</td><td class="def">Workflow automation and integration with 400+ connectors for SaaS, on-prem and Azure services.</td><td>Workflow automation</td><td class="when">No-code integration workflows</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">API Management</td><td class="def">Full lifecycle API management with developer portal, policies, analytics and security.</td><td>API gateway</td><td class="when">Publish &amp; manage APIs</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">SignalR Service</td><td class="def">Real-time web functionality with WebSockets and fallback transports for live updates.</td><td>Real-time web</td><td class="when">Live chat, dashboards, notifications</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Web PubSub</td><td class="def">Real-time messaging for web apps with WebSocket and pub/sub patterns.</td><td>Pub/sub messaging</td><td class="when">Real-time web messaging</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Notification Hubs</td><td class="def">Push notification service for sending messages to iOS, Android, Windows and other platforms at scale.</td><td>Push notifications</td><td class="when">Mobile push notifications</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure Communication Services</td><td class="def">Rich communication APIs for voice, video, chat, SMS and email in applications.</td><td>Communication APIs</td><td class="when">Embed voice/video/chat</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Queue Storage</td><td class="def">Simple message queue for large workloads with storage-backed queues.</td><td>Message queues</td><td class="when">Simple async messaging</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- MIGRATION -->
+<section class="cat c-migration">
+<h2>🚚 Migration &amp; Transfer <span class="count">10</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Azure Migrate</td><td class="def">Central hub for assessing and migrating on-premises workloads to Azure with discovery, assessment and migration tools.</td><td>Migration hub</td><td class="when">Plan &amp; execute migrations</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure Site Recovery</td><td class="def">Disaster recovery service that replicates VMs and physical servers to Azure for failover.</td><td>DR replication</td><td class="when">BC/DR to Azure</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Database Migration Service</td><td class="def">Migrates databases to Azure with minimal downtime, supporting various source and target engines.</td><td>DB migration</td><td class="when">Database migration to Azure</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Data Box</td><td class="def">Physical devices for offline data transfer to Azure from terabytes to petabytes.</td><td>Offline transfer</td><td class="when">Large / offline datasets</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure Storage Mover</td><td class="def">Managed migration service that moves on-premises files and objects to Azure Storage.</td><td>Storage migration</td><td class="when">File/object → Azure</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Resource Mover</td><td class="def">Moves Azure resources between regions, resource groups and subscriptions.</td><td>Resource relocation</td><td class="when">Cross-region moves</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure VMware Solution</td><td class="def">Run VMware vSphere workloads natively on Azure with full VMware compatibility.</td><td>VMware migration</td><td class="when">Lift-shift VMware to Azure</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure Stack Edge</td><td class="def">Managed edge appliance for data transfer and edge computing with Azure services.</td><td>Edge compute &amp; transfer</td><td class="when">Edge ML, data transfer</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure Stack Hub</td><td class="def">Integrated hardware system to run Azure services on-premises for hybrid scenarios.</td><td>On-prem Azure</td><td class="when">On-prem with Azure APIs</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure Local</td><td class="def">Azure on-premises infrastructure for running VMs and Azure services locally with hybrid management.</td><td>On-prem Azure</td><td class="when">On-prem with Azure management</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- IOT -->
+<section class="cat c-iot">
+<h2>📡 IoT <span class="count">10</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Azure IoT Hub</td><td class="def">Managed service for bidirectional communication between IoT devices and the cloud at scale.</td><td>Device gateway</td><td class="when">MQTT/AMQP device connectivity</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure IoT Central</td><td class="def">Fully managed IoT application platform (SaaS) for connecting, monitoring and managing devices.</td><td>IoT SaaS</td><td class="when">Quick IoT app deployment</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure IoT Edge</td><td class="def">Runs cloud workloads (AI, analytics, custom logic) on IoT edge devices.</td><td>Edge compute</td><td class="when">Local processing on devices</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure IoT Operations</td><td class="def">Unified data plane for industrial IoT with edge-to-cloud data flow and management.</td><td>Industrial IoT</td><td class="when">Industrial IoT at scale</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure Digital Twins</td><td class="def">Creates comprehensive digital models of physical environments for simulation and analysis.</td><td>Digital twins</td><td class="when">Model physical spaces</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Stream Analytics</td><td class="def">Real-time analytics for streaming data from IoT devices and applications.</td><td>Stream analytics</td><td class="when">Real-time IoT insights</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Event Hubs</td><td class="def">Big data streaming platform for high-throughput event ingestion from IoT devices.</td><td>Event ingestion</td><td class="when">High-volume device data</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Maps</td><td class="def">Geospatial services for location intelligence, routing, geocoding and mapping in applications.</td><td>Location services</td><td class="when">Maps, geospatial analytics</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Sphere</td><td class="def">End-to-end IoT security solution with certified hardware, OS and cloud services.</td><td>IoT security</td><td class="when">Secure IoT devices</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Windows for IoT</td><td class="def">Windows IoT operating systems for intelligent edge devices.</td><td>IoT OS</td><td class="when">Windows-based edge devices</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- MEDIA -->
+<section class="cat c-media">
+<h2>🎬 Media Services <span class="count">8</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Azure Media Services</td><td class="def">Cloud-based media workflow platform for encoding, streaming and content protection.</td><td>Media workflows</td><td class="when">Video encoding &amp; streaming</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure Media Player</td><td class="def">Web video player for playback of media content across devices and browsers.</td><td>Video player</td><td class="when">Adaptive streaming playback</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Live and On-Demand Streaming</td><td class="def">Live and VOD streaming capabilities with adaptive bitrate and CDN integration.</td><td>Streaming delivery</td><td class="when">Live events, VOD</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Content Protection</td><td class="def">DRM and content protection for premium video with PlayReady, Widevine and FairPlay.</td><td>DRM</td><td class="when">Protected video content</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Encoding</td><td class="def">Cloud encoding for video files to multiple formats and bitrates.</td><td>Video encoding</td><td class="when">Multi-format output</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Video Indexer</td><td class="def">AI-powered video analytics for extracting insights from audio and video content.</td><td>Video AI</td><td class="when">Video insights, transcription</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Communication Services</td><td class="def">Rich communication APIs for voice, video, chat and SMS in applications.</td><td>Real-time comms</td><td class="when">Embed voice/video/chat</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Fluid Relay</td><td class="def">Real-time collaborative experiences with Fluid Framework for shared state.</td><td>Collaboration</td><td class="when">Real-time co-editing</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- BUSINESS APPS -->
+<section class="cat c-biz">
+<h2>💼 Business Applications <span class="count">10</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Power Platform</td><td class="def">Low-code platform with Power Apps, Power Automate, Power BI and Power Virtual Agents.</td><td>Low-code apps</td><td class="when">Citizen development</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Power Apps</td><td class="def">Low-code app development for internal business applications.</td><td>Business apps</td><td class="when">Custom business apps</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Power Automate</td><td class="def">Workflow automation across apps and services with hundreds of connectors.</td><td>Automation</td><td class="when">Business process automation</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Power Virtual Agents</td><td class="def">No-code chatbot building with AI capabilities and integration with Power Platform.</td><td>Chatbots</td><td class="when">Conversational bots</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Microsoft 365</td><td class="def">Productivity suite including Office apps, Teams, Exchange, SharePoint and OneDrive.</td><td>Productivity</td><td class="when">Enterprise productivity</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Dynamics 365</td><td class="def">Business applications for CRM (Sales, Customer Service) and ERP (Finance, Supply Chain).</td><td>CRM / ERP</td><td class="when">Enterprise business apps</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Microsoft Viva</td><td class="def">Employee experience platform for learning, wellbeing, engagement and knowledge.</td><td>Employee experience</td><td class="when">Employee productivity</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Microsoft Teams</td><td class="def">Collaboration platform with chat, meetings, calling and app integration.</td><td>Team collaboration</td><td class="when">Unified communications</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">SharePoint</td><td class="def">Collaboration and document management platform with sites and workflows.</td><td>Content management</td><td class="when">Intranet, document management</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Exchange Online</td><td class="def">Cloud email and calendaring service with enterprise security.</td><td>Business email</td><td class="when">Hosted email</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- END USER COMPUTING -->
+<section class="cat c-euc">
+<h2>🖥️ End User Computing <span class="count">5</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Azure Virtual Desktop</td><td class="def">Desktop and app virtualization service that runs on Azure with Windows 10/11 multi-session support.</td><td>Virtual desktops</td><td class="when">Managed DaaS, remote work</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Microsoft Dev Box</td><td class="def">Cloud-based, ready-to-code workstations for developers with pre-configured environments.</td><td>Developer workstations</td><td class="when">Standardized dev environments</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Windows 365</td><td class="def">Cloud PC service that streams Windows desktop to any device with per-user subscription.</td><td>Cloud PCs</td><td class="when">Cloud-hosted desktops</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Remote Desktop Services</td><td class="def">Run Windows apps and desktops on Azure VMs with RDS licensing.</td><td>App/desktop virtualization</td><td class="when">Traditional RDS on Azure</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Microsoft Intune</td><td class="def">Cloud-based endpoint management for devices and applications with conditional access.</td><td>Device management</td><td class="when">MDM, MAM, endpoint security</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- CONTAINERS -->
+<section class="cat c-container">
+<h2>📦 Containers &amp; Serverless <span class="count">8</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Azure Kubernetes Service</td><td class="def">Managed Kubernetes with automated upgrades, scaling and integration with Azure services.</td><td>Kubernetes</td><td class="when">K8s standard, portability</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Container Apps</td><td class="def">Serverless containers with scale-to-zero, Dapr, revisions and traffic splitting on managed Kubernetes.</td><td>Serverless containers</td><td class="when">Microservices, no K8s ops</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Container Instances</td><td class="def">Fastest way to run a container in Azure without managing VMs or orchestrators.</td><td>Simple containers</td><td class="when">Single containers, quick tasks</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Container Registry</td><td class="def">Private Docker/OCI container registry with geo-replication and vulnerability scanning.</td><td>Container registry</td><td class="when">Private image registry</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Azure Functions</td><td class="def">Serverless functions triggered by events, with consumption and premium plans.</td><td>Serverless functions</td><td class="when">Event-driven code</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">App Service</td><td class="def">Platform for web apps and APIs with built-in CI/CD, scaling and staging slots.</td><td>Web apps / APIs</td><td class="when">Managed web hosting</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Static Web Apps</td><td class="def">Modern web app service for static frontends with serverless API backends and global distribution.</td><td>Static sites</td><td class="when">JAMstack, SPAs</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Spring Apps</td><td class="def">Managed service for Spring Boot and Steeltoe microservices with built-in service discovery.</td><td>Java Spring apps</td><td class="when">Spring Boot microservices</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- VMWARE / SPECIALIZED -->
+<section class="cat c-vmware">
+<h2>🔬 VMware, Quantum &amp; Specialized <span class="count">6</span></h2>
+<table>
+<thead><tr><th class="col-svc">Service</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Azure VMware Solution</td><td class="def">Run VMware vSphere workloads natively on Azure with full VMware compatibility.</td><td>VMware on Azure</td><td class="when">Migrate VMware estates</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure Quantum</td><td class="def">Quantum computing service for exploring quantum algorithms on real hardware and simulators.</td><td>Quantum computing</td><td class="when">Explore quantum algorithms</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure Orbital</td><td class="def">Ground station as a service for satellite communication and data downlink to Azure.</td><td>Satellite comms</td><td class="when">Satellite data downlink</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure Health Data Services</td><td class="def">Unified solution to protect and combine health data in the cloud with analytics insights.</td><td>Healthcare data</td><td class="when">HIPAA-compliant health data</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Azure API for FHIR</td><td class="def">Managed FHIR API for healthcare data interoperability.</td><td>Healthcare APIs</td><td class="when">FHIR data exchange</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Azure Operator Nexus</td><td class="def">Hybrid cloud platform for telecom operators to run network functions on Azure.</td><td>Telecom workloads</td><td class="when">5G, network functions</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+</div>
+
+<div class="lower">
+  <div class="panel">
+    <h3>Solution Architect Decision Guide</h3>
+    <div style="font-size:11.5px; line-height:1.7;">
+      <p><b>1. Compute</b> — VMs (control) · AKS/Container Apps (containers) · Functions (serverless) · App Service (web) · Batch (jobs)</p>
+      <p><b>2. Storage</b> — Blob (objects) · Managed Disks (block) · Azure Files (SMB/NFS) · NetApp Files (enterprise) · Archive (cold)</p>
+      <p><b>3. Database</b> — SQL Database/Managed Instance (SQL) · Cosmos DB (NoSQL) · PostgreSQL/MySQL (open source) · Redis Cache (in-memory)</p>
+      <p><b>4. Network</b> — VNet · Azure DNS · Load Balancer/App Gateway · Front Door · ExpressRoute/VPN</p>
+      <p><b>5. Security</b> — Entra ID · Key Vault · Defender for Cloud · Sentinel · Firewall/WAF · DDoS Protection</p>
+      <p><b>6. Observability</b> — Azure Monitor · Log Analytics · Application Insights · Service Health</p>
+      <p><b>7. Governance</b> — Azure Policy · Blueprints · Cost Management · ARM Templates</p>
+      <p><b>8. Integration</b> — Service Bus · Event Grid · Event Hubs · Logic Apps · API Management</p>
+      <p><b>9. Migration</b> — Azure Migrate · Site Recovery (DR) · DMS (databases) · Data Box / Storage Mover</p>
+      <p><b>10. AI / ML</b> — Azure OpenAI · AI Services · Machine Learning · AI Search · Microsoft Foundry</p>
+    </div>
+  </div>
+
+  <div class="panel arch">
+    <h3>Reference Architecture — Modern Web Application</h3>
+    <div class="flow">Users
+  │
+  ▼
+Azure DNS ──► Front Door (CDN + WAF)
+                     │
+                     ▼
+              Application Gateway
+                     │
+                     ▼
+           ┌──── VNet ───────────────────┐
+           │  Public subnets ► Load Balancer │
+           │       │                     │
+           │       ▼                     │
+           │  Private subnets            │
+           │  VMs · AKS · Container Apps │
+           │       │                     │
+           │       ▼                     │
+           │  Data: Azure SQL · Cosmos DB │
+           │  Redis Cache · Blob Storage  │
+           └─────────────────────────────┘
+                     │
+                     ▼
+Key Vault · Entra ID · Defender for Cloud · Azure Monitor</div>
+    <p class="arch note"><b>Serverless variant:</b> Front Door → API Management → Functions → Cosmos DB, with Event Grid/Service Bus for async and Logic Apps for workflow.</p>
+    <p class="arch note"><b>Data/ML variant:</b> Sources → Event Hubs → Data Lake → Data Factory → Synapse/Databricks → Azure ML / Azure OpenAI → Power BI.</p>
+  </div>
+
+  <div class="panel why">
+    <h3>How to read this reference</h3>
+    <ul style="font-size:11.5px">
+      <li><b>Definition</b> — plain-language description of what the service is and does.</li>
+      <li><b>Use case</b> — the shortest tag for the primary job.</li>
+      <li><b>When to choose</b> — trigger conditions that push you toward this service.</li>
+      <li><b>Fit</b> — S/M/L boxes ticked = natural fit at that org size.</li>
+      <li><b>Cost</b> — LOW = pennies to low hundreds; MED = hundreds to low thousands; HIGH = thousands+ or committed capacity. Actual spend is workload-dependent.</li>
+      <li>Services with <b>*</b> are deprecated or being retired.</li>
+    </ul>
+    <h3 style="margin-top:14px">Why Azure?</h3>
+    <ul style="font-size:11.5px">
+      <li>200+ services across 20+ categories</li>
+      <li>60+ regions, more than any other cloud provider</li>
+      <li>Hybrid advantage: Arc, Stack, Local, ExpressRoute</li>
+      <li>Deep Microsoft integration: Entra ID, Microsoft 365, Dynamics 365</li>
+      <li>Enterprise AI: Azure OpenAI Service, AI Services, Microsoft Foundry</li>
+      <li>Best-in-class enterprise compliance and governance</li>
+    </ul>
+  </div>
+</div>
+
+<footer>Microsoft Azure Complete Product &amp; Solution Architect Reference · 2026 edition with Definition, Fit &amp; Cost columns.</footer>
+
+</div>
+</body>
+</html>

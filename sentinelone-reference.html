@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SentinelOne Complete Product &amp; Solution Architect Reference</title>
+<style>
+  :root {
+    --s1-purple: #5C2D91;
+    --s1-purple-dark: #3D1D61;
+    --ink: #1A1A2E;
+    --paper: #F5F5F5;
+    --card: #FFFFFF;
+    --line: #E5E5E5;
+    --muted: #6B7280;
+    --def: #334155;
+    --endpoint: #5C2D91;
+    --cloud: #1E40AF;
+    --identity: #0D9488;
+    --data: #D97706;
+    --ai: #E3008C;
+    --mdr: #DC2626;
+    --cost-low: #16A34A;
+    --cost-med: #D97706;
+    --cost-high: #5C2D91;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); font-family: -apple-system, "Segoe UI", Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .sheet { max-width: 1800px; margin: 0 auto; padding: 24px; }
+
+  header {
+    background: linear-gradient(135deg, var(--s1-purple-dark) 0%, var(--s1-purple) 100%);
+    color: white;
+    padding: 22px 28px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 90px 1fr auto;
+    gap: 22px;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+  .logo { font-weight: 800; font-size: 24px; letter-spacing: -1px; line-height: 1; }
+  .logo .shield { color: #FFD700; display: block; font-size: 14px; margin-top: 2px; }
+  header h1 { margin: 0 0 4px 0; font-size: 26px; }
+  header .sub { margin: 0; opacity: 0.85; font-size: 13px; }
+  header .sub b { color: #FFD700; font-weight: 600; }
+  .badge {
+    text-align: right;
+    border-left: 1px solid rgba(255,255,255,0.2);
+    padding-left: 22px;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  .badge .big { font-size: 18px; font-weight: 700; color: #FFD700; display: block; }
+
+  .legend {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    font-size: 11.5px;
+    align-items: center;
+  }
+  .legend .item { display: flex; align-items: center; gap: 6px; }
+  .legend strong { color: var(--s1-purple-dark); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .cat {
+    background: var(--card);
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .cat > h2 {
+    margin: 0;
+    padding: 10px 14px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cat > h2 .count {
+    margin-left: auto;
+    font-size: 11px;
+    background: rgba(255,255,255,0.25);
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-weight: 500;
+  }
+  .cat table { width: 100%; border-collapse: collapse; font-size: 11.5px; table-layout: fixed; }
+  .cat thead th {
+    background: #FAFAFA;
+    text-align: left;
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--line);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .cat tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #F1F1F1;
+    vertical-align: top;
+    line-height: 1.4;
+  }
+  .cat tbody tr:last-child td { border-bottom: none; }
+
+  .col-svc  { width: 12%; }
+  .col-def  { width: 28%; }
+  .col-use  { width: 15%; }
+  .col-when { width: 20%; }
+  .col-fit  { width: 13%; }
+  .col-cost { width: 12%; }
+
+  .svc { font-weight: 700; color: var(--ink); }
+  .def { color: var(--def); }
+  .when { color: var(--muted); }
+
+  .fit {
+    display: inline-flex;
+    gap: 3px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10px;
+  }
+  .fit span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    padding: 2px 0;
+    border: 1px solid #D1D5DB;
+    border-radius: 3px;
+    background: #FAFAFA;
+    color: #9CA3AF;
+  }
+  .fit span.on {
+    background: var(--s1-purple-dark);
+    color: white;
+    border-color: var(--s1-purple-dark);
+    font-weight: 700;
+  }
+
+  .cost {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    color: white;
+    min-width: 46px;
+    text-align: center;
+  }
+  .cost.L { background: var(--cost-low); }
+  .cost.M { background: var(--cost-med); }
+  .cost.H { background: var(--cost-high); }
+
+  .c-endpoint h2 { background: var(--endpoint); }
+  .c-cloud h2 { background: var(--cloud); }
+  .c-identity h2 { background: var(--identity); }
+  .c-data h2 { background: var(--data); }
+  .c-ai h2 { background: var(--ai); }
+  .c-mdr h2 { background: var(--mdr); }
+
+  .lower {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr 0.7fr;
+    gap: 14px;
+    margin-top: 18px;
+  }
+  @media (max-width: 1100px) { .lower { grid-template-columns: 1fr; } }
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .panel h3 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: var(--s1-purple-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .panel h3::before {
+    content: "";
+    display: inline-block;
+    width: 4px; height: 16px;
+    background: #FFD700;
+    border-radius: 2px;
+  }
+  .why ul { padding-left: 18px; margin: 4px 0; font-size: 12px; line-height: 1.65; }
+  .why li::marker { color: #FFD700; }
+  .arch .flow {
+    background: #F8FAFC;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 8px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10.5px;
+    white-space: pre-wrap;
+    color: #334155;
+  }
+  .arch .note { color: var(--muted); font-size: 10.5px; }
+  footer { margin-top: 18px; text-align: center; font-size: 10.5px; color: var(--muted); padding: 10px; }
+  @media print {
+    body { background: white; }
+    .sheet { max-width: none; padding: 8px; }
+    .cat, .panel, header { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<header>
+  <div class="logo">sentinel<span class="shield">▣</span>one</div>
+  <div>
+    <h1>SentinelOne Complete Product &amp; Solution Architect Reference</h1>
+    <p class="sub">Product · <b>Definition</b> · Use Case · When to Choose · Enterprise Fit · Cost Tier</p>
+  </div>
+  <div class="badge">
+    <span class="big">Singularity Platform</span>
+    AI-Native Security · 2026 edition
+  </div>
+</header>
+
+<div class="legend">
+  <div class="item"><strong>Fit:</strong></div>
+  <div class="item"><span class="fit"><span class="on">S</span><span>M</span><span>L</span></span> Small / SMB</div>
+  <div class="item"><span class="fit"><span>S</span><span class="on">M</span><span>L</span></span> Mid-market</div>
+  <div class="item"><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span> Large enterprise</div>
+  <div class="item"><strong style="margin-left:10px">Cost:</strong>
+    <span class="cost L">LOW</span>
+    <span class="cost M">MED</span>
+    <span class="cost H">HIGH</span>
+  </div>
+  <div class="item" style="color:var(--muted); font-size:10.5px">Cost = typical subscription footprint at moderate deployment. Products with <b>*</b> are legacy or being phased out.</div>
+</div>
+
+<div class="grid">
+
+<!-- ENDPOINT SECURITY -->
+<section class="cat c-endpoint">
+<h2>💻 Endpoint Security <span class="count">6</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Singularity Core</td><td class="def">Cloud-native NGAV and EPP solution replacing legacy antivirus with AI-powered prevention and behavioral detection [citation:3].</td><td>NGAV / EPP</td><td class="when">Replace legacy AV, endpoint baseline</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Singularity Complete</td><td class="def">AI-powered security solution for endpoint and cloud workloads, combining EDR with cloud security and IT operations capabilities [citation:17].</td><td>EDR + Cloud</td><td class="when">Comprehensive endpoint + cloud protection</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Singularity Endpoint</td><td class="def">AI-powered EDR/EPP providing autonomous, real-time prevention, detection, and response across endpoints [citation:19].</td><td>EDR / XDR</td><td class="when">Endpoint detection and response</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Singularity Ranger</td><td class="def">Active Directory and Azure AD assessor that detects vulnerabilities through continuous identity assessment [citation:12].</td><td>AD assessment</td><td class="when">AD/Azure AD security assessment</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Singularity Hologram</td><td class="def">Deception-based security that deploys decoys across the network to lure attackers and reveal their presence [citation:12].</td><td>Deception</td><td class="when">Early threat detection, breach deception</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Singularity for Kubernetes</td><td class="def">Container and Kubernetes security with runtime protection across managed and self-managed K8s services [citation:17].</td><td>K8s security</td><td class="when">Container runtime protection</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- CLOUD SECURITY -->
+<section class="cat c-cloud">
+<h2>☁️ Cloud Security (CNAPP) <span class="count">8</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Singularity Cloud Security</td><td class="def">Comprehensive AI-powered CNAPP securing cloud workloads, infrastructure, and data from build time to runtime [citation:11][citation:13].</td><td>CNAPP</td><td class="when">Multi-cloud security, unified cloud protection</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Singularity Cloud Workload Security</td><td class="def">#1 ranked CWPP securing servers, cloud VMs, and containers across multi-cloud environments [citation:11].</td><td>CWPP</td><td class="when">Runtime workload protection</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Singularity Cloud Native Security</td><td class="def">Cloud posture and risk analysis with automated red teaming to verify exploitable risk [citation:11][citation:13].</td><td>CSPM</td><td class="when">Cloud posture management, misconfiguration detection</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Singularity Cloud Data Security</td><td class="def">Threat protection for cloud data and storage from sophisticated attacks [citation:11].</td><td>CDS</td><td class="when">Cloud data protection, DSPM</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">AI Security Posture Management</td><td class="def">AI-SPM that secures AI models, data, and infrastructure with continuous monitoring for risks [citation:19].</td><td>AI-SPM</td><td class="when">AI security governance, shadow AI detection</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Secrets Scanning</td><td class="def">Identifies 750+ types of secrets across code repositories to prevent credential leakage [citation:11].</td><td>Secrets detection</td><td class="when">Shift-left security, code scanning</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">IaC Scanning</td><td class="def">Agentless scanning of Infrastructure-as-Code templates before production deployment [citation:11].</td><td>IaC security</td><td class="when">Shift-left, pre-deployment scanning</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Offensive Security Engine</td><td class="def">Safely simulates attacks to identify truly exploitable vulnerabilities and prioritize verified exploit paths [citation:11].</td><td>Automated red teaming</td><td class="when">Risk prioritization, exploit verification</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- IDENTITY SECURITY -->
+<section class="cat c-identity">
+<h2>🔐 Identity Security <span class="count">5</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Singularity Identity</td><td class="def">Source of context about who or what is acting in an environment, correlating identity, endpoint, and workload signals [citation:7].</td><td>Identity security</td><td class="when">Identity-based threat detection</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Prompt Security</td><td class="def">Identifies misuse in the browser and within AI tools, protecting against prompt injection and AI abuse [citation:7].</td><td>AI/browser security</td><td class="when">GenAI security, browser protection</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">ITDR (Identity Threat Detection &amp; Response)</td><td class="def">Continuous validation of actions and behavioral controls for human and non-human identities [citation:7].</td><td>ITDR</td><td class="when">Identity threat detection and response</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Active Directory Protection</td><td class="def">Protects Active Directory &amp; Azure AD controllers and assets from privilege escalation and lateral movement [citation:12].</td><td>AD protection</td><td class="when">AD/Azure AD security hardening</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Non-Human Identity Security</td><td class="def">Secures autonomous AI agents and machine identities with continuous validation and behavioral controls [citation:7].</td><td>Machine identity</td><td class="when">AI agent governance, service account security</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- DATA & AI SIEM -->
+<section class="cat c-data">
+<h2>📊 Data &amp; AI SIEM <span class="count">5</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Singularity AI SIEM</td><td class="def">AI-native SIEM that eliminates ingestion costs and data overloads, shifting analysts from manual tasks to strategic defense [citation:19].</td><td>AI SIEM</td><td class="when">Modern SOC, cost-effective SIEM</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Observo AI Pipeline</td><td class="def">AI-native telemetry pipeline that ingests, enriches, summarizes, and routes data before it reaches a SIEM or data lake, reducing data volume by up to 80% [citation:14][citation:16].</td><td>Data pipeline</td><td class="when">Data cost reduction, telemetry optimization</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Singularity Data Lake</td><td class="def">Unified data lake integrating cloud, endpoint, identity, and third-party data for comprehensive visibility [citation:11][citation:19].</td><td>Data lake</td><td class="when">Cross-surface threat hunting</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Storyline</td><td class="def">Automated attack visualization that correlates telemetry into visual narratives for rapid incident triage [citation:3].</td><td>Attack visualization</td><td class="when">Incident investigation, threat hunting</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Hyperautomation</td><td class="def">No-code automated response workflows that streamline security incident response [citation:5][citation:11].</td><td>Automation</td><td class="when">Automated incident response</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- AI & ANALYTICS -->
+<section class="cat c-ai">
+<h2>🧠 AI &amp; Analytics <span class="count">4</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Purple AI</td><td class="def">Generative AI security analyst providing natural language threat hunting, event summaries, and automated triage [citation:5][citation:11].</td><td>AI SOC assistant</td><td class="when">AI-driven SOC, natural language queries</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Behavioral AI</td><td class="def">On-agent behavioral AI that identifies and stops fileless attacks happening within Storylines in real time [citation:3].</td><td>Behavior detection</td><td class="when">Fileless attack prevention</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Static AI</td><td class="def">On-agent static AI that replaces signatures and predicts malicious files before execution [citation:3].</td><td>Static analysis</td><td class="when">Pre-execution malware prevention</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">AI-SPM</td><td class="def">AI Security Posture Management that discovers shadow AI assets, identifies misconfigurations, and visualizes AI attack paths [citation:19].</td><td>AI governance</td><td class="when">AI security posture, compliance</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- MANAGED SERVICES -->
+<section class="cat c-mdr">
+<h2>🛡️ Managed Services <span class="count">4</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Singularity Vigilance</td><td class="def">Managed Detection and Response (MDR) service providing 24/7 expert monitoring and response [citation:1].</td><td>MDR</td><td class="when">Outsourced SOC, 24/7 coverage</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Singularity Watchtower</td><td class="def">Threat hunting service that proactively searches for hidden threats in your environment [citation:1].</td><td>Threat hunting</td><td class="when">Proactive threat discovery</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Singularity Purple AI</td><td class="def">AI-powered threat intelligence and investigation assistant for security teams [citation:1].</td><td>Threat intelligence</td><td class="when">AI-assisted investigation</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Singularity Complete</td><td class="def">All-in-one AI-powered security solution consolidating EDR, cloud security, and IT operations [citation:17].</td><td>Unified security</td><td class="when">Single-vendor consolidation</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+</div>
+
+<div class="lower">
+  <div class="panel">
+    <h3>Solution Architect Decision Guide</h3>
+    <div style="font-size:11.5px; line-height:1.7;">
+      <p><b>1. Endpoint Security</b> — Singularity Core (NGAV) · Singularity Endpoint (EDR) · Singularity Complete (EDR + Cloud) · Ranger (AD assessment) · Hologram (deception) [citation:3][citation:12][citation:17]</p>
+      <p><b>2. Cloud Security</b> — Singularity Cloud Security (CNAPP) · Cloud Workload Security (CWPP) · Cloud Native Security (CSPM) · Cloud Data Security · AI-SPM [citation:11][citation:13]</p>
+      <p><b>3. Identity Security</b> — Singularity Identity · Prompt Security · ITDR · AD Protection · Non-Human Identity [citation:7][citation:12]</p>
+      <p><b>4. Data &amp; AI SIEM</b> — AI SIEM · Observo AI Pipeline · Data Lake · Storyline · Hyperautomation [citation:16][citation:19]</p>
+      <p><b>5. AI &amp; Analytics</b> — Purple AI · Behavioral AI · Static AI · AI-SPM [citation:3][citation:5]</p>
+      <p><b>6. Managed Services</b> — Vigilance (MDR) · Watchtower (Threat Hunting) · Purple AI · Complete [citation:1]</p>
+    </div>
+  </div>
+
+  <div class="panel arch">
+    <h3>Reference Architecture — Autonomous SOC</h3>
+    <div class="flow">Endpoints · Cloud · Identity · Data
+  │
+  ▼
+Singularity Agent (Endpoint)
+  │
+  ├── Static AI (pre-execution prevention)
+  ├── Behavioral AI (runtime detection)
+  └── Storyline (attack visualization)
+  │
+  ▼
+┌──── Singularity Platform ────┐
+│  • Singularity Cloud Security │
+│  • Singularity Identity       │
+│  • Singularity Data Lake      │
+└──────────────┬───────────────┘
+               │
+               ▼
+     ┌──── AI SIEM ────┐
+     │  Observo AI     │
+     │  (data pipeline)│
+     └────────┬────────┘
+              │
+              ▼
+     ┌──── Purple AI ────┐
+     │  Natural language │
+     │  threat hunting   │
+     │  + Hyperautomation│
+     └───────────────────┘
+              │
+              ▼
+     Singularity Vigilance (MDR)
+     Watchtower (Threat Hunting)</div>
+    <p class="arch note"><b>Endpoint variant:</b> Singularity Core + Endpoint + Ranger for endpoint-only protection.</p>
+    <p class="arch note"><b>Cloud-native variant:</b> Singularity Cloud Security + AI-SPM + Cloud Workload Security for multi-cloud environments.</p>
+  </div>
+
+  <div class="panel why">
+    <h3>How to read this reference</h3>
+    <ul style="font-size:11.5px">
+      <li><b>Definition</b> — plain-language description of what the product is and does.</li>
+      <li><b>Use case</b> — the shortest tag for the primary job.</li>
+      <li><b>When to choose</b> — trigger conditions that push you toward this product.</li>
+      <li><b>Fit</b> — S/M/L boxes ticked = natural fit at that org size.</li>
+      <li><b>Cost</b> — LOW = entry-level; MED = professional; HIGH = enterprise or carrier-grade. Actual cost is deployment-dependent.</li>
+    </ul>
+    <h3 style="margin-top:14px">Why SentinelOne?</h3>
+    <ul style="font-size:11.5px">
+      <li>AI-native platform: Purple AI, Behavioral AI, Static AI [citation:3]</li>
+      <li>Unified Singularity Platform: endpoint, cloud, identity, data [citation:19]</li>
+      <li>Singularity Data Lake: single data lake for all telemetry [citation:11]</li>
+      <li>Observo AI: 80% data volume reduction [citation:16]</li>
+      <li>MITRE ATT&CK: 100% detections, 88% less noise [citation:11]</li>
+      <li>1.2B+ real-world executions for AI agent training [citation:5]</li>
+      <li>14,000+ global customers [citation:5]</li>
+    </ul>
+  </div>
+</div>
+
+<footer>SentinelOne Complete Product &amp; Solution Architect Reference · 2026 edition with Definition, Fit &amp; Cost columns.</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Solution Architect — Cross-Brand Solution Builder</title>
+<style>
+  :root {
+    --ink:#0F1720; --paper:#F5F7FA; --card:#FFFFFF; --line:#E1E5EA; --muted:#667085;
+    --brand:#0F766E; --brand-dark:#0B4F4A; --accent:#F59E0B;
+    --low:#16A34A; --med:#D97706; --high:#DC2626;
+    --aws:#232F3E; --azure:#0078D4; --gcp:#4285F4; --huawei:#CF0A2C; --hik:#C8102E;
+    --pan:#FA582D; --cp:#003A70; --forti:#DA291C; --cisco:#049FD9; --s1:#5C2D91;
+    --genesys:#2E4D8E; --avaya:#EC2027; --tcx:#0B5CAD; --ruckus:#1677C8;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:-apple-system,"Segoe UI",Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .sheet{max-width:1900px;margin:0 auto;padding:24px}
+
+  header{
+    background:linear-gradient(135deg,var(--brand-dark) 0%,var(--brand) 100%);
+    color:#fff;padding:22px 28px;border-radius:12px;
+    display:grid;grid-template-columns:1fr auto;gap:22px;align-items:center;margin-bottom:18px;
+    border-left:6px solid var(--accent);
+  }
+  header h1{margin:0 0 4px;font-size:26px}
+  header .sub{margin:0;opacity:.9;font-size:13px}
+  header .sub b{color:#FDE68A}
+  header .badge{text-align:right;border-left:1px solid rgba(255,255,255,.25);padding-left:22px;font-size:12px;line-height:1.5}
+  header .badge .big{font-size:18px;font-weight:700;color:#FDE68A;display:block}
+
+  /* Tabs */
+  .tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+  .tab{
+    padding:9px 16px;border-radius:8px;border:1px solid var(--line);background:#fff;
+    font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:.15s;
+  }
+  .tab.active{background:var(--brand);border-color:var(--brand);color:#fff}
+  .tab:hover:not(.active){background:#F8FAFC;color:var(--ink)}
+
+  .panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:16px;display:none}
+  .panel.active{display:block}
+  .panel h2{margin:0 0 12px;font-size:15px;color:var(--brand-dark);display:flex;align-items:center;gap:8px}
+  .panel h2::before{content:"";display:inline-block;width:4px;height:16px;background:var(--accent);border-radius:2px}
+  .panel h3{margin:16px 0 8px;font-size:13px;color:var(--brand-dark);display:flex;align-items:center;gap:6px}
+  .panel h3::before{content:"";display:inline-block;width:3px;height:12px;background:var(--accent);border-radius:2px}
+
+  .wrow{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px}
+  .wrow.two{grid-template-columns:1fr 1fr}
+  .wrow.three{grid-template-columns:1fr 1fr 1fr}
+  @media (max-width:1100px){.wrow,.wrow.two,.wrow.three{grid-template-columns:1fr 1fr}}
+  @media (max-width:700px){.wrow,.wrow.two,.wrow.three{grid-template-columns:1fr}}
+
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+  .field select,.field input{
+    width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;
+    font-size:13px;background:#fff;color:var(--ink);appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23667085' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;
+  }
+  .field input{background-image:none;padding-right:12px}
+  .field select:focus,.field input:focus{outline:2px solid var(--brand);outline-offset:0}
+  .hint{font-size:11px;color:var(--muted);margin-top:2px}
+
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+  .chip{
+    display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:20px;
+    border:1px solid var(--line);background:#fff;font-size:12px;cursor:pointer;transition:.15s;user-select:none;
+  }
+  .chip:hover{background:#F8FAFC}
+  .chip.on{background:var(--brand);border-color:var(--brand);color:#fff}
+  .chip.on:hover{background:var(--brand-dark)}
+  .chip input{display:none}
+
+  .actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+  .btn{
+    padding:10px 18px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--ink);
+    font-size:13px;font-weight:600;cursor:pointer;transition:.15s;
+  }
+  .btn:hover{background:#F8FAFC}
+  .btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+  .btn.primary:hover{background:var(--brand-dark);border-color:var(--brand-dark)}
+  .btn.ghost{background:transparent;border-color:transparent;color:var(--muted)}
+  .btn.small{padding:7px 12px;font-size:12px}
+
+  .summary{display:none;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:16px;font-size:12.5px;line-height:1.6}
+  .summary.show{display:block}
+  .summary .tag{display:inline-block;background:#ECFDF5;color:#065F46;border:1px solid #A7F3D0;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;margin-right:6px;margin-bottom:4px}
+  .summary .tag.alt{background:#EFF6FF;color:#1E40AF;border-color:#BFDBFE}
+  .summary .tag.warn{background:#FEF3C7;color:#92400E;border-color:#FDE68A}
+  .summary .tag.purple{background:#F3E8FF;color:#6B21A8;border-color:#DDD6FE}
+
+  /* Brand grid */
+  .brands{display:grid;grid-template-columns:1fr;gap:14px}
+  .brand{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .brand > h3{
+    margin:0;padding:10px 14px;color:#fff;font-size:13.5px;font-weight:600;
+    display:flex;align-items:center;gap:8px;
+  }
+  .brand > h3 .count{margin-left:auto;font-size:11px;background:rgba(255,255,255,.28);padding:2px 8px;border-radius:10px;font-weight:500}
+  .brand > h3 .logo-dot{width:10px;height:10px;border-radius:50%;background:#fff;opacity:.85}
+  .brand table{width:100%;border-collapse:collapse;font-size:11.5px;table-layout:fixed}
+  .brand thead th{
+    background:#FAFAFA;text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);
+    font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;
+  }
+  .brand tbody td{padding:8px 10px;border-bottom:1px solid #F1F0EB;vertical-align:top;line-height:1.45}
+  .brand tbody tr:last-child td{border-bottom:none}
+  .col-svc{width:13%}.col-def{width:24%}.col-use{width:11%}.col-when{width:15%}.col-fit{width:9%}.col-cost{width:8%}
+  .col-lic{width:10%}.col-sup{width:10%}
+  .svc{font-weight:700}
+  .def{color:#334155}
+  .when{color:var(--muted)}
+  .fit{display:inline-flex;gap:3px;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:10px}
+  .fit span{display:inline-flex;align-items:center;justify-content:center;width:22px;padding:2px 0;border:1px solid #D1D5DB;border-radius:3px;background:#FAFAFA;color:#9CA3AF}
+  .fit span.on{background:#102A43;color:#fff;border-color:#102A43;font-weight:700}
+  .cost{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;letter-spacing:.4px;color:#fff;min-width:44px;text-align:center}
+  .cost.L{background:var(--low)}.cost.M{background:var(--med)}.cost.H{background:var(--high)}
+  .pill{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:600;margin:1px 2px 1px 0}
+  .pill.lic{background:#EEF2FF;color:#3730A3}
+  .pill.sup{background:#ECFDF5;color:#065F46}
+  .pill.topo{background:#FFF7ED;color:#9A3412}
+  .pill.deploy{background:#F0F9FF;color:#075985}
+
+  .empty{background:#fff;border:1px dashed var(--line);border-radius:12px;padding:40px 20px;text-align:center;color:var(--muted);font-size:13px}
+  .empty b{color:var(--ink)}
+
+  /* Shortlist */
+  .shortlist{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+  @media (max-width:900px){.shortlist{grid-template-columns:1fr}}
+  .sl-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .sl-card h4{margin:0 0 8px;font-size:13px;color:var(--brand-dark)}
+  .sl-card ul{margin:0;padding-left:18px;font-size:12px;line-height:1.7}
+  .sl-card ul li::marker{color:var(--accent)}
+
+  footer{margin-top:18px;text-align:center;font-size:10.5px;color:var(--muted);padding:10px}
+
+  @media print{
+    body{background:#fff}.sheet{max-width:none;padding:8px}
+    .tabs,.actions,.wizard-actions{display:none}
+    .panel{display:block !important}
+    .brand,.summary,header,.sl-card{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<header>
+  <div>
+    <h1>Solution Architect — Cross-Brand Solution Builder</h1>
+    <p class="sub">Choose a <b>solution area</b>, set <b>size</b>, then drill into <b>specific elements</b> — licensing, support, topology and deployment — and compare how every brand delivers it.</p>
+  </div>
+  <div class="badge">
+    <span class="big">14 Brands</span>
+    AWS · Azure · Huawei · Hikvision · Palo Alto · Check Point · Fortinet · Cisco · SentinelOne · Genesys · Avaya · 3CX · RUCKUS · More
+  </div>
+</header>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" data-tab="builder">🧭 Solution Builder</div>
+  <div class="tab" data-tab="shortlist">📋 Shortlist</div>
+  <div class="tab" data-tab="matrix">🧩 Element Matrix</div>
+</div>
+
+<!-- =================== BUILDER PANEL =================== -->
+<div class="panel active" id="panel-builder">
+  <h2>1. Define the solution</h2>
+  <div class="wrow">
+    <div class="field">
+      <label for="category">Solution category</label>
+      <select id="category">
+        <option value="">— Select a category —</option>
+        <optgroup label="Compute &amp; Cloud">
+          <option value="compute">Compute / Virtual Machines</option>
+          <option value="containers">Containers &amp; Serverless</option>
+          <option value="cloud">Cloud Platform</option>
+        </optgroup>
+        <optgroup label="Networking">
+          <option value="switching">Switching &amp; LAN</option>
+          <option value="wireless">Wireless / Wi-Fi</option>
+          <option value="sdwan">SD-WAN &amp; SASE</option>
+          <option value="routing">Routing &amp; Service Provider</option>
+          <option value="netmgmt">Network Management &amp; Assurance</option>
+        </optgroup>
+        <optgroup label="Security">
+          <option value="firewall">Firewall / NGFW</option>
+          <option value="cloudsecurity">Cloud Security (CNAPP/CSPM)</option>
+          <option value="endpoint">Endpoint Security (EDR/EPP)</option>
+          <option value="secops">Security Operations (SIEM/SOAR/XDR)</option>
+          <option value="nac">Identity &amp; NAC</option>
+        </optgroup>
+        <optgroup label="Data &amp; AI">
+          <option value="database">Database</option>
+          <option value="analytics">Analytics &amp; Data</option>
+          <option value="ai">AI &amp; Machine Learning</option>
+        </optgroup>
+        <optgroup label="Contact Center &amp; UC">
+          <option value="contactcenter">Contact Center / CX</option>
+          <option value="uc">Unified Communications</option>
+          <option value="devices">Phones &amp; Endpoints</option>
+        </optgroup>
+        <optgroup label="Physical &amp; IoT">
+          <option value="cameras">Video Surveillance Cameras</option>
+          <option value="nvr">Recording / NVR / DVR</option>
+          <option value="access">Access Control</option>
+          <option value="iot">IoT &amp; Sensors</option>
+        </optgroup>
+      </select>
+    </div>
+    <div class="field">
+      <label for="size">Organization / deployment size</label>
+      <select id="size">
+        <option value="any">Any / not sure</option>
+        <option value="S">Small / SMB</option>
+        <option value="M">Mid-market</option>
+        <option value="L">Large enterprise / SP</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="keyword">Keyword filter</label>
+      <input id="keyword" type="text" placeholder="e.g. Wi-Fi 7, Kubernetes, MFA, firewall…">
+    </div>
+    <div class="field">
+      <label for="sort">Sort results by</label>
+      <select id="sort">
+        <option value="brand">Brand (A–Z)</option>
+        <option value="cost">Cost (low → high)</option>
+        <option value="fit">Best fit for my size</option>
+      </select>
+    </div>
+  </div>
+
+  <h2 style="margin-top:18px">2. Pick specific solution elements</h2>
+  <div class="wrow three">
+    <div class="field">
+      <label>Licensing model</label>
+      <div class="chips" id="chips-license">
+        <label class="chip"><input type="checkbox" value="Perpetual">Perpetual</label>
+        <label class="chip"><input type="checkbox" value="Subscription">Subscription</label>
+        <label class="chip"><input type="checkbox" value="Consumption">Consumption</label>
+        <label class="chip"><input type="checkbox" value="Per-user">Per-user</label>
+        <label class="chip"><input type="checkbox" value="Per-device">Per-device</label>
+        <label class="chip"><input type="checkbox" value="Capacity-based">Capacity-based</label>
+        <label class="chip"><input type="checkbox" value="BYOL">BYOL</label>
+        <label class="chip"><input type="checkbox" value="Flexible">Flexible / points</label>
+      </div>
+      <div class="hint">Select one or more. Leave blank to include all.</div>
+    </div>
+    <div class="field">
+      <label>Support tier</label>
+      <div class="chips" id="chips-support">
+        <label class="chip"><input type="checkbox" value="Basic">Basic</label>
+        <label class="chip"><input type="checkbox" value="Standard">Standard</label>
+        <label class="chip"><input type="checkbox" value="Enhanced">Enhanced</label>
+        <label class="chip"><input type="checkbox" value="Premium">Premium</label>
+        <label class="chip"><input type="checkbox" value="24x7">24×7</label>
+        <label class="chip"><input type="checkbox" value="MDR">MDR / Managed</label>
+        <label class="chip"><input type="checkbox" value="TAC">TAC / Vendor-direct</label>
+        <label class="chip"><input type="checkbox" value="Partner">Partner-delivered</label>
+      </div>
+      <div class="hint">Filter by support entitlement or delivery model.</div>
+    </div>
+    <div class="field">
+      <label>Topology / architecture</label>
+      <div class="chips" id="chips-topology">
+        <label class="chip"><input type="checkbox" value="Cloud">Cloud</label>
+        <label class="chip"><input type="checkbox" value="Hybrid">Hybrid</label>
+        <label class="chip"><input type="checkbox" value="On-prem">On-prem</label>
+        <label class="chip"><input type="checkbox" value="Distributed">Distributed / branch</label>
+        <label class="chip"><input type="checkbox" value="Hub-and-spoke">Hub-and-spoke</label>
+        <label class="chip"><input type="checkbox" value="Leaf-spine">Leaf-spine</label>
+        <label class="chip"><input type="checkbox" value="Mesh">Mesh</label>
+        <label class="chip"><input type="checkbox" value="Edge">Edge</label>
+        <label class="chip"><input type="checkbox" value="Centralized">Centralized</label>
+      </div>
+      <div class="hint">Filter by supported deployment architecture.</div>
+    </div>
+  </div>
+  <div class="wrow three" style="margin-top:14px">
+    <div class="field">
+      <label>Deployment model</label>
+      <div class="chips" id="chips-deploy">
+        <label class="chip"><input type="checkbox" value="SaaS">SaaS</label>
+        <label class="chip"><input type="checkbox" value="Private cloud">Private cloud</label>
+        <label class="chip"><input type="checkbox" value="Public cloud">Public cloud</label>
+        <label class="chip"><input type="checkbox" value="Appliance">Appliance</label>
+        <label class="chip"><input type="checkbox" value="Virtual">Virtual</label>
+        <label class="chip"><input type="checkbox" value="Container">Container</label>
+        <label class="chip"><input type="checkbox" value="Managed">Managed service</label>
+      </div>
+    </div>
+    <div class="field">
+      <label>Commercial term</label>
+      <div class="chips" id="chips-term">
+        <label class="chip"><input type="checkbox" value="1-year">1-year</label>
+        <label class="chip"><input type="checkbox" value="3-year">3-year</label>
+        <label class="chip"><input type="checkbox" value="5-year">5-year</label>
+        <label class="chip"><input type="checkbox" value="Monthly">Monthly</label>
+        <label class="chip"><input type="checkbox" value="Enterprise Agreement">Enterprise Agreement</label>
+      </div>
+    </div>
+    <div class="field">
+      <label>Options</label>
+      <div class="chips" id="chips-options">
+        <label class="chip"><input type="checkbox" value="Trial">Free trial / POC</label>
+        <label class="chip"><input type="checkbox" value="Migration">Migration services</label>
+        <label class="chip"><input type="checkbox" value="Training">Training / certification</label>
+        <label class="chip"><input type="checkbox" value="MSP">MSP / partner delivery</label>
+        <label class="chip"><input type="checkbox" value="FinOps">FinOps / cost tools</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn primary" id="go">Show matches</button>
+    <button class="btn" id="addShortlist">Add matches to shortlist</button>
+    <button class="btn" id="reset">Reset</button>
+    <button class="btn ghost" id="print">Print / Save PDF</button>
+  </div>
+</div>
+
+<!-- =================== SHORTLIST PANEL =================== -->
+<div class="panel" id="panel-shortlist">
+  <h2>Your shortlist</h2>
+  <p style="font-size:12.5px;color:var(--muted);margin-top:0">
+    Products you have added while exploring the builder. Use this to compare brands side-by-side before a detailed evaluation.
+  </p>
+  <div class="actions" style="margin-top:0">
+    <button class="btn small" id="clearShortlist">Clear shortlist</button>
+    <button class="btn small" id="printShortlist">Print shortlist</button>
+  </div>
+  <div id="shortlistBody">
+    <div class="empty">Your shortlist is empty. Run a search in the <b>Solution Builder</b> and click <b>Add matches to shortlist</b>.</div>
+  </div>
+</div>
+
+<!-- =================== ELEMENT MATRIX PANEL =================== -->
+<div class="panel" id="panel-matrix">
+  <h2>Element matrix</h2>
+  <p style="font-size:12.5px;color:var(--muted);margin-top:0">
+    A compact view of which brands support which <b>licensing models</b>, <b>support tiers</b>, <b>topologies</b> and <b>deployment options</b> for the selected category.
+    Use it to spot which vendor is strongest on the specific element you care about.
+  </p>
+  <div class="field" style="max-width:400px">
+    <label for="matrixCategory">Category for matrix</label>
+    <select id="matrixCategory">
+      <option value="">— Select category —</option>
+      <option value="compute">Compute / Virtual Machines</option>
+      <option value="containers">Containers &amp; Serverless</option>
+      <option value="switching">Switching &amp; LAN</option>
+      <option value="wireless">Wireless / Wi-Fi</option>
+      <option value="sdwan">SD-WAN &amp; SASE</option>
+      <option value="routing">Routing &amp; Service Provider</option>
+      <option value="netmgmt">Network Management &amp; Assurance</option>
+      <option value="firewall">Firewall / NGFW</option>
+      <option value="cloudsecurity">Cloud Security (CNAPP/CSPM)</option>
+      <option value="endpoint">Endpoint Security (EDR/EPP)</option>
+      <option value="secops">Security Operations (SIEM/SOAR/XDR)</option>
+      <option value="nac">Identity &amp; NAC</option>
+      <option value="database">Database</option>
+      <option value="analytics">Analytics &amp; Data</option>
+      <option value="ai">AI &amp; Machine Learning</option>
+      <option value="contactcenter">Contact Center / CX</option>
+      <option value="uc">Unified Communications</option>
+      <option value="devices">Phones &amp; Endpoints</option>
+      <option value="cameras">Video Surveillance Cameras</option>
+      <option value="nvr">Recording / NVR / DVR</option>
+      <option value="access">Access Control</option>
+      <option value="iot">IoT &amp; Sensors</option>
+    </select>
+  </div>
+  <div id="matrixBody" style="margin-top:14px"></div>
+</div>
+
+<!-- SUMMARY -->
+<div class="summary" id="summary"></div>
+
+<!-- RESULTS -->
+<div class="brands" id="results">
+  <div class="empty" id="empty">
+    Select a <b>solution category</b> in the <b>Solution Builder</b> tab, optionally pick licensing, support and topology filters, then click <b>Show matches</b>.
+  </div>
+</div>
+
+<footer>Cross-Brand Solution Architect Reference · 2026 edition · Fit, cost, licensing and support are indicative. Confirm commercial and support details with each vendor.</footer>
+</div>
+
+<script>
+/* =========================================================
+   ENHANCED DATA MODEL
+   Each entry now includes:
+   lic[]     — licensing models
+   sup[]     — support tiers / models
+   topo[]    — topologies
+   deploy[]  — deployment models
+   term[]    — commercial terms
+   opt[]     — options (trial, migration, training, MSP, FinOps)
+   ========================================================= */
+
+const BRANDS = [
+  /* ---------------- AWS ---------------- */
+  { name:"AWS", color:"var(--aws)", entries:[
+    {cat:["compute"],svc:"EC2",def:"Resizable virtual machines with wide CPU, memory, GPU and networking options.",use:"Virtual servers",when:"OS control, custom workloads",fit:"SML",cost:"M",
+     lic:["Consumption","Capacity-based"],sup:["Basic","Standard","Premium","TAC"],topo:["Cloud","Hybrid","Distributed"],deploy:["Public cloud","Virtual"],term:["Monthly","1-year","3-year","Enterprise Agreement"],opt:["Trial","Migration","Training","FinOps"]},
+    {cat:["compute","containers"],svc:"ECS",def:"AWS-native orchestrator for Docker containers on EC2 or Fargate.",use:"Containers (Docker)",when:"Managed containers on AWS",fit:"SML",cost:"M",
+     lic:["Consumption"],sup:["Basic","Standard","Premium","TAC"],topo:["Cloud","Hybrid"],deploy:["Public cloud","Container"],term:["Monthly","1-year","3-year"],opt:["Trial","Migration","Training"]},
+    {cat:["compute","containers"],svc:"EKS",def:"Managed Kubernetes control plane with upstream API compatibility.",use:"Kubernetes",when:"K8s ecosystem, portability",fit:"SML",cost:"H",
+     lic:["Consumption","Subscription"],sup:["Standard","Premium","TAC"],topo:["Cloud","Hybrid","Distributed"],deploy:["Public cloud","Container"],term:["Monthly","1-year","3-year"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["compute","containers"],svc:"Lambda",def:"Serverless compute that runs code in response to events, billed per invocation.",use:"Serverless functions",when:"Event-driven, short-lived",fit:"SML",cost:"L",
+     lic:["Consumption"],sup:["Basic","Standard"],topo:["Cloud","Edge"],deploy:["Public cloud"],term:["Monthly"],opt:["Trial"]},
+    {cat:["database"],svc:"RDS",def:"Managed MySQL, PostgreSQL, MariaDB, Oracle, SQL Server, Db2 with backups and HA.",use:"Managed relational",when:"Standard SQL databases",fit:"SML",cost:"M",
+     lic:["Consumption","BYOL"],sup:["Standard","Premium","TAC"],topo:["Cloud","Hybrid"],deploy:["Public cloud"],term:["Monthly","1-year","3-year"],opt:["Migration","Training","FinOps"]},
+    {cat:["database"],svc:"Aurora",def:"Cloud-native MySQL- and PostgreSQL-compatible database with self-healing storage.",use:"Cloud-native SQL",when:"High perf MySQL/PG compatible",fit:"SML",cost:"H",
+     lic:["Consumption"],sup:["Standard","Premium","TAC"],topo:["Cloud"],deploy:["Public cloud"],term:["Monthly","1-year","3-year"],opt:["Migration","FinOps"]},
+    {cat:["database"],svc:"DynamoDB",def:"Serverless key-value and document NoSQL database with single-digit ms latency.",use:"NoSQL key-value",when:"Massive scale, low latency",fit:"SML",cost:"M",
+     lic:["Consumption","Capacity-based"],sup:["Basic","Standard","Premium"],topo:["Cloud"],deploy:["Public cloud"],term:["Monthly","1-year"],opt:["Trial","Migration"]},
+    {cat:["firewall","nac"],svc:"IAM",def:"Identity and Access Management controlling who can do what on AWS resources.",use:"Access control",when:"Manage AWS permissions",fit:"SML",cost:"L",
+     lic:["Consumption"],sup:["Basic","Standard"],topo:["Cloud"],deploy:["Public cloud"],term:["Monthly"],opt:["Training"]},
+    {cat:["firewall"],svc:"Network Firewall",def:"Managed stateful firewall and IPS for VPCs with L3/4/7 filtering.",use:"L3/4/7 firewall",when:"Managed VPC-level firewall",fit:"SML",cost:"H",
+     lic:["Consumption"],sup:["Standard","Premium","TAC"],topo:["Cloud","Hub-and-spoke"],deploy:["Public cloud"],term:["Monthly","1-year"],opt:["Migration"]},
+    {cat:["secops"],svc:"GuardDuty",def:"Continuous threat-detection analyzing CloudTrail, VPC Flow Logs, DNS and EKS/RDS/S3.",use:"Threat detection",when:"Continuous ML monitoring",fit:"SML",cost:"M",
+     lic:["Consumption"],sup:["Basic","Standard"],topo:["Cloud"],deploy:["SaaS"],term:["Monthly"],opt:["Trial"]},
+    {cat:["ai"],svc:"SageMaker AI",def:"End-to-end ML platform to build, train, tune, deploy and monitor custom models.",use:"Build/train/deploy",when:"End-to-end custom ML",fit:"SML",cost:"H",
+     lic:["Consumption"],sup:["Standard","Premium","TAC"],topo:["Cloud","Hybrid"],deploy:["Public cloud"],term:["Monthly","1-year","3-year"],opt:["Trial","Migration","Training"]},
+    {cat:["ai"],svc:"Bedrock",def:"Managed API access to foundation models from Anthropic, Meta, Mistral, Amazon and others.",use:"Foundation models",when:"GenAI via managed APIs",fit:"SML",cost:"M",
+     lic:["Consumption"],sup:["Standard","Premium"],topo:["Cloud"],deploy:["SaaS"],term:["Monthly"],opt:["Trial","Training"]},
+    {cat:["contactcenter"],svc:"Connect",def:"Omnichannel cloud contact center with voice, chat, tasks and generative AI agent assistance.",use:"Cloud contact center",when:"Omnichannel customer service",fit:"SML",cost:"M",
+     lic:["Per-user","Consumption"],sup:["Standard","Premium","24x7"],topo:["Cloud","Distributed"],deploy:["SaaS"],term:["Monthly","1-year","3-year"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["iot"],svc:"IoT Core",def:"Managed MQTT/HTTPS device gateway connecting billions of devices with mutual TLS.",use:"Device connect",when:"MQTT/HTTPS at scale",fit:"SML",cost:"M",
+     lic:["Consumption"],sup:["Standard","Premium"],topo:["Cloud","Edge","Distributed"],deploy:["Public cloud"],term:["Monthly","1-year"],opt:["Trial","Migration"]}
+  ]},
+
+  /* ---------------- MICROSOFT AZURE ---------------- */
+  { name:"Microsoft Azure", color:"var(--azure)", entries:[
+    {cat:["compute"],svc:"Virtual Machines",def:"On-demand, scalable compute with full OS control.",use:"IaaS virtual servers",when:"OS control, lift-and-shift",fit:"SML",cost:"M",
+     lic:["Consumption","BYOL"],sup:["Basic","Standard","Premium","TAC"],topo:["Cloud","Hybrid","Distributed"],deploy:["Public cloud","Private cloud","Virtual"],term:["Monthly","1-year","3-year","Enterprise Agreement"],opt:["Trial","Migration","Training","FinOps"]},
+    {cat:["compute","containers"],svc:"Azure Kubernetes Service",def:"Managed Kubernetes control plane with automated upgrades and scaling.",use:"Kubernetes",when:"K8s standard, portability",fit:"SML",cost:"H",
+     lic:["Consumption","Subscription"],sup:["Standard","Premium","TAC"],topo:["Cloud","Hybrid"],deploy:["Public cloud","Container"],term:["Monthly","1-year","3-year"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["compute","containers"],svc:"Container Apps",def:"Serverless containers with scale-to-zero, Dapr, revisions and traffic splitting.",use:"Serverless containers",when:"Microservices, no K8s ops",fit:"SML",cost:"M",
+     lic:["Consumption"],sup:["Standard","Premium"],topo:["Cloud"],deploy:["Public cloud","Container"],term:["Monthly","1-year"],opt:["Trial","Migration"]},
+    {cat:["database"],svc:"Azure SQL Database",def:"Fully managed SQL Server engine with serverless compute and Hyperscale.",use:"Managed SQL",when:"SQL Server workloads, PaaS",fit:"SML",cost:"M",
+     lic:["Consumption","BYOL"],sup:["Standard","Premium","TAC"],topo:["Cloud","Hybrid"],deploy:["Public cloud"],term:["Monthly","1-year","3-year"],opt:["Migration","Training","FinOps"]},
+    {cat:["database"],svc:"Azure Cosmos DB",def:"Globally distributed, multi-model NoSQL database with single-digit ms latency.",use:"NoSQL / global",when:"Global distribution, multi-model",fit:"SML",cost:"H",
+     lic:["Consumption","Capacity-based"],sup:["Standard","Premium","TAC"],topo:["Cloud","Distributed"],deploy:["Public cloud"],term:["Monthly","1-year","3-year"],opt:["Migration","FinOps"]},
+    {cat:["firewall","nac"],svc:"Microsoft Entra ID",def:"Cloud identity and access management for workforce and customer identities.",use:"IAM / SSO",when:"Identity, conditional access",fit:"SML",cost:"L",
+     lic:["Per-user","Subscription"],sup:["Basic","Standard","Premium"],topo:["Cloud","Hybrid"],deploy:["SaaS"],term:["Monthly","1-year","Enterprise Agreement"],opt:["Trial","Migration","Training"]},
+    {cat:["firewall"],svc:"Azure Firewall",def:"Managed, cloud-native network security with high availability.",use:"Network firewall",when:"Centralized VNet protection",fit:"SML",cost:"H",
+     lic:["Consumption"],sup:["Standard","Premium","TAC"],topo:["Cloud","Hub-and-spoke"],deploy:["Public cloud"],term:["Monthly","1-year"],opt:["Migration"]},
+    {cat:["secops"],svc:"Microsoft Sentinel",def:"Cloud-native SIEM and SOAR using AI for threat detection.",use:"SIEM / SOAR",when:"Security analytics & response",fit:"SML",cost:"H",
+     lic:["Consumption","Per-user"],sup:["Standard","Premium","24x7"],topo:["Cloud","Hybrid"],deploy:["SaaS"],term:["Monthly","1-year","3-year","Enterprise Agreement"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["endpoint"],svc:"Defender for Cloud",def:"CSPM and workload protection across Azure, hybrid and multicloud.",use:"Security posture",when:"Unified security management",fit:"SML",cost:"M",
+     lic:["Subscription","Per-device"],sup:["Standard","Premium","24x7"],topo:["Cloud","Hybrid"],deploy:["SaaS"],term:["Monthly","1-year","3-year"],opt:["Trial","Migration","Training"]},
+    {cat:["cloudsecurity"],svc:"Microsoft Purview",def:"Unified data governance and compliance platform.",use:"Data governance",when:"Compliance, data mapping",fit:"SML",cost:"H",
+     lic:["Per-user","Consumption"],sup:["Standard","Premium"],topo:["Cloud","Hybrid"],deploy:["SaaS"],term:["Monthly","1-year","Enterprise Agreement"],opt:["Trial","Migration","Training"]},
+    {cat:["ai"],svc:"Azure OpenAI Service",def:"Access to OpenAI GPT, DALL-E and Embeddings with Azure security.",use:"Foundation models",when:"GenAI via managed APIs",fit:"SML",cost:"M",
+     lic:["Consumption"],sup:["Standard","Premium"],topo:["Cloud"],deploy:["SaaS"],term:["Monthly","1-year"],opt:["Trial","Training"]},
+    {cat:["ai","analytics"],svc:"Azure Machine Learning",def:"End-to-end ML platform to build, train and deploy models with MLOps.",use:"Build/train/deploy",when:"End-to-end custom ML",fit:"SML",cost:"H",
+     lic:["Consumption"],sup:["Standard","Premium","TAC"],topo:["Cloud","Hybrid"],deploy:["Public cloud"],term:["Monthly","1-year","3-year"],opt:["Trial","Migration","Training"]},
+    {cat:["analytics"],svc:"Microsoft Fabric",def:"All-in-one analytics platform unifying Power BI, Data Factory, Synapse and OneLake.",use:"Unified analytics",when:"End-to-end analytics SaaS",fit:"SML",cost:"M",
+     lic:["Capacity-based","Per-user"],sup:["Standard","Premium","24x7"],topo:["Cloud"],deploy:["SaaS"],term:["Monthly","1-year","3-year"],opt:["Trial","Migration","Training","FinOps"]}
+  ]},
+
+  /* ---------------- HUAWEI ---------------- */
+  { name:"Huawei", color:"var(--huawei)", entries:[
+    {cat:["compute"],svc:"Kunpeng Processors",def:"ARM-based server processors for general-purpose data center and cloud compute.",use:"Server compute",when:"ARM-based server workloads",fit:"SML",cost:"H",
+     lic:["Perpetual","Capacity-based"],sup:["Standard","Premium","TAC","Partner"],topo:["On-prem","Hybrid","Centralized"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Training","MSP"]},
+    {cat:["compute"],svc:"TaiShan Servers",def:"ARM-based servers powered by Kunpeng for cloud, big data and distributed storage.",use:"ARM servers",when:"Cloud, big data, ARM ecosystem",fit:"SML",cost:"H",
+     lic:["Perpetual","Capacity-based"],sup:["Standard","Premium","TAC","Partner"],topo:["On-prem","Hybrid","Centralized"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Migration","Training","MSP"]},
+    {cat:["compute","ai"],svc:"Ascend AI Processors",def:"AI processor family based on Da Vinci architecture for training and inference.",use:"AI compute",when:"AI training, inference workloads",fit:"SML",cost:"H",
+     lic:["Perpetual","Capacity-based"],sup:["Premium","TAC","Partner"],topo:["On-prem","Hybrid"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Training","MSP"]},
+    {cat:["ai"],svc:"Atlas AI Servers",def:"AI servers for data center inference, deep learning development and training.",use:"AI servers",when:"AI data center workloads",fit:"SML",cost:"H",
+     lic:["Perpetual","Capacity-based"],sup:["Premium","TAC","Partner"],topo:["On-prem","Hybrid","Centralized"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Training","MSP"]},
+    {cat:["ai"],svc:"Pangu Large Model",def:"Large AI model covering NLP, computer vision, time-series and scientific computing.",use:"Foundation AI",when:"Industry AI applications",fit:"SML",cost:"H",
+     lic:["Subscription","Consumption"],sup:["Premium","TAC","Partner"],topo:["Cloud","Hybrid","On-prem"],deploy:["SaaS","Private cloud"],term:["1-year","3-year"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["cloud"],svc:"Huawei Cloud Stack",def:"Hybrid cloud solution for building private clouds with public cloud capabilities.",use:"Hybrid cloud",when:"On-prem cloud, data sovereignty",fit:"SML",cost:"H",
+     lic:["Perpetual","Subscription","Capacity-based"],sup:["Premium","TAC","Partner"],topo:["On-prem","Hybrid","Centralized"],deploy:["Private cloud","Appliance"],term:["1-year","3-year","5-year"],opt:["Migration","Training","MSP"]},
+    {cat:["database"],svc:"GaussDB",def:"Enterprise-grade distributed relational database with high availability.",use:"Enterprise SQL",when:"Mission-critical SQL workloads",fit:"SML",cost:"H",
+     lic:["Perpetual","Subscription"],sup:["Premium","TAC","Partner"],topo:["On-prem","Hybrid","Cloud"],deploy:["Appliance","Private cloud","Public cloud"],term:["1-year","3-year","5-year"],opt:["Migration","Training","MSP"]},
+    {cat:["switching"],svc:"CloudEngine Switches",def:"Data center and campus switches for AI and cloud workloads.",use:"Network switching",when:"Data centers, campus networks",fit:"SML",cost:"H",
+     lic:["Perpetual","Subscription"],sup:["Standard","Premium","TAC","Partner"],topo:["On-prem","Leaf-spine","Centralized"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Migration","Training","MSP"]},
+    {cat:["routing"],svc:"NetEngine Routers",def:"High-performance routers for carrier backbone, metro and enterprise WAN.",use:"Routing",when:"Carrier backbone, enterprise WAN",fit:"SML",cost:"H",
+     lic:["Perpetual","Capacity-based"],sup:["Premium","TAC","Partner"],topo:["On-prem","Hub-and-spoke","Distributed"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Migration","Training","MSP"]},
+    {cat:["wireless"],svc:"AirEngine Wi-Fi",def:"Enterprise Wi-Fi 6/7 access points and controllers for high-density wireless.",use:"Enterprise Wi-Fi",when:"Campus, office, industrial Wi-Fi",fit:"SML",cost:"M",
+     lic:["Perpetual","Subscription"],sup:["Standard","Premium","TAC","Partner"],topo:["On-prem","Hybrid","Centralized"],deploy:["Appliance","Virtual"],term:["1-year","3-year"],opt:["Migration","Training","MSP"]},
+    {cat:["firewall"],svc:"Huawei HiSecEngine",def:"Next-generation firewall family for enterprise and carrier security.",use:"NGFW",when:"Enterprise perimeter",fit:"SML",cost:"H",
+     lic:["Perpetual","Subscription"],sup:["Premium","TAC","Partner"],topo:["On-prem","Hybrid","Centralized"],deploy:["Appliance","Virtual"],term:["1-year","3-year","5-year"],opt:["Migration","Training","MSP"]},
+    {cat:["cameras"],svc:"HoloSens Cameras",def:"AI-powered cameras for video surveillance and intelligent analytics.",use:"Video surveillance",when:"Smart city, enterprise",fit:"SML",cost:"M",
+     lic:["Perpetual","Per-device"],sup:["Standard","Premium","Partner"],topo:["On-prem","Centralized","Distributed"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Migration","Training","MSP"]}
+  ]},
+
+  /* ---------------- HIKVISION ---------------- */
+  { name:"Hikvision", color:"var(--hik)", entries:[
+    {cat:["cameras"],svc:"DeepinView Series",def:"AI-powered cameras with deep learning for person/vehicle classification and behavior analytics.",use:"AI video analytics",when:"Advanced perimeter protection, BI",fit:"SML",cost:"H",
+     lic:["Perpetual","Per-device"],sup:["Standard","Premium","Partner","TAC"],topo:["On-prem","Centralized","Distributed"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Migration","Training","MSP"]},
+    {cat:["cameras"],svc:"ColorVu Series",def:"Cameras with full-color imaging in near-total darkness using advanced sensor and light.",use:"Low-light color",when:"Night surveillance with color",fit:"SML",cost:"M",
+     lic:["Perpetual","Per-device"],sup:["Standard","Premium","Partner"],topo:["On-prem","Centralized","Distributed"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Training","MSP"]},
+    {cat:["cameras"],svc:"AcuSense Series",def:"Deep learning distinguishing humans and vehicles from other moving objects.",use:"False alarm reduction",when:"Perimeter, intrusion detection",fit:"SML",cost:"M",
+     lic:["Perpetual","Per-device"],sup:["Standard","Premium","Partner"],topo:["On-prem","Centralized","Distributed"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Training","MSP"]},
+    {cat:["cameras"],svc:"Thermal Cameras",def:"Cameras detecting heat signatures for surveillance in complete darkness or smoke.",use:"Thermal detection",when:"Perimeter at night, fire detection",fit:"SML",cost:"H",
+     lic:["Perpetual","Per-device"],sup:["Premium","Partner"],topo:["On-prem","Centralized"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Migration","Training","MSP"]},
+    {cat:["nvr"],svc:"AcuSeek NVR",def:"AI-powered NVR enabling natural-language searches of recorded footage.",use:"AI video search",when:"Rapid forensic search",fit:"SML",cost:"H",
+     lic:["Perpetual","Per-device"],sup:["Standard","Premium","Partner"],topo:["On-prem","Centralized"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Migration","Training","MSP"]},
+    {cat:["nvr"],svc:"VPro Series NVR",def:"Professional NVRs with high channel capacity, RAID and advanced analytics.",use:"Enterprise recording",when:"Large deployments, mission-critical",fit:"SML",cost:"H",
+     lic:["Perpetual","Per-device"],sup:["Premium","Partner"],topo:["On-prem","Centralized"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Migration","Training","MSP"]},
+    {cat:["nvr"],svc:"DVR (Analog HD)",def:"Digital video recorders supporting analog HD cameras with cost-effective cabling.",use:"Legacy analog upgrade",when:"Existing coax infrastructure",fit:"SML",cost:"L",
+     lic:["Perpetual","Per-device"],sup:["Basic","Standard","Partner"],topo:["On-prem","Centralized"],deploy:["Appliance"],term:["1-year","3-year"],opt:["Training","MSP"]},
+    {cat:["access"],svc:"Face Recognition Terminals",def:"Biometric terminals using facial recognition for touchless, high-throughput access.",use:"Biometric access",when:"High-security, touchless entry",fit:"SML",cost:"M",
+     lic:["Perpetual","Per-device"],sup:["Standard","Premium","Partner"],topo:["On-prem","Centralized","Distributed"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Migration","Training","MSP"]},
+    {cat:["access"],svc:"DS-K2700X Series",def:"Professional multi-door controllers for high-capacity access applications.",use:"Multi-door control",when:"Enterprise, large facilities",fit:"SML",cost:"H",
+     lic:["Perpetual","Per-device"],sup:["Premium","Partner"],topo:["On-prem","Centralized"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Migration","Training","MSP"]},
+    {cat:["iot"],svc:"AX PRO Series",def:"Wireless alarm system with hub, sensors and mobile app control for SMB.",use:"Wireless intrusion",when:"Homes, small offices",fit:"SML",cost:"L",
+     lic:["Perpetual","Per-device"],sup:["Basic","Standard","Partner"],topo:["On-prem","Distributed"],deploy:["Appliance"],term:["1-year","3-year"],opt:["Training","MSP"]},
+    {cat:["iot"],svc:"Security Radar",def:"Phased-array radar for long-range, wide-area target detection integrated with PTZ.",use:"Perimeter detection",when:"Large perimeters, critical sites",fit:"SML",cost:"H",
+     lic:["Perpetual","Per-device"],sup:["Premium","Partner"],topo:["On-prem","Centralized"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Migration","Training","MSP"]},
+    {cat:["netmgmt"],svc:"HikCentral Professional",def:"Unified security management platform for video, access, intercom, alarm and more.",use:"Centralized management",when:"Multi-system enterprise security",fit:"SML",cost:"H",
+     lic:["Perpetual","Subscription"],sup:["Premium","Partner","TAC"],topo:["On-prem","Hybrid","Centralized"],deploy:["Appliance","Virtual"],term:["1-year","3-year","5-year"],opt:["Migration","Training","MSP"]}
+  ]},
+
+  /* ---------------- PALO ALTO NETWORKS ---------------- */
+  { name:"Palo Alto Networks", color:"var(--pan)", entries:[
+    {cat:["firewall"],svc:"PA-400 Series",def:"Compact ML-Powered NGFWs for branch offices, retail and midsize businesses.",use:"Branch / SMB firewall",when:"Small sites, retail, branch",fit:"SML",cost:"L",
+     lic:["Perpetual","Subscription"],sup:["Standard","Premium","24x7","TAC","Partner"],topo:["On-prem","Distributed","Centralized"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["firewall"],svc:"PA-3200 / 3400 Series",def:"Enterprise-grade NGFWs for data center and internet edge with high throughput.",use:"Data center / edge",when:"Large data centers",fit:"SML",cost:"H",
+     lic:["Perpetual","Subscription"],sup:["Premium","24x7","TAC","Partner"],topo:["On-prem","Centralized","Hub-and-spoke"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Migration","Training","MSP"]},
+    {cat:["firewall"],svc:"PA-7000 Series",def:"Modular chassis-based NGFWs for the largest enterprise and service provider networks.",use:"Chassis firewall",when:"Carrier-scale, modular",fit:"SML",cost:"H",
+     lic:["Perpetual","Subscription"],sup:["Premium","24x7","TAC"],topo:["On-prem","Centralized"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Migration","Training"]},
+    {cat:["firewall","cloudsecurity"],svc:"VM-Series",def:"Virtual firewalls for inline network security on multi- and hybrid-cloud.",use:"Cloud firewall",when:"Public/private cloud protection",fit:"SML",cost:"M",
+     lic:["BYOL","Subscription","Consumption"],sup:["Standard","Premium","TAC"],topo:["Cloud","Hybrid","Hub-and-spoke"],deploy:["Virtual","Public cloud","Private cloud"],term:["1-year","3-year","Monthly"],opt:["Trial","Migration","FinOps"]},
+    {cat:["containers","firewall"],svc:"CN-Series",def:"Container-native firewalls for Kubernetes environments.",use:"Container firewall",when:"Kubernetes, container security",fit:"SML",cost:"M",
+     lic:["Subscription","Consumption"],sup:["Standard","Premium","TAC"],topo:["Cloud","Hybrid"],deploy:["Container","Public cloud"],term:["1-year","3-year","Monthly"],opt:["Trial","Migration"]},
+    {cat:["sdwan"],svc:"Prisma Access",def:"Cloud-based SASE for secure access to applications and data.",use:"SASE",when:"Cloud-delivered network security",fit:"SML",cost:"M",
+     lic:["Subscription","Per-user"],sup:["Premium","24x7","TAC"],topo:["Cloud","Distributed","Hub-and-spoke"],deploy:["SaaS"],term:["1-year","3-year"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["cloudsecurity"],svc:"Prisma Cloud",def:"CNAPP protecting applications across public, private, hybrid and multicloud.",use:"CNAPP",when:"Multi-cloud security",fit:"SML",cost:"H",
+     lic:["Subscription","Consumption"],sup:["Premium","24x7","TAC"],topo:["Cloud","Hybrid"],deploy:["SaaS"],term:["1-year","3-year"],opt:["Trial","Migration","Training","FinOps"]},
+    {cat:["secops"],svc:"Cortex XSIAM",def:"AI-driven security operations platform embedding Agentic AI for autonomous response.",use:"SecOps platform",when:"AI-driven SOC transformation",fit:"SML",cost:"H",
+     lic:["Subscription","Consumption"],sup:["Premium","24x7","MDR","TAC"],topo:["Cloud","Hybrid","Centralized"],deploy:["SaaS"],term:["1-year","3-year"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["endpoint","secops"],svc:"Cortex XDR",def:"Integrates network, endpoint, cloud and third-party data with behavioral analytics.",use:"XDR",when:"Extended detection & response",fit:"SML",cost:"H",
+     lic:["Subscription","Per-device"],sup:["Premium","24x7","MDR"],topo:["Cloud","Hybrid","Distributed"],deploy:["SaaS"],term:["1-year","3-year"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["secops"],svc:"Unit 42",def:"Cybersecurity research and threat intelligence, IR and consulting services.",use:"Threat intel / IR",when:"Proactive threat awareness",fit:"SML",cost:"M",
+     lic:["Subscription"],sup:["Premium","24x7","MDR"],topo:["Cloud","Hybrid","On-prem"],deploy:["Managed"],term:["1-year","3-year"],opt:["MSP"]}
+  ]},
+
+  /* ---------------- CHECK POINT ---------------- */
+  { name:"Check Point", color:"var(--cp)", entries:[
+    {cat:["firewall"],svc:"Quantum Spark 1500",def:"Entry-level SMB security gateways with integrated UTM, Wi-Fi 6 and 5G options.",use:"SMB firewall",when:"Small offices, retail, branch",fit:"SML",cost:"L",
+     lic:["Perpetual","Subscription"],sup:["Basic","Standard","Premium","Partner"],topo:["On-prem","Distributed","Centralized"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["firewall"],svc:"Quantum 3600/3800",def:"Branch office gateways with up to 1.5 Gbps zero-day protection and redundant PSUs.",use:"Branch firewall",when:"Enterprise branch, remote office",fit:"SML",cost:"M",
+     lic:["Perpetual","Subscription"],sup:["Standard","Premium","24x7","TAC","Partner"],topo:["On-prem","Distributed","Hub-and-spoke"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Migration","Training","MSP"]},
+    {cat:["firewall"],svc:"Quantum 26000/28000",def:"Data center gateways with up to 30 Gbps threat prevention and telco-grade reliability.",use:"Data center firewall",when:"Mission-critical data center",fit:"SML",cost:"H",
+     lic:["Perpetual","Subscription"],sup:["Premium","24x7","TAC"],topo:["On-prem","Centralized"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Migration","Training"]},
+    {cat:["firewall","cloudsecurity"],svc:"CloudGuard Network Security",def:"Cloud-native firewall for AWS, Azure, GCP and OCI with unified policy.",use:"Cloud firewall",when:"Multi-cloud security",fit:"SML",cost:"M",
+     lic:["BYOL","Subscription","Consumption"],sup:["Standard","Premium","TAC"],topo:["Cloud","Hybrid","Hub-and-spoke"],deploy:["Virtual","Public cloud","Private cloud"],term:["1-year","3-year","Monthly"],opt:["Trial","Migration","FinOps"]},
+    {cat:["cloudsecurity"],svc:"CloudGuard CNAPP",def:"Cloud-Native Application Protection Platform with CSPM and workload protection.",use:"CNAPP",when:"Comprehensive cloud security",fit:"SML",cost:"M",
+     lic:["Subscription","Consumption"],sup:["Standard","Premium","TAC"],topo:["Cloud","Hybrid"],deploy:["SaaS"],term:["1-year","3-year"],opt:["Trial","Migration","Training","FinOps"]},
+    {cat:["endpoint"],svc:"Harmony Endpoint",def:"Comprehensive endpoint protection with EPP, EDR and XDR in a single client.",use:"Endpoint security",when:"Endpoint protection, EDR",fit:"SML",cost:"M",
+     lic:["Subscription","Per-device","Per-user"],sup:["Standard","Premium","24x7","MDR"],topo:["Cloud","Hybrid","Distributed"],deploy:["SaaS"],term:["1-year","3-year"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["sdwan"],svc:"Harmony SASE",def:"Cloud-delivered SASE with ZTNA, SWG and CASB in a unified service.",use:"SASE",when:"Remote access, branch security",fit:"SML",cost:"M",
+     lic:["Subscription","Per-user"],sup:["Premium","24x7","TAC"],topo:["Cloud","Distributed"],deploy:["SaaS"],term:["1-year","3-year"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["secops"],svc:"Infinity XDR",def:"Extended Detection and Response with behavioral analytics and real-time threat intel.",use:"XDR",when:"Cross-surface threat detection",fit:"SML",cost:"M",
+     lic:["Subscription"],sup:["Premium","24x7","MDR"],topo:["Cloud","Hybrid"],deploy:["SaaS"],term:["1-year","3-year"],opt:["Trial","Migration","MSP"]},
+    {cat:["secops"],svc:"ThreatCloud AI",def:"AI-powered threat intelligence with 50+ AI engines and 99.8% block rate.",use:"Threat intelligence",when:"Real-time threat prevention",fit:"SML",cost:"L",
+     lic:["Subscription"],sup:["Standard","Premium"],topo:["Cloud"],deploy:["SaaS"],term:["1-year","3-year"],opt:["Trial"]},
+    {cat:["nac"],svc:"Harmony Email & Collaboration",def:"AI-powered anti-phishing, anti-malware and BEC protection for M365 and Google.",use:"Email security",when:"Email threat protection",fit:"SML",cost:"M",
+     lic:["Subscription","Per-user"],sup:["Standard","Premium","24x7"],topo:["Cloud"],deploy:["SaaS"],term:["1-year","3-year"],opt:["Trial","Migration","Training"]}
+  ]},
+
+  /* ---------------- FORTINET ---------------- */
+  { name:"Fortinet", color:"var(--forti)", entries:[
+    {cat:["firewall"],svc:"FortiGate NGFW",def:"NGFW powered by custom SPU/NP ASICs and FortiOS combining firewall, IPS, VPN, SSL inspection and SD-WAN.",use:"Perimeter firewall",when:"Branch, campus, DC, cloud edge",fit:"SML",cost:"M",
+     lic:["Perpetual","Subscription","Flexible"],sup:["Standard","Premium","24x7","TAC","Partner"],topo:["On-prem","Hybrid","Distributed","Hub-and-spoke"],deploy:["Appliance","Virtual"],term:["1-year","3-year","5-year","Enterprise Agreement"],opt:["Trial","Migration","Training","MSP","FinOps"]},
+    {cat:["firewall","cloudsecurity"],svc:"FortiGate VM",def:"Virtual FortiGate appliance for VMware, Hyper-V, KVM, Nutanix and Xen.",use:"Virtual firewall",when:"Private cloud / virtualized DC",fit:"SML",cost:"M",
+     lic:["BYOL","Subscription","Flexible"],sup:["Standard","Premium","TAC"],topo:["Cloud","Hybrid","Private cloud"],deploy:["Virtual","Private cloud","Public cloud"],term:["1-year","3-year","Monthly"],opt:["Trial","Migration","FinOps"]},
+    {cat:["firewall","cloudsecurity"],svc:"FortiGate CNF",def:"Cloud-Native Firewall delivered as a SaaS service inside AWS or Azure.",use:"Managed cloud FW",when:"Simplify cloud FW ops",fit:"SML",cost:"H",
+     lic:["Consumption","Subscription"],sup:["Standard","Premium","TAC"],topo:["Cloud","Hub-and-spoke"],deploy:["SaaS","Public cloud"],term:["Monthly","1-year"],opt:["Trial","Migration","FinOps"]},
+    {cat:["sdwan"],svc:"Secure SD-WAN",def:"Integrated SD-WAN inside every FortiGate with application-aware routing and overlays.",use:"SD-WAN",when:"Replace MPLS, connect branches",fit:"SML",cost:"M",
+     lic:["Perpetual","Subscription","Flexible"],sup:["Standard","Premium","24x7","TAC","Partner"],topo:["Hybrid","Distributed","Hub-and-spoke","Mesh"],deploy:["Appliance","Virtual"],term:["1-year","3-year","5-year"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["switching"],svc:"FortiSwitch",def:"Family of managed Ethernet access, PoE and data-center switches.",use:"Network switches",when:"Fabric-managed LAN",fit:"SML",cost:"M",
+     lic:["Perpetual","Subscription"],sup:["Standard","Premium","TAC","Partner"],topo:["On-prem","Centralized","Leaf-spine"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Migration","Training","MSP"]},
+    {cat:["wireless"],svc:"FortiAP / FortiWiFi",def:"Indoor and outdoor Wi-Fi 6/6E/7 access points managed by FortiGate or FortiCloud.",use:"Wi-Fi access points",when:"Secure wireless in branches",fit:"SML",cost:"M",
+     lic:["Perpetual","Subscription","Flexible"],sup:["Standard","Premium","TAC","Partner"],topo:["On-prem","Centralized","Distributed"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Migration","Training","MSP"]},
+    {cat:["cloudsecurity"],svc:"FortiCNAPP",def:"Cloud-Native Application Protection Platform (Lacework-based) for CSPM and CWP.",use:"CNAPP",when:"Multi-cloud posture & runtime",fit:"SML",cost:"H",
+     lic:["Subscription","Consumption"],sup:["Premium","24x7","TAC"],topo:["Cloud","Hybrid"],deploy:["SaaS"],term:["1-year","3-year"],opt:["Trial","Migration","Training","FinOps"]},
+    {cat:["endpoint"],svc:"FortiEDR",def:"Behavior-based EDR/EPP that prevents ransomware and fileless attacks in real time.",use:"EDR / EPP",when:"Replace legacy AV",fit:"SML",cost:"M",
+     lic:["Subscription","Per-device","Flexible"],sup:["Standard","Premium","24x7","MDR"],topo:["Cloud","Hybrid","Distributed"],deploy:["SaaS"],term:["1-year","3-year"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["secops"],svc:"FortiSIEM",def:"Multi-vendor SIEM with CMDB, UEBA and MITRE ATT&CK correlation.",use:"SIEM",when:"Centralized detection & compliance",fit:"SML",cost:"H",
+     lic:["Subscription","Capacity-based"],sup:["Premium","24x7","TAC","MDR"],topo:["Cloud","Hybrid","On-prem"],deploy:["SaaS","Virtual","Appliance"],term:["1-year","3-year"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["secops"],svc:"FortiSOAR",def:"Security Orchestration, Automation and Response with playbook engine and connectors.",use:"SOAR",when:"Scale a SOC without more staff",fit:"SML",cost:"H",
+     lic:["Subscription"],sup:["Premium","24x7","TAC","MDR"],topo:["Cloud","Hybrid","On-prem"],deploy:["SaaS","Virtual","Appliance"],term:["1-year","3-year"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["nac"],svc:"FortiNAC",def:"Network Access Control profiling wired and wireless endpoints.",use:"NAC",when:"IoT/BYOD visibility & control",fit:"SML",cost:"H",
+     lic:["Perpetual","Subscription","Per-device"],sup:["Premium","TAC","Partner"],topo:["On-prem","Hybrid","Centralized"],deploy:["Appliance","Virtual"],term:["1-year","3-year","5-year"],opt:["Migration","Training","MSP"]}
+  ]},
+
+  /* ---------------- CISCO ---------------- */
+  { name:"Cisco", color:"var(--cisco)", entries:[
+    {cat:["switching"],svc:"Catalyst 9300 / 9300X",def:"Enterprise stackable access switch with UPOE+, 25/40/100G uplinks and StackWise-1T.",use:"Campus access",when:"Standard enterprise access tier",fit:"SML",cost:"H",
+     lic:["Perpetual","Subscription","Enterprise Agreement"],sup:["Standard","Premium","24x7","TAC","Partner"],topo:["On-prem","Centralized","Distributed"],deploy:["Appliance"],term:["1-year","3-year","5-year","Enterprise Agreement"],opt:["Migration","Training","MSP","FinOps"]},
+    {cat:["switching"],svc:"Catalyst 9500 / 9600",def:"Fixed and modular high-performance campus core and aggregation switches.",use:"Campus core",when:"Aggregation / campus core",fit:"SML",cost:"H",
+     lic:["Perpetual","Subscription","Enterprise Agreement"],sup:["Premium","24x7","TAC"],topo:["On-prem","Centralized","Leaf-spine"],deploy:["Appliance"],term:["1-year","3-year","5-year","Enterprise Agreement"],opt:["Migration","Training","FinOps"]},
+    {cat:["switching"],svc:"Nexus 9300 / 9500",def:"Data-center leaf and spine switches running NX-OS for VXLAN/EVPN or ACI fabrics.",use:"DC leaf / spine",when:"Leaf-spine data-center fabric",fit:"SML",cost:"H",
+     lic:["Perpetual","Subscription","Enterprise Agreement"],sup:["Premium","24x7","TAC"],topo:["On-prem","Leaf-spine","Centralized"],deploy:["Appliance"],term:["1-year","3-year","5-year","Enterprise Agreement"],opt:["Migration","Training","FinOps"]},
+    {cat:["wireless"],svc:"Catalyst 9100 Wi-Fi 7",def:"Next-gen Wi-Fi 7 APs with multi-link operation, 6 GHz and AI/ML radio management.",use:"Wi-Fi 7 AP",when:"New deployments & refresh",fit:"SML",cost:"H",
+     lic:["Perpetual","Subscription","Enterprise Agreement"],sup:["Standard","Premium","24x7","TAC","Partner"],topo:["On-prem","Centralized","Distributed"],deploy:["Appliance"],term:["1-year","3-year","5-year","Enterprise Agreement"],opt:["Migration","Training","MSP"]},
+    {cat:["wireless"],svc:"Catalyst 9800 WLC",def:"Wireless LAN Controller running IOS XE for enterprise wireless.",use:"WLC",when:"Central AP management",fit:"SML",cost:"H",
+     lic:["Perpetual","Subscription","Enterprise Agreement"],sup:["Premium","24x7","TAC"],topo:["On-prem","Centralized","Hybrid"],deploy:["Appliance","Virtual"],term:["1-year","3-year","5-year","Enterprise Agreement"],opt:["Migration","Training","MSP"]},
+    {cat:["sdwan"],svc:"Catalyst SD-WAN (Viptela)",def:"Enterprise SD-WAN overlay with cEdge/vEdge devices and vManage/vSmart/vBond controllers.",use:"Enterprise SD-WAN",when:"Large multi-region SD-WAN",fit:"SML",cost:"H",
+     lic:["Subscription","Enterprise Agreement","Capacity-based"],sup:["Premium","24x7","TAC"],topo:["Hybrid","Distributed","Hub-and-spoke","Mesh"],deploy:["Appliance","Virtual","Public cloud"],term:["1-year","3-year","5-year","Enterprise Agreement"],opt:["Migration","Training","MSP","FinOps"]},
+    {cat:["firewall"],svc:"Secure Firewall (Firepower)",def:"NGFW family running FTD with NGFW, NGIPS, VPN, TLS decrypt managed by FMC or CDO.",use:"NGFW",when:"Enterprise perimeter, DC edge",fit:"SML",cost:"H",
+     lic:["Perpetual","Subscription","Enterprise Agreement"],sup:["Premium","24x7","TAC"],topo:["On-prem","Hybrid","Centralized"],deploy:["Appliance","Virtual"],term:["1-year","3-year","5-year","Enterprise Agreement"],opt:["Migration","Training","MSP"]},
+    {cat:["nac"],svc:"Duo",def:"Cloud-delivered MFA, single sign-on and adaptive access with device-posture checks.",use:"MFA / SSO / ZTNA",when:"Add MFA quickly, everywhere",fit:"SML",cost:"L",
+     lic:["Subscription","Per-user"],sup:["Standard","Premium","24x7"],topo:["Cloud","Hybrid"],deploy:["SaaS"],term:["1-year","3-year","Monthly"],opt:["Trial","Migration","Training"]},
+    {cat:["nac"],svc:"ISE",def:"Identity Services Engine for RADIUS, TACACS+, 802.1X, guest, BYOD and posture.",use:"NAC / RADIUS",when:"Wired/wireless access control",fit:"SML",cost:"H",
+     lic:["Perpetual","Subscription","Enterprise Agreement"],sup:["Premium","24x7","TAC"],topo:["On-prem","Hybrid","Centralized"],deploy:["Appliance","Virtual"],term:["1-year","3-year","5-year","Enterprise Agreement"],opt:["Migration","Training","MSP"]},
+    {cat:["endpoint"],svc:"Secure Endpoint (AMP)",def:"Cloud-managed EDR/EPP combining behavioral prevention and retrospective detection.",use:"EDR",when:"Enterprise endpoint protection",fit:"SML",cost:"M",
+     lic:["Subscription","Per-device","Enterprise Agreement"],sup:["Premium","24x7","MDR","TAC"],topo:["Cloud","Hybrid","Distributed"],deploy:["SaaS"],term:["1-year","3-year","Enterprise Agreement"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["secops"],svc:"Splunk Enterprise Security",def:"SIEM app on top of Splunk with correlation searches, risk scoring and MITRE mapping.",use:"SIEM",when:"Enterprise SOC detection",fit:"SML",cost:"H",
+     lic:["Subscription","Capacity-based"],sup:["Premium","24x7","MDR","TAC"],topo:["Cloud","Hybrid","On-prem"],deploy:["SaaS","Virtual","Appliance"],term:["1-year","3-year","Enterprise Agreement"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["contactcenter"],svc:"Webex Contact Center",def:"Cloud CCaaS with voice + digital channels, IVR, WFO and GenAI agent assist.",use:"CCaaS",when:"Cloud contact center",fit:"SML",cost:"H",
+     lic:["Subscription","Per-user"],sup:["Standard","Premium","24x7","MDR"],topo:["Cloud","Distributed"],deploy:["SaaS"],term:["1-year","3-year","Monthly"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["uc"],svc:"Webex Suite",def:"Cloud collaboration bundle — Meetings, Calling, Messaging, Polling and Events.",use:"UCaaS bundle",when:"Single-vendor collab platform",fit:"SML",cost:"M",
+     lic:["Subscription","Per-user"],sup:["Standard","Premium","24x7"],topo:["Cloud","Hybrid"],deploy:["SaaS"],term:["1-year","3-year","Monthly"],opt:["Trial","Migration","Training"]},
+    {cat:["devices"],svc:"Cisco IP Phone 9800 Series",def:"Wi-Fi 6E multi-platform desk phones with Bluetooth and modern touchscreens.",use:"IP desk phone",when:"New phone refresh",fit:"SML",cost:"M",
+     lic:["Perpetual","Subscription"],sup:["Standard","Premium","TAC","Partner"],topo:["On-prem","Cloud","Hybrid"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Migration","Training","MSP"]}
+  ]},
+
+  /* ---------------- SENTINELONE ---------------- */
+  { name:"SentinelOne", color:"var(--s1)", entries:[
+    {cat:["endpoint"],svc:"Singularity Core",def:"Cloud-native NGAV and EPP replacing legacy antivirus with AI-powered prevention.",use:"NGAV / EPP",when:"Replace legacy AV, endpoint baseline",fit:"SML",cost:"L",
+     lic:["Subscription","Per-device","Per-user"],sup:["Standard","Premium","24x7","MDR"],topo:["Cloud","Hybrid","Distributed"],deploy:["SaaS"],term:["1-year","3-year"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["endpoint","secops"],svc:"Singularity Endpoint",def:"AI-powered EDR/EPP with autonomous real-time prevention, detection and response.",use:"EDR / XDR",when:"Endpoint detection and response",fit:"SML",cost:"M",
+     lic:["Subscription","Per-device","Per-user"],sup:["Standard","Premium","24x7","MDR"],topo:["Cloud","Hybrid","Distributed"],deploy:["SaaS"],term:["1-year","3-year"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["cloudsecurity"],svc:"Singularity Cloud Security",def:"AI-powered CNAPP securing cloud workloads, infrastructure and data from build to runtime.",use:"CNAPP",when:"Multi-cloud security, unified cloud protection",fit:"SML",cost:"H",
+     lic:["Subscription","Consumption"],sup:["Premium","24x7","MDR"],topo:["Cloud","Hybrid"],deploy:["SaaS"],term:["1-year","3-year"],opt:["Trial","Migration","Training","FinOps"]},
+    {cat:["cloudsecurity"],svc:"Cloud Workload Security",def:"CWPP securing servers, cloud VMs and containers across multi-cloud.",use:"CWPP",when:"Runtime workload protection",fit:"SML",cost:"M",
+     lic:["Subscription","Consumption"],sup:["Standard","Premium","24x7"],topo:["Cloud","Hybrid"],deploy:["SaaS"],term:["1-year","3-year"],opt:["Trial","Migration","Training"]},
+    {cat:["endpoint"],svc:"Singularity Ranger",def:"Active Directory and Azure AD assessor detecting vulnerabilities through continuous identity assessment.",use:"AD assessment",when:"AD/Azure AD security assessment",fit:"SML",cost:"M",
+     lic:["Subscription"],sup:["Standard","Premium","MDR"],topo:["Cloud","Hybrid","On-prem"],deploy:["SaaS"],term:["1-year","3-year"],opt:["Trial","Migration","Training"]},
+    {cat:["secops"],svc:"Purple AI",def:"Generative AI security analyst providing natural language threat hunting and automated triage.",use:"AI SOC assistant",when:"AI-driven SOC, natural language queries",fit:"SML",cost:"M",
+     lic:["Subscription"],sup:["Premium","24x7","MDR"],topo:["Cloud","Hybrid"],deploy:["SaaS"],term:["1-year","3-year"],opt:["Trial","Training"]},
+    {cat:["secops"],svc:"Singularity AI SIEM",def:"AI-native SIEM eliminating ingestion costs and data overloads.",use:"AI SIEM",when:"Modern SOC, cost-effective SIEM",fit:"SML",cost:"M",
+     lic:["Subscription","Consumption"],sup:["Premium","24x7","MDR"],topo:["Cloud","Hybrid"],deploy:["SaaS"],term:["1-year","3-year"],opt:["Trial","Migration","Training","FinOps"]},
+    {cat:["nac"],svc:"Singularity Identity",def:"Source of context about who or what is acting, correlating identity, endpoint and workload signals.",use:"Identity security",when:"Identity-based threat detection",fit:"SML",cost:"M",
+     lic:["Subscription","Per-user"],sup:["Premium","24x7","MDR"],topo:["Cloud","Hybrid"],deploy:["SaaS"],term:["1-year","3-year"],opt:["Trial","Migration","Training"]},
+    {cat:["secops"],svc:"Singularity Vigilance",def:"Managed Detection and Response providing 24/7 expert monitoring and response.",use:"MDR",when:"Outsourced SOC, 24/7 coverage",fit:"SML",cost:"M",
+     lic:["Subscription","Per-device"],sup:["MDR","24x7","Premium"],topo:["Cloud","Hybrid"],deploy:["Managed","SaaS"],term:["1-year","3-year"],opt:["Trial","MSP"]}
+  ]},
+
+  /* ---------------- GENESYS ---------------- */
+  { name:"Genesys", color:"var(--genesys)", entries:[
+    {cat:["contactcenter"],svc:"Genesys Cloud CX 1",def:"Voice-only contact center with speech-enabled IVR, routing, recording and native bots.",use:"Voice contact center",when:"Voice-centric, entry-level CC",fit:"SML",cost:"L",
+     lic:["Subscription","Per-user"],sup:["Standard","Premium","24x7","MDR"],topo:["Cloud","Distributed"],deploy:["SaaS"],term:["1-year","3-year","Monthly"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["contactcenter"],svc:"Genesys Cloud CX 2",def:"Omnichannel package adding digital channels, omnichannel routing, QA and predictive engagement.",use:"Omnichannel CC",when:"Multi-channel engagement",fit:"SML",cost:"M",
+     lic:["Subscription","Per-user"],sup:["Standard","Premium","24x7","MDR"],topo:["Cloud","Distributed"],deploy:["SaaS"],term:["1-year","3-year","Monthly"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["contactcenter"],svc:"Genesys Cloud CX 3",def:"Full WEM package with employee performance, forecasting, scheduling and analytics.",use:"Omnichannel + WEM",when:"Workforce optimization priority",fit:"SML",cost:"H",
+     lic:["Subscription","Per-user"],sup:["Premium","24x7","MDR"],topo:["Cloud","Distributed"],deploy:["SaaS"],term:["1-year","3-year"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["contactcenter","ai"],svc:"Genesys Cloud CX 4",def:"Adds Customer Journey Management, AI Experience Tokens, virtual agents and Supervisor Copilot.",use:"AI-powered omnichannel",when:"Advanced AI and journey orchestration",fit:"SML",cost:"H",
+     lic:["Subscription","Per-user","Consumption"],sup:["Premium","24x7","MDR"],topo:["Cloud","Distributed"],deploy:["SaaS"],term:["1-year","3-year"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["contactcenter","ai"],svc:"Agent Copilot",def:"Real-time AI assistant guiding agents with insights and automating post-call tasks.",use:"Agent assistance",when:"Reduce handle time",fit:"SML",cost:"M",
+     lic:["Subscription","Per-user"],sup:["Premium","24x7"],topo:["Cloud"],deploy:["SaaS"],term:["1-year","3-year"],opt:["Trial","Training"]},
+    {cat:["contactcenter","ai"],svc:"Predictive Routing",def:"ML-powered routing matching customers to the best agent based on business outcomes.",use:"Outcome-based routing",when:"Optimize customer-agent match",fit:"SML",cost:"M",
+     lic:["Subscription","Per-user"],sup:["Premium","24x7"],topo:["Cloud","Distributed"],deploy:["SaaS"],term:["1-year","3-year"],opt:["Trial","Migration","Training"]},
+    {cat:["contactcenter","ai"],svc:"Virtual Agent",def:"AI-powered virtual agents handling interactions autonomously.",use:"Self-service AI",when:"Automate customer resolutions",fit:"SML",cost:"M",
+     lic:["Subscription","Consumption"],sup:["Premium","24x7"],topo:["Cloud"],deploy:["SaaS"],term:["1-year","3-year","Monthly"],opt:["Trial","Training"]},
+    {cat:["contactcenter"],svc:"Workforce Management",def:"AI-powered forecasting and scheduling with shift bidding and mobile notifications.",use:"WFM",when:"Optimize staffing and scheduling",fit:"SML",cost:"M",
+     lic:["Subscription","Per-user"],sup:["Premium","24x7"],topo:["Cloud"],deploy:["SaaS"],term:["1-year","3-year"],opt:["Trial","Training"]},
+    {cat:["contactcenter"],svc:"Genesys Cloud Voice",def:"Built-in cloud telephony providing reliable, resilient and scalable voice.",use:"Cloud telephony",when:"Managed telephony from Genesys",fit:"SML",cost:"M",
+     lic:["Subscription","Consumption"],sup:["Premium","24x7","MDR"],topo:["Cloud","Distributed"],deploy:["SaaS"],term:["1-year","3-year"],opt:["Trial","Migration","MSP"]}
+  ]},
+
+  /* ---------------- AVAYA ---------------- */
+  { name:"Avaya", color:"var(--avaya)", entries:[
+    {cat:["contactcenter"],svc:"Avaya Infinity",def:"Unified customer-experience platform supporting cloud, hybrid and on-prem with AI orchestration.",use:"Unified CX platform",when:"Modernize without replacing",fit:"SML",cost:"H",
+     lic:["Subscription","Per-user","Perpetual"],sup:["Standard","Premium","24x7","MDR"],topo:["Cloud","Hybrid","On-prem","Centralized"],deploy:["SaaS","Private cloud","Appliance"],term:["1-year","3-year","5-year"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["contactcenter"],svc:"AXP Public Cloud",def:"Multi-tenant CCaaS with voice, digital channels, self-service, WEM and AI.",use:"CCaaS",when:"Cloud-first, fast rollout",fit:"SML",cost:"H",
+     lic:["Subscription","Per-user"],sup:["Premium","24x7","MDR"],topo:["Cloud","Distributed"],deploy:["SaaS"],term:["1-year","3-year","Monthly"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["contactcenter","ai"],svc:"Avaya AI Virtual Agent",def:"Cloud voice and chat bot handling routine contacts end-to-end with human handoff.",use:"Voice / chat bot",when:"Automate high-volume contacts",fit:"SML",cost:"H",
+     lic:["Subscription","Consumption"],sup:["Premium","24x7"],topo:["Cloud"],deploy:["SaaS"],term:["1-year","3-year"],opt:["Trial","Training"]},
+    {cat:["contactcenter","ai"],svc:"Avaya AI Agent Assist",def:"Real-time transcription, sentiment and next-best-action suggestions for live agents.",use:"Agent copilot",when:"Accelerate handle time & quality",fit:"SML",cost:"H",
+     lic:["Subscription","Per-user"],sup:["Premium","24x7"],topo:["Cloud","Hybrid"],deploy:["SaaS"],term:["1-year","3-year"],opt:["Trial","Training"]},
+    {cat:["uc"],svc:"Avaya Aura Platform",def:"Enterprise UC suite delivering voice, video and mobility across sites.",use:"Enterprise UC",when:"Large multi-site UC estate",fit:"SML",cost:"H",
+     lic:["Perpetual","Subscription"],sup:["Premium","24x7","TAC","Partner"],topo:["On-prem","Hybrid","Centralized"],deploy:["Appliance","Virtual"],term:["1-year","3-year","5-year"],opt:["Migration","Training","MSP"]},
+    {cat:["uc"],svc:"Avaya Cloud Office (ACO)",def:"Cloud UCaaS delivered with RingCentral — voice, video, meetings and messaging per-user.",use:"Cloud UCaaS",when:"Cloud UC, replace on-prem PBX",fit:"SML",cost:"M",
+     lic:["Subscription","Per-user"],sup:["Standard","Premium","24x7"],topo:["Cloud","Distributed"],deploy:["SaaS"],term:["1-year","3-year","Monthly"],opt:["Trial","Migration","Training"]},
+    {cat:["uc"],svc:"IP Office",def:"Unified communications platform for small and mid-market businesses up to 3,000 users.",use:"SMB PBX",when:"SMB / mid-market on-prem or hybrid",fit:"SML",cost:"M",
+     lic:["Perpetual","Subscription"],sup:["Standard","Premium","TAC","Partner"],topo:["On-prem","Hybrid","Centralized"],deploy:["Appliance","Virtual"],term:["1-year","3-year","5-year"],opt:["Migration","Training","MSP"]},
+    {cat:["devices"],svc:"J179 / J189",def:"Power-user and executive SIP phones with color displays and expansion modules.",use:"Desk phones",when:"Managers, assistants, supervisors",fit:"SML",cost:"M",
+     lic:["Perpetual","Subscription"],sup:["Standard","Premium","Partner"],topo:["On-prem","Cloud","Hybrid"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Migration","Training","MSP"]}
+  ]},
+
+  /* ---------------- 3CX ---------------- */
+  { name:"3CX", color:"var(--tcx)", entries:[
+    {cat:["uc"],svc:"3CX SMB Free",def:"Free cloud phone system for small offices up to 10 users with core calling, mobility and video.",use:"SMB phone system",when:"Small office, no-cost starting point",fit:"SML",cost:"L",
+     lic:["Subscription","Per-user"],sup:["Basic","Standard","Partner"],topo:["Cloud","Distributed"],deploy:["SaaS"],term:["Monthly","1-year"],opt:["Trial","Training","MSP"]},
+    {cat:["uc"],svc:"3CX PRO",def:"Commercial edition adding advanced call-center, reporting, CRM and management capabilities.",use:"Advanced PBX / CC",when:"Queues, reporting and CRM required",fit:"SML",cost:"M",
+     lic:["Subscription","Per-user","Capacity-based"],sup:["Standard","Premium","Partner"],topo:["Cloud","Hybrid","On-prem"],deploy:["SaaS","Virtual","Appliance"],term:["1-year","3-year"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["uc","ai"],svc:"3CX AI Edition",def:"Enterprise edition combining the 3CX platform with integrated AI agents, transcription and intelligence.",use:"AI Phone System",when:"AI automation and advanced enterprise comms",fit:"SML",cost:"H",
+     lic:["Subscription","Per-user","Capacity-based"],sup:["Premium","24x7","Partner"],topo:["Cloud","Hybrid","On-prem"],deploy:["SaaS","Private cloud","Virtual","Appliance"],term:["1-year","3-year"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["contactcenter"],svc:"3CX Contact Center",def:"Integrated contact center covering queues, routing, reporting, CRM and digital channels.",use:"Contact center",when:"Customer-service teams need more than a PBX",fit:"SML",cost:"H",
+     lic:["Subscription","Per-user","Capacity-based"],sup:["Premium","24x7","Partner"],topo:["Cloud","Hybrid","On-prem","Distributed"],deploy:["SaaS","Virtual","Appliance"],term:["1-year","3-year"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["contactcenter"],svc:"Call Queues / Skill Routing",def:"Queueing and distribution of inbound calls using configurable strategies and agent skills.",use:"Inbound call center",when:"Teams share incoming customer calls",fit:"SML",cost:"L",
+     lic:["Subscription","Per-user"],sup:["Standard","Premium"],topo:["Cloud","Hybrid","On-prem"],deploy:["SaaS","Virtual","Appliance"],term:["1-year","3-year"],opt:["Training"]},
+    {cat:["contactcenter","ai"],svc:"AI Receptionist",def:"AI agent answering calls, understanding requests, routing callers and filtering unwanted calls.",use:"AI receptionist",when:"Automate front-desk call handling",fit:"SML",cost:"H",
+     lic:["Subscription","Consumption"],sup:["Premium","24x7"],topo:["Cloud"],deploy:["SaaS"],term:["1-year","3-year","Monthly"],opt:["Trial","Training"]},
+    {cat:["uc"],svc:"3CX Video Conferencing",def:"Integrated browser-based video meetings up to 250 participants with screen sharing and recording.",use:"Video meetings",when:"Integrated conferencing required",fit:"SML",cost:"M",
+     lic:["Subscription","Per-user"],sup:["Standard","Premium"],topo:["Cloud","Hybrid","On-prem"],deploy:["SaaS","Virtual","Appliance"],term:["1-year","3-year"],opt:["Trial","Training"]},
+    {cat:["devices"],svc:"Fanvil / Yealink / Snom IP Phones",def:"Supported SIP desk phones covering entry, business, executive and operator use cases.",use:"Desk phones",when:"Standardized supported endpoints",fit:"SML",cost:"L",
+     lic:["Perpetual","Per-device"],sup:["Basic","Standard","Partner"],topo:["On-prem","Cloud","Hybrid"],deploy:["Appliance"],term:["1-year","3-year"],opt:["Migration","Training","MSP"]}
+  ]},
+
+  /* ---------------- RUCKUS ---------------- */
+  { name:"RUCKUS", color:"var(--ruckus)", entries:[
+    {cat:["wireless"],svc:"R770 / R670",def:"Wi-Fi 7 indoor access points for very high-density enterprise and campus deployments.",use:"Wi-Fi 7 AP",when:"Capacity, 6 GHz and high client density",fit:"SML",cost:"H",
+     lic:["Perpetual","Subscription","Per-device"],sup:["Standard","Premium","24x7","TAC","Partner"],topo:["On-prem","Hybrid","Centralized","Distributed"],deploy:["Appliance"],term:["1-year","3-year","5-year","Enterprise Agreement"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["wireless"],svc:"R560 / R760",def:"Wi-Fi 6E indoor access points supporting the 6 GHz band for capacity and reduced interference.",use:"Wi-Fi 6E AP",when:"6 GHz devices and spectrum matter",fit:"SML",cost:"H",
+     lic:["Perpetual","Subscription","Per-device"],sup:["Standard","Premium","24x7","TAC","Partner"],topo:["On-prem","Hybrid","Centralized","Distributed"],deploy:["Appliance"],term:["1-year","3-year","5-year","Enterprise Agreement"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["wireless"],svc:"R650 / R550 / R350",def:"Wi-Fi 6 indoor AP family for enterprise campuses, education, healthcare and SMB.",use:"Wi-Fi 6 AP",when:"Strong Wi-Fi 6 performance across a campus",fit:"SML",cost:"M",
+     lic:["Perpetual","Subscription","Per-device"],sup:["Standard","Premium","Partner"],topo:["On-prem","Hybrid","Centralized","Distributed"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["wireless"],svc:"T670 / T750 / T350",def:"Wi-Fi 7 and Wi-Fi 6 outdoor APs for stadiums, campuses and public venues.",use:"Outdoor Wi-Fi",when:"Outdoor capacity and coverage",fit:"SML",cost:"H",
+     lic:["Perpetual","Subscription","Per-device"],sup:["Premium","24x7","TAC","Partner"],topo:["On-prem","Hybrid","Centralized","Distributed"],deploy:["Appliance"],term:["1-year","3-year","5-year","Enterprise Agreement"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["wireless"],svc:"H670 / H550 / H350",def:"Hospitality and MDU access points for guest rooms and multi-dwelling environments.",use:"Hospitality / MDU Wi-Fi",when:"Room-level or unit-level coverage",fit:"SML",cost:"M",
+     lic:["Perpetual","Subscription","Per-device"],sup:["Standard","Premium","Partner"],topo:["On-prem","Centralized","Distributed"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Migration","Training","MSP"]},
+    {cat:["switching"],svc:"ICX 8200 / 8100",def:"Enterprise access switches supporting multigigabit, PoE and high-speed uplinks.",use:"Access switching",when:"Modern Wi-Fi access and PoE switching",fit:"SML",cost:"H",
+     lic:["Perpetual","Subscription"],sup:["Standard","Premium","24x7","TAC","Partner"],topo:["On-prem","Centralized","Distributed"],deploy:["Appliance"],term:["1-year","3-year","5-year","Enterprise Agreement"],opt:["Migration","Training","MSP"]},
+    {cat:["switching"],svc:"ICX 7550 / 7650 / 7850",def:"High-performance aggregation, core and data-center switching platforms.",use:"Core / aggregation",when:"High throughput and resiliency required",fit:"SML",cost:"H",
+     lic:["Perpetual","Subscription"],sup:["Premium","24x7","TAC"],topo:["On-prem","Leaf-spine","Centralized"],deploy:["Appliance"],term:["1-year","3-year","5-year","Enterprise Agreement"],opt:["Migration","Training"]},
+    {cat:["netmgmt"],svc:"RUCKUS One",def:"AI-driven cloud network assurance, service delivery and BI platform for converged wired and wireless.",use:"Cloud network management",when:"Unified cloud management and assurance",fit:"SML",cost:"H",
+     lic:["Subscription","Per-device"],sup:["Premium","24x7","TAC","Partner"],topo:["Cloud","Hybrid","Centralized","Distributed"],deploy:["SaaS"],term:["1-year","3-year","5-year","Enterprise Agreement"],opt:["Trial","Migration","Training","MSP","FinOps"]},
+    {cat:["netmgmt"],svc:"SmartZone",def:"Enterprise network controller platform for managing RUCKUS APs and ICX switches.",use:"WLAN / network controller",when:"Centralized private-cloud control",fit:"SML",cost:"H",
+     lic:["Perpetual","Subscription"],sup:["Premium","24x7","TAC","Partner"],topo:["On-prem","Hybrid","Centralized"],deploy:["Appliance","Virtual"],term:["1-year","3-year","5-year"],opt:["Migration","Training","MSP"]},
+    {cat:["netmgmt"],svc:"RUCKUS Unleashed",def:"Controller-less WLAN architecture with controller functionality embedded in the AP cluster.",use:"Controller-less Wi-Fi",when:"SMBs need simple WLAN without a controller",fit:"SML",cost:"M",
+     lic:["Perpetual","Subscription"],sup:["Standard","Premium","Partner"],topo:["On-prem","Distributed"],deploy:["Appliance"],term:["1-year","3-year","5-year"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["nac"],svc:"Cloudpath",def:"Secure network access platform for onboarding BYOD, guests, IT-owned and IoT devices.",use:"Network access control",when:"Secure onboarding and identity-based access",fit:"SML",cost:"H",
+     lic:["Subscription","Per-device"],sup:["Premium","24x7","TAC","Partner"],topo:["Cloud","Hybrid","On-prem"],deploy:["SaaS","Virtual","Appliance"],term:["1-year","3-year","5-year"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["iot"],svc:"RUCKUS IoT Suite",def:"IoT management platform connecting RUCKUS APs and partner IoT devices.",use:"IoT management",when:"Multiple IoT systems share the WLAN",fit:"SML",cost:"H",
+     lic:["Subscription","Per-device"],sup:["Premium","24x7","TAC","Partner"],topo:["On-prem","Hybrid","Centralized","Distributed"],deploy:["SaaS","Appliance"],term:["1-year","3-year","5-year"],opt:["Trial","Migration","Training","MSP"]},
+    {cat:["netmgmt","ai"],svc:"RUCKUS AI",def:"AI-driven analytics for network assurance, incident detection, health monitoring and troubleshooting.",use:"AI network assurance",when:"Proactive network operations",fit:"SML",cost:"H",
+     lic:["Subscription","Per-device"],sup:["Premium","24x7","TAC","Partner"],topo:["Cloud","Hybrid","Centralized"],deploy:["SaaS"],term:["1-year","3-year","5-year","Enterprise Agreement"],opt:["Trial","Migration","Training","MSP","FinOps"]}
+  ]}
+];
+
+/* =========================================================
+   STATE
+   ========================================================= */
+const state = {
+  shortlist: []
+};
+
+/* =========================================================
+   DOM
+   ========================================================= */
+const els = {
+  tabs: document.querySelectorAll('.tab'),
+  panels: document.querySelectorAll('.panel'),
+  category: document.getElementById('category'),
+  size: document.getElementById('size'),
+  keyword: document.getElementById('keyword'),
+  sort: document.getElementById('sort'),
+  go: document.getElementById('go'),
+  addShortlist: document.getElementById('addShortlist'),
+  reset: document.getElementById('reset'),
+  print: document.getElementById('print'),
+  clearShortlist: document.getElementById('clearShortlist'),
+  printShortlist: document.getElementById('printShortlist'),
+  matrixCategory: document.getElementById('matrixCategory'),
+  results: document.getElementById('results'),
+  summary: document.getElementById('summary'),
+  shortlistBody: document.getElementById('shortlistBody'),
+  matrixBody: document.getElementById('matrixBody'),
+  empty: document.getElementById('empty'),
+  chips: {
+    license: document.querySelectorAll('#chips-license input'),
+    support: document.querySelectorAll('#chips-support input'),
+    topology: document.querySelectorAll('#chips-topology input'),
+    deploy: document.querySelectorAll('#chips-deploy input'),
+    term: document.querySelectorAll('#chips-term input'),
+    options: document.querySelectorAll('#chips-options input')
+  }
+};
+
+/* =========================================================
+   TABS
+   ========================================================= */
+els.tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    els.tabs.forEach(t => t.classList.remove('active'));
+    els.panels.forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+    if(tab.dataset.tab === 'shortlist') renderShortlist();
+    if(tab.dataset.tab === 'matrix') renderMatrix();
+  });
+});
+
+/* =========================================================
+   CHIP HELPERS
+   ========================================================= */
+function getChecked(inputs){
+  return Array.from(inputs).filter(i => i.checked).map(i => i.value);
+}
+function anyOverlap(arrA, arrB){
+  if(!arrB.length) return true;
+  return arrA.some(x => arrB.includes(x));
+}
+
+/* =========================================================
+   MATCHING
+   ========================================================= */
+function sizeMatches(fit, size){
+  if(size === 'any') return true;
+  return fit.includes(size);
+}
+function textMatches(entry, kw){
+  if(!kw) return true;
+  const k = kw.toLowerCase();
+  return (entry.svc + ' ' + entry.def + ' ' + entry.use + ' ' + entry.when + ' ' +
+          (entry.lic||[]).join(' ') + ' ' + (entry.sup||[]).join(' ') + ' ' +
+          (entry.topo||[]).join(' ') + ' ' + (entry.deploy||[]).join(' ') + ' ' +
+          (entry.term||[]).join(' ') + ' ' + (entry.opt||[]).join(' ')).toLowerCase().includes(k);
+}
+function elementMatches(entry, filters){
+  return (
+    anyOverlap(entry.lic||[], filters.license) &&
+    anyOverlap(entry.sup||[], filters.support) &&
+    anyOverlap(entry.topo||[], filters.topology) &&
+    anyOverlap(entry.deploy||[], filters.deploy) &&
+    anyOverlap(entry.term||[], filters.term) &&
+    anyOverlap(entry.opt||[], filters.options)
+  );
+}
+
+/* =========================================================
+   RENDER
+   ========================================================= */
+function render(){
+  const cat = els.category.value;
+  const size = els.size.value;
+  const kw = els.keyword.value.trim();
+  const sortBy = els.sort.value;
+  const filters = {
+    license: getChecked(els.chips.license),
+    support: getChecked(els.chips.support),
+    topology: getChecked(els.chips.topology),
+    deploy: getChecked(els.chips.deploy),
+    term: getChecked(els.chips.term),
+    options: getChecked(els.chips.options)
+  };
+
+  if(!cat){
+    els.results.innerHTML = '<div class="empty">Select a <b>solution category</b> above and click <b>Show matches</b>.</div>';
+    els.summary.className = 'summary';
+    els.summary.innerHTML = '';
+    return;
+  }
+
+  let total = 0;
+  const blocks = [];
+
+  BRANDS.forEach(brand => {
+    let matches = brand.entries.filter(e =>
+      e.cat.includes(cat) &&
+      sizeMatches(e.fit, size) &&
+      textMatches(e, kw) &&
+      elementMatches(e, filters)
+    );
+
+    if(sortBy === 'cost'){
+      const order = {L:0, M:1, H:2};
+      matches.sort((a,b) => order[a.cost] - order[b.cost]);
+    } else if(sortBy === 'fit' && size !== 'any'){
+      matches.sort((a,b) => (b.fit.includes(size)?1:0) - (a.fit.includes(size)?1:0));
+    }
+
+    if(matches.length === 0) return;
+    total += matches.length;
+
+    const rows = matches.map(e => {
+      const lic = (e.lic||[]).map(x => `<span class="pill lic">${x}</span>`).join('');
+      const sup = (e.sup||[]).map(x => `<span class="pill sup">${x}</span>`).join('');
+      const topo = (e.topo||[]).map(x => `<span class="pill topo">${x}</span>`).join('');
+      const dep = (e.deploy||[]).map(x => `<span class="pill deploy">${x}</span>`).join('');
+      return `
+        <tr>
+          <td class="svc">${e.svc}</td>
+          <td class="def">${e.def}</td>
+          <td>${e.use}</td>
+          <td class="when">${e.when}</td>
+          <td>
+            <span class="fit">
+              <span class="${e.fit.includes('S')?'on':''}">S</span>
+              <span class="${e.fit.includes('M')?'on':''}">M</span>
+              <span class="${e.fit.includes('L')?'on':''}">L</span>
+            </span>
+          </td>
+          <td><span class="cost ${e.cost}">${e.cost==='L'?'LOW':e.cost==='M'?'MED':'HIGH'}</span></td>
+          <td>${lic}</td>
+          <td>${sup}</td>
+          <td>${topo}</td>
+          <td>${dep}</td>
+        </tr>
+      `;
+    }).join('');
+
+    blocks.push(`
+      <section class="brand">
+        <h3 style="background:${brand.color}">
+          <span class="logo-dot"></span>
+          ${brand.name}
+          <span class="count">${matches.length} match${matches.length>1?'es':''}</span>
+        </h3>
+        <table>
+          <thead>
+            <tr>
+              <th class="col-svc">Product</th>
+              <th class="col-def">Definition</th>
+              <th class="col-use">Use case</th>
+              <th class="col-when">When to choose</th>
+              <th class="col-fit">Fit</th>
+              <th class="col-cost">Cost</th>
+              <th class="col-lic">Licensing</th>
+              <th class="col-sup">Support</th>
+              <th class="col-sup">Topology</th>
+              <th class="col-sup">Deployment</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </section>
+    `);
+  });
+
+  if(blocks.length === 0){
+    els.results.innerHTML = '<div class="empty">No products matched. Try relaxing element filters or changing the category.</div>';
+  } else {
+    els.results.innerHTML = blocks.join('');
+  }
+
+  const catLabel = els.category.options[els.category.selectedIndex].text;
+  const sizeLabel = els.size.options[els.size.selectedIndex].text;
+  const tags = [
+    `<span class="tag">${catLabel}</span>`,
+    `<span class="tag alt">${sizeLabel}</span>`,
+    kw ? `<span class="tag warn">Keyword: “${kw}”</span>` : '',
+    filters.license.length ? `<span class="tag purple">License: ${filters.license.join(', ')}</span>` : '',
+    filters.support.length ? `<span class="tag purple">Support: ${filters.support.join(', ')}</span>` : '',
+    filters.topology.length ? `<span class="tag purple">Topology: ${filters.topology.join(', ')}</span>` : '',
+    filters.deploy.length ? `<span class="tag purple">Deploy: ${filters.deploy.join(', ')}</span>` : '',
+    filters.term.length ? `<span class="tag purple">Term: ${filters.term.join(', ')}</span>` : '',
+    filters.options.length ? `<span class="tag purple">Options: ${filters.options.join(', ')}</span>` : ''
+  ].join('');
+  els.summary.className = 'summary show';
+  els.summary.innerHTML = `${tags}<br><b>${total}</b> product${total!==1?'s':''} across <b>${blocks.length}</b> brand${blocks.length!==1?'s':''}. ` +
+    `Each result shows its licensing models, support tiers, topologies and deployment models so you can compare vendors on the specific element you care about.`;
+}
+
+/* =========================================================
+   SHORTLIST
+   ========================================================= */
+function addMatchesToShortlist(){
+  const cat = els.category.value;
+  const size = els.size.value;
+  const kw = els.keyword.value.trim();
+  const filters = {
+    license: getChecked(els.chips.license),
+    support: getChecked(els.chips.support),
+    topology: getChecked(els.chips.topology),
+    deploy: getChecked(els.chips.deploy),
+    term: getChecked(els.chips.term),
+    options: getChecked(els.chips.options)
+  };
+  if(!cat){ alert('Pick a category first.'); return; }
+  let added = 0;
+  BRANDS.forEach(brand => {
+    brand.entries.filter(e =>
+      e.cat.includes(cat) && sizeMatches(e.fit, size) && textMatches(e, kw) && elementMatches(e, filters)
+    ).forEach(e => {
+      const key = brand.name + '|' + e.svc;
+      if(!state.shortlist.find(x => x.key === key)){
+        state.shortlist.push({key, brand:brand.name, color:brand.color, ...e});
+        added++;
+      }
+    });
+  });
+  alert(added + ' product(s) added to shortlist.');
+}
+
+function renderShortlist(){
+  if(state.shortlist.length === 0){
+    els.shortlistBody.innerHTML = '<div class="empty">Your shortlist is empty. Run a search in the <b>Solution Builder</b> and click <b>Add matches to shortlist</b>.</div>';
+    return;
+  }
+  const byBrand = {};
+  state.shortlist.forEach(x => {
+    if(!byBrand[x.brand]) byBrand[x.brand] = {color:x.color, items:[]};
+    byBrand[x.brand].items.push(x);
+  });
+  const html = Object.keys(byBrand).map(brand => {
+    const b = byBrand[brand];
+    const rows = b.items.map(e => `
+      <tr>
+        <td class="svc">${e.svc}</td>
+        <td class="def">${e.def}</td>
+        <td>${(e.lic||[]).map(x=>`<span class="pill lic">${x}</span>`).join('')}</td>
+        <td>${(e.sup||[]).map(x=>`<span class="pill sup">${x}</span>`).join('')}</td>
+        <td>${(e.topo||[]).map(x=>`<span class="pill topo">${x}</span>`).join('')}</td>
+        <td><span class="cost ${e.cost}">${e.cost==='L'?'LOW':e.cost==='M'?'MED':'HIGH'}</span></td>
+      </tr>
+    `).join('');
+    return `
+      <section class="brand" style="margin-bottom:14px">
+        <h3 style="background:${b.color}">
+          <span class="logo-dot"></span>${brand}
+          <span class="count">${b.items.length} item${b.items.length>1?'s':''}</span>
+        </h3>
+        <table>
+          <thead><tr><th>Product</th><th>Definition</th><th>Licensing</th><th>Support</th><th>Topology</th><th>Cost</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </section>
+    `;
+  }).join('');
+  els.shortlistBody.innerHTML = html;
+}
+
+/* =========================================================
+   MATRIX
+   ========================================================= */
+function renderMatrix(){
+  const cat = els.matrixCategory.value;
+  if(!cat){
+    els.matrixBody.innerHTML = '<div class="empty">Pick a category to build the element matrix.</div>';
+    return;
+  }
+  const allLic = new Set(), allSup = new Set(), allTopo = new Set(), allDep = new Set();
+  BRANDS.forEach(b => b.entries.filter(e => e.cat.includes(cat)).forEach(e => {
+    (e.lic||[]).forEach(x=>allLic.add(x));
+    (e.sup||[]).forEach(x=>allSup.add(x));
+    (e.topo||[]).forEach(x=>allTopo.add(x));
+    (e.deploy||[]).forEach(x=>allDep.add(x));
+  }));
+  const licArr = [...allLic].sort();
+  const supArr = [...allSup].sort();
+  const topoArr = [...allTopo].sort();
+  const depArr = [...allDep].sort();
+
+  function matrix(sectionTitle, columns, accessor){
+    const head = columns.map(c => `<th>${c}</th>`).join('');
+    const rows = BRANDS.map(b => {
+      const items = b.entries.filter(e => e.cat.includes(cat));
+      if(items.length === 0) return '';
+      const cells = columns.map(c => {
+        const has = items.some(e => (accessor(e)||[]).includes(c));
+        return `<td style="text-align:center">${has ? '●' : '·'}</td>`;
+      }).join('');
+      return `<tr><td class="svc">${b.name}</td>${cells}</tr>`;
+    }).join('');
+    return `
+      <h3>${sectionTitle}</h3>
+      <table style="width:100%;border-collapse:collapse;font-size:11.5px;table-layout:auto">
+        <thead><tr><th style="text-align:left">Brand</th>${head}</tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    `;
+  }
+
+  els.matrixBody.innerHTML =
+    matrix('Licensing models', licArr, e => e.lic) +
+    matrix('Support tiers', supArr, e => e.sup) +
+    matrix('Topologies', topoArr, e => e.topo) +
+    matrix('Deployment models', depArr, e => e.deploy);
+}
+
+/* =========================================================
+   EVENTS
+   ========================================================= */
+els.go.addEventListener('click', render);
+els.addShortlist.addEventListener('click', addMatchesToShortlist);
+els.reset.addEventListener('click', () => {
+  els.category.value = '';
+  els.size.value = 'any';
+  els.keyword.value = '';
+  els.sort.value = 'brand';
+  Object.values(els.chips).forEach(group => group.forEach(i => i.checked = false));
+  document.querySelectorAll('.chip.on').forEach(c => c.classList.remove('on'));
+  render();
+});
+els.print.addEventListener('click', () => window.print());
+els.clearShortlist.addEventListener('click', () => { state.shortlist = []; renderShortlist(); });
+els.printShortlist.addEventListener('click', () => window.print());
+els.matrixCategory.addEventListener('change', renderMatrix);
+els.category.addEventListener('change', () => { if(els.category.value) render(); });
+els.size.addEventListener('change', () => { if(els.category.value) render(); });
+els.keyword.addEventListener('keydown', e => { if(e.key === 'Enter') render(); });
+els.sort.addEventListener('change', () => { if(els.category.value) render(); });
+
+/* Chip visual state */
+Object.values(els.chips).forEach(group => group.forEach(input => {
+  input.addEventListener('change', () => {
+    const label = input.closest('.chip');
+    if(label) label.classList.toggle('on', input.checked);
+  });
+}));
+
+/* Initial */
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Hikvision Complete Product &amp; Solution Architect Reference</title>
+<style>
+  :root {
+    --hik-red: #C8102E;
+    --hik-red-dark: #8B0000;
+    --ink: #1A1A2E;
+    --paper: #F5F5F5;
+    --card: #FFFFFF;
+    --line: #E5E5E5;
+    --muted: #6B7280;
+    --def: #334155;
+    --camera: #C8102E;
+    --nvr: #B91C1C;
+    --access: #7C2D12;
+    --intercom: #9D174D;
+    --alarm: #DC2626;
+    --software: #1E40AF;
+    --radar: #0D9488;
+    --aiot: #7C3AED;
+    --display: #D97706;
+    --storage: #16A34A;
+    --robot: #059669;
+    --smart: #2563EB;
+    --cost-low: #16A34A;
+    --cost-med: #D97706;
+    --cost-high: #C8102E;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); font-family: -apple-system, "Segoe UI", Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .sheet { max-width: 1800px; margin: 0 auto; padding: 24px; }
+
+  header {
+    background: linear-gradient(135deg, var(--hik-red-dark) 0%, var(--hik-red) 100%);
+    color: white;
+    padding: 22px 28px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 90px 1fr auto;
+    gap: 22px;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+  .logo { font-weight: 800; font-size: 28px; letter-spacing: -1px; line-height: 1; }
+  .logo .eye { color: #FFD700; display: block; font-size: 14px; margin-top: 2px; }
+  header h1 { margin: 0 0 4px 0; font-size: 26px; }
+  header .sub { margin: 0; opacity: 0.85; font-size: 13px; }
+  header .sub b { color: #FFD700; font-weight: 600; }
+  .badge {
+    text-align: right;
+    border-left: 1px solid rgba(255,255,255,0.2);
+    padding-left: 22px;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  .badge .big { font-size: 18px; font-weight: 700; color: #FFD700; display: block; }
+
+  .legend {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    font-size: 11.5px;
+    align-items: center;
+  }
+  .legend .item { display: flex; align-items: center; gap: 6px; }
+  .legend strong { color: var(--hik-red-dark); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .cat {
+    background: var(--card);
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .cat > h2 {
+    margin: 0;
+    padding: 10px 14px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cat > h2 .count {
+    margin-left: auto;
+    font-size: 11px;
+    background: rgba(255,255,255,0.25);
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-weight: 500;
+  }
+  .cat table { width: 100%; border-collapse: collapse; font-size: 11.5px; table-layout: fixed; }
+  .cat thead th {
+    background: #FAFAFA;
+    text-align: left;
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--line);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .cat tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #F1F1F1;
+    vertical-align: top;
+    line-height: 1.4;
+  }
+  .cat tbody tr:last-child td { border-bottom: none; }
+
+  .col-svc  { width: 12%; }
+  .col-def  { width: 28%; }
+  .col-use  { width: 15%; }
+  .col-when { width: 20%; }
+  .col-fit  { width: 13%; }
+  .col-cost { width: 12%; }
+
+  .svc { font-weight: 700; color: var(--ink); }
+  .def { color: var(--def); }
+  .when { color: var(--muted); }
+
+  .fit {
+    display: inline-flex;
+    gap: 3px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10px;
+  }
+  .fit span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    padding: 2px 0;
+    border: 1px solid #D1D5DB;
+    border-radius: 3px;
+    background: #FAFAFA;
+    color: #9CA3AF;
+  }
+  .fit span.on {
+    background: var(--hik-red-dark);
+    color: white;
+    border-color: var(--hik-red-dark);
+    font-weight: 700;
+  }
+
+  .cost {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    color: white;
+    min-width: 46px;
+    text-align: center;
+  }
+  .cost.L { background: var(--cost-low); }
+  .cost.M { background: var(--cost-med); }
+  .cost.H { background: var(--cost-high); }
+
+  .c-camera h2 { background: var(--camera); }
+  .c-nvr h2 { background: var(--nvr); }
+  .c-access h2 { background: var(--access); }
+  .c-intercom h2 { background: var(--intercom); }
+  .c-alarm h2 { background: var(--alarm); }
+  .c-software h2 { background: var(--software); }
+  .c-radar h2 { background: var(--radar); }
+  .c-aiot h2 { background: var(--aiot); }
+  .c-display h2 { background: var(--display); }
+  .c-storage h2 { background: var(--storage); }
+  .c-robot h2 { background: var(--robot); }
+  .c-smart h2 { background: var(--smart); }
+
+  .lower {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr 0.7fr;
+    gap: 14px;
+    margin-top: 18px;
+  }
+  @media (max-width: 1100px) { .lower { grid-template-columns: 1fr; } }
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .panel h3 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: var(--hik-red-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .panel h3::before {
+    content: "";
+    display: inline-block;
+    width: 4px; height: 16px;
+    background: #FFD700;
+    border-radius: 2px;
+  }
+  .why ul { padding-left: 18px; margin: 4px 0; font-size: 12px; line-height: 1.65; }
+  .why li::marker { color: #FFD700; }
+  .arch .flow {
+    background: #F8FAFC;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 8px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10.5px;
+    white-space: pre-wrap;
+    color: #334155;
+  }
+  .arch .note { color: var(--muted); font-size: 10.5px; }
+  footer { margin-top: 18px; text-align: center; font-size: 10.5px; color: var(--muted); padding: 10px; }
+  @media print {
+    body { background: white; }
+    .sheet { max-width: none; padding: 8px; }
+    .cat, .panel, header { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<header>
+  <div class="logo">HIK<span class="eye">◉</span>VISION</div>
+  <div>
+    <h1>Hikvision Complete Product &amp; Solution Architect Reference</h1>
+    <p class="sub">Product · <b>Definition</b> · Use Case · When to Choose · Enterprise Fit · Cost Tier</p>
+  </div>
+  <div class="badge">
+    <span class="big">AIoT Portfolio</span>
+    Security · Digitalization · 2026 edition
+  </div>
+</header>
+
+<div class="legend">
+  <div class="item"><strong>Fit:</strong></div>
+  <div class="item"><span class="fit"><span class="on">S</span><span>M</span><span>L</span></span> Small / SMB</div>
+  <div class="item"><span class="fit"><span>S</span><span class="on">M</span><span>L</span></span> Mid-market</div>
+  <div class="item"><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span> Large enterprise</div>
+  <div class="item"><strong style="margin-left:10px">Cost:</strong>
+    <span class="cost L">LOW</span>
+    <span class="cost M">MED</span>
+    <span class="cost H">HIGH</span>
+  </div>
+  <div class="item" style="color:var(--muted); font-size:10.5px">Cost = typical hardware + software footprint at moderate deployment. Services with <b>*</b> are legacy or being phased out.</div>
+</div>
+
+<div class="grid">
+
+<!-- NETWORK CAMERAS -->
+<section class="cat c-camera">
+<h2>📷 Network Cameras <span class="count">12</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">DeepinView Series</td><td class="def">AI-powered cameras with deep learning for precise detection and analysis, including person/vehicle classification and behavior analytics.</td><td>AI video analytics</td><td class="when">Advanced perimeter protection, business intelligence</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">ColorVu Series</td><td class="def">Cameras with full-color imaging in near-total darkness using advanced sensor and light technology (24/7 color).</td><td>Low-light color imaging</td><td class="when">Night surveillance requiring color detail</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">AcuSense Series</td><td class="def">Cameras with built-in deep learning algorithms that distinguish humans and vehicles from other moving objects, reducing false alarms.</td><td>False alarm reduction</td><td class="when">Perimeter protection, intrusion detection</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Pro Series (EasyIP)</td><td class="def">Professional-grade IP cameras with high resolution, smart features, and robust build quality for diverse applications.</td><td>General surveillance</td><td class="when">Standard commercial/industrial CCTV</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Value Series</td><td class="def">Cost-effective IP cameras for basic surveillance needs without advanced analytics.</td><td>Entry-level surveillance</td><td class="when">Budget-conscious basic monitoring</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Panoramic Cameras</td><td class="def">Multi-sensor cameras providing 180° or 360° panoramic views with high resolution and no blind spots.</td><td>Wide-area coverage</td><td class="when">Open spaces, intersections, lobbies</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">PTZ Cameras</td><td class="def">Pan-tilt-zoom cameras with optical zoom and remote directional control for tracking and detailed observation.</td><td>Active tracking</td><td class="when">Large areas, parking lots, perimeters</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Thermal Cameras</td><td class="def">Cameras detecting heat signatures for surveillance in complete darkness, smoke, or challenging conditions.</td><td>Thermal detection</td><td class="when">Perimeter at night, fire detection, industrial</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Fisheye Cameras</td><td class="def">360° single-sensor cameras with dewarping for complete room coverage.</td><td>Small area 360°</td><td class="when">Retail, meeting rooms, small spaces</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Explosion-Proof Cameras</td><td class="def">Certified cameras for hazardous environments (ATEX/IECEx) with stainless steel housing.</td><td>Hazardous areas</td><td class="when">Oil &amp; gas, chemical plants</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Wireless Cameras</td><td class="def">Wi-Fi enabled cameras for easy deployment where cabling is impractical.</td><td>Wireless surveillance</td><td class="when">Temporary sites, hard-to-cable areas</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Solar-Powered Cameras</td><td class="def">Standalone cameras with solar panels and 4G connectivity for remote locations without power.</td><td>Off-grid surveillance</td><td class="when">Construction, agriculture, remote perimeters</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- NVR / DVR -->
+<section class="cat c-nvr">
+<h2>🎥 NVR &amp; DVR <span class="count">8</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">AcuSeek NVR</td><td class="def">AI-powered NVR enabling natural-language searches of recorded footage for faster investigation.</td><td>AI video search</td><td class="when">Rapid forensic search</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">VPro Series NVR</td><td class="def">Professional NVRs with high channel capacity, RAID support, and advanced analytics integration.</td><td>Enterprise recording</td><td class="when">Large deployments, mission-critical</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Pro Series NVR</td><td class="def">Mid-range NVRs balancing performance, features, and cost for commercial applications.</td><td>Commercial recording</td><td class="when">Retail, offices, schools</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Value Series NVR</td><td class="def">Entry-level NVRs for basic recording and live viewing needs.</td><td>Basic recording</td><td class="when">Small business, home</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">DVR (Analog HD)</td><td class="def">Digital video recorders supporting analog HD cameras (TVI/AHD/CVI) with cost-effective cabling.</td><td>Legacy analog upgrade</td><td class="when">Existing coax infrastructure</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Hybrid NVR/DVR</td><td class="def">Recorders supporting both IP and analog cameras for phased migration.</td><td>Mixed system</td><td class="when">Transitioning from analog to IP</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">NVR Kits (PoE)</td><td class="def">Bundled kits with NVR and PoE cameras for simplified deployment.</td><td>All-in-one solution</td><td class="when">Small business, quick install</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">pStor Storage</td><td class="def">Scalable storage solution with direct stream storage from cameras to local or third-party storage.</td><td>Scalable storage</td><td class="when">Large-scale, flexible storage</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- ACCESS CONTROL -->
+<section class="cat c-access">
+<h2>🚪 Access Control <span class="count">8</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">DS-K2700X Series</td><td class="def">Professional multi-door controllers with flexible management for high-capacity access applications.</td><td>Multi-door control</td><td class="when">Enterprise, large facilities</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">DS-K1T502 Series</td><td class="def">All-in-one terminals combining access control, video intercom, and video security with Wi-Fi and mobile credentials.</td><td>Converged terminal</td><td class="when">Offices, modern buildings</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">DS-K1T805 Series</td><td class="def">Slim-profile access terminals with fingerprint, card, and mobile credential support (Bluetooth, NFC, QR).</td><td>Space-limited installs</td><td class="when">Glass doors, narrow frames</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">DS-K1109 Series</td><td class="def">Card readers with embedded mobile access technologies (QR code, Bluetooth).</td><td>Mobile credentials</td><td class="when">Touchless access</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Face Recognition Terminals</td><td class="def">Biometric terminals using facial recognition for touchless, high-throughput access.</td><td>Biometric access</td><td class="when">High-security, touchless entry</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Fingerprint Terminals</td><td class="def">Biometric terminals using fingerprint recognition for reliable identity verification.</td><td>Fingerprint access</td><td class="when">Time &amp; attendance, secure areas</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Access Controllers</td><td class="def">Networked controllers managing multiple doors, readers, and credentials with centralized policy.</td><td>Door control</td><td class="when">Multi-door enterprise systems</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Video Intercom Integration</td><td class="def">Access terminals that link with video intercom systems for unified entry management.</td><td>Intercom + access</td><td class="when">Residential, office entry</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- VIDEO INTERCOM -->
+<section class="cat c-intercom">
+<h2>🔔 Video Intercom <span class="count">7</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Door Stations</td><td class="def">Outdoor intercom units with camera, call button, and two-way audio for visitor verification.</td><td>Entry intercom</td><td class="when">Residential, office entrances</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Indoor Stations</td><td class="def">Indoor monitors for answering door calls, viewing visitors, and unlocking doors remotely.</td><td>Indoor answering</td><td class="when">Apartments, reception desks</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Video Intercom Kits</td><td class="def">Bundled door station and indoor monitor kits for simplified residential deployment.</td><td>Residential kits</td><td class="when">Single-family homes, small buildings</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Multi-Tenant Intercom</td><td class="def">Systems supporting multiple apartments/buildings with central management and SIP integration.</td><td>Building intercom</td><td class="when">Apartment complexes, offices</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">IP Intercom with Access</td><td class="def">Combined intercom and access control terminals for unified entry.</td><td>Unified entry</td><td class="when">Modern buildings, touchless</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Wireless Intercom</td><td class="def">Wi-Fi based intercom systems for easy retrofit without cabling.</td><td>Wireless entry</td><td class="when">Retrofit, rental properties</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Hik-Connect Integration</td><td class="def">Mobile app integration for answering door calls and viewing video from anywhere.</td><td>Remote intercom</td><td class="when">Mobile-first users</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- ALARM SYSTEMS -->
+<section class="cat c-alarm">
+<h2>🚨 Alarm &amp; Intrusion <span class="count">6</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">AX PRO Series</td><td class="def">Wireless alarm system with hub, sensors, and mobile app control for residential and SMB.</td><td>Wireless intrusion</td><td class="when">Homes, small offices</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">AX HYBRID Series</td><td class="def">Hybrid alarm system supporting both wired and wireless sensors for flexible deployment.</td><td>Hybrid intrusion</td><td class="when">Mixed sensor environments</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Intrusion Panels</td><td class="def">Central alarm panels managing sensors, zones, and notifications with PSTN/IP/GPRS options.</td><td>Alarm control</td><td class="when">Commercial security systems</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">PIR Sensors</td><td class="def">Passive infrared motion detectors for intrusion detection with pet immunity options.</td><td>Motion detection</td><td class="when">Perimeter and indoor protection</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Perimeter Sensors</td><td class="def">Outdoor sensors (beam, radar) for fence-line and perimeter intrusion detection.</td><td>Perimeter protection</td><td class="when">Fences, boundaries</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Alarm Integration</td><td class="def">Integration of alarm systems with video surveillance for visual verification of alarms.</td><td>Alarm + video</td><td class="when">Unified security management</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- SOFTWARE -->
+<section class="cat c-software">
+<h2>💻 Software &amp; Management <span class="count">10</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">HikCentral Professional</td><td class="def">Unified security management platform for video, access control, intercom, alarm, and more with 20+ add-ons.</td><td>Centralized management</td><td class="when">Multi-system enterprise security</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Hik-Connect</td><td class="def">Mobile app for viewing live video, playback, receiving alarms, and answering intercom calls remotely.</td><td>Mobile access</td><td class="when">Remote monitoring for end users</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Hik-Partner Pro (HPP)</td><td class="def">Partner platform for product info, device management, and after-sales support.</td><td>Partner portal</td><td class="when">Dealers, integrators</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">iVMS-4200</td><td class="def">Client software for local video management, device configuration, and monitoring.</td><td>Local VMS</td><td class="when">Small to mid deployments</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">HikCentral Web Client</td><td class="def">Browser-based access to HikCentral for management without installing client software.</td><td>Web management</td><td class="when">Remote administration</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">OpenAPI / SDK</td><td class="def">APIs and SDKs for integrating Hikvision devices and software with third-party systems.</td><td>System integration</td><td class="when">Custom integrations</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">BACnet Gateway</td><td class="def">Integration with building automation systems for unified building management.</td><td>BMS integration</td><td class="when">Smart buildings, energy management</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">AcuSeek Search</td><td class="def">AI-powered natural language search across recorded video for rapid investigation.</td><td>Video search</td><td class="when">Forensic analysis, investigations</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">HikCentral Add-ons</td><td class="def">20+ specialized modules for parking, commercial display, patrol, mustering, and more.</td><td>Vertical solutions</td><td class="when">Industry-specific needs</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Remote Site Management</td><td class="def">Centralized management across hundreds or thousands of remote sites from a single platform.</td><td>Multi-site management</td><td class="when">Retail chains, banking, logistics</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- RADAR & SPECIALIZED -->
+<section class="cat c-radar">
+<h2>📡 Radar &amp; Specialized Sensors <span class="count">8</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Security Radar</td><td class="def">Phased-array radar for long-range, wide-area target detection, integrating with PTZ cameras for AI tracking.</td><td>Perimeter detection</td><td class="when">Large perimeters, critical sites</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Industrial Radar</td><td class="def">Non-contact millimeter-wave and laser sensors for distance, level, and speed measurement in harsh environments.</td><td>Industrial sensing</td><td class="when">Manufacturing, logistics</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Auxiliary Care Radar</td><td class="def">Contactless millimeter-wave radar for respiration, heartbeat, and fall detection in elderly care.</td><td>Health monitoring</td><td class="when">Elderly care, hospitals</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">LiDAR Sensors</td><td class="def">Laser-based sensing for precise distance measurement and 3D environmental perception.</td><td>Precision sensing</td><td class="when">Robotics, industrial automation</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Millimeter-Wave Radar</td><td class="def">Advanced radar for all-weather detection and tracking, penetrating dust, fog, and rain.</td><td>All-weather detection</td><td class="when">Challenging environments</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">X-Ray Inspection</td><td class="def">X-ray systems for security inspection of parcels, baggage, and cargo.</td><td>Security screening</td><td class="when">Airports, buildings, events</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">UVSS (Under Vehicle)</td><td class="def">Under-vehicle surveillance system for detecting anomalies, threats, and contraband beneath vehicles.</td><td>Vehicle screening</td><td class="when">Checkpoints, critical infrastructure</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Acoustic Sensors</td><td class="def">Audible and ultrasonic sensors for sound detection and analysis.</td><td>Acoustic monitoring</td><td class="when">Industrial, security applications</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- AIOT & ANALYTICS -->
+<section class="cat c-aiot">
+<h2>🧠 AI &amp; AIoT <span class="count">8</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Guanlan AI Models</td><td class="def">Large-scale, multimodal AI models powering Hikvision's AIoT ecosystem for advanced analytics.</td><td>Foundation AI</td><td class="when">Advanced AI applications</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">DeepinView Analytics</td><td class="def">Deep learning-based video analytics for precise detection, classification, and behavior analysis.</td><td>Video AI</td><td class="when">Perimeter, business intelligence</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">AcuSense Technology</td><td class="def">AI that distinguishes humans and vehicles from other objects, reducing false alarms.</td><td>Alarm filtering</td><td class="when">Perimeter protection</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">AcuSeek AI Search</td><td class="def">Natural language search of recorded video for rapid forensic investigation.</td><td>Video search</td><td class="when">Incident investigation</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">People Counting</td><td class="def">AI analytics for counting foot traffic and analyzing customer flow.</td><td>Business intelligence</td><td class="when">Retail, venues</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">ANPR / LPR</td><td class="def">Automatic number plate recognition for vehicle access, parking, and traffic management.</td><td>Vehicle recognition</td><td class="when">Parking, tolling, security</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Face Recognition</td><td class="def">AI-based facial recognition for access control, attendance, and security.</td><td>Biometric AI</td><td class="when">Touchless access, security</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Behavior Analytics</td><td class="def">AI detection of loitering, intrusion, line crossing, and other behaviors.</td><td>Behavior detection</td><td class="when">Security monitoring</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- DISPLAY -->
+<section class="cat c-display">
+<h2>🖥️ Commercial Display <span class="count">5</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">LED Displays</td><td class="def">LED video walls and displays for control rooms, lobbies, and advertising.</td><td>Video walls</td><td class="when">Control rooms, lobbies</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Monitors</td><td class="def">Professional monitors for surveillance viewing and control rooms.</td><td>Monitoring displays</td><td class="when">Control rooms, reception</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Digital Signage</td><td class="def">Commercial display systems with content management for advertising and information.</td><td>Digital signage</td><td class="when">Retail, hospitality, corporate</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Interactive Displays</td><td class="def">Touch-enabled displays for collaboration and information kiosks.</td><td>Interactive kiosks</td><td class="when">Education, retail, corporate</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Content Management</td><td class="def">Software for creating, scheduling, and managing display content across multiple screens.</td><td>Signage CMS</td><td class="when">Multi-screen deployments</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- STORAGE -->
+<section class="cat c-storage">
+<h2>💾 Storage Solutions <span class="count">5</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">CVR (Central Video Recorder)</td><td class="def">Enterprise-grade storage for large-scale video surveillance with RAID and redundancy.</td><td>Central storage</td><td class="when">Large deployments, data centers</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">pStor Storage</td><td class="def">Scalable clustered storage with direct stream from cameras.</td><td>Scalable storage</td><td class="when">Flexible, large-scale storage</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">NAS Storage</td><td class="def">Network-attached storage for video and data with file sharing capabilities.</td><td>File storage</td><td class="when">Small to mid deployments</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost M">MED</span></td></tr>
+<tr><td class="svc">Hard Drives</td><td class="def">Surveillance-optimized HDDs for reliable 24/7 recording.</td><td>Storage media</td><td class="when">All NVR/DVR deployments</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Cloud Storage</td><td class="def">Cloud-based storage for video backup and remote access (via Hik-Connect).</td><td>Cloud backup</td><td class="when">Off-site redundancy</td><td><span class="fit"><span class="on">S</span><span class="on">M</span><span>L</span></span></td><td><span class="cost M">MED</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- ROBOTICS -->
+<section class="cat c-robot">
+<h2>🤖 Robotics &amp; Automation <span class="count">4</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Security Robots</td><td class="def">Autonomous patrol robots with cameras, sensors, and AI for perimeter and indoor security.</td><td>Autonomous patrol</td><td class="when">Large facilities, industrial sites</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Logistics Robots</td><td class="def">AGV/AMR robots for warehouse and logistics automation.</td><td>Warehouse automation</td><td class="when">Logistics, manufacturing</td><td><span class="fit"><span>S</span><span>M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Disinfection Robots</td><td class="def">UV disinfection robots for healthcare and public spaces.</td><td>Disinfection</td><td class="when">Hospitals, airports</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+<tr><td class="svc">Service Robots</td><td class="def">Robots for delivery, guidance, and customer service.</td><td>Service automation</td><td class="when">Hotels, retail, healthcare</td><td><span class="fit"><span>S</span><span class="on">M</span><span class="on">L</span></span></td><td><span class="cost H">HIGH</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- SMART HOME -->
+<section class="cat c-smart">
+<h2>🏠 Smart Home <span class="count">5</span></h2>
+<table>
+<thead><tr><th class="col-svc">Product Line</th><th class="col-def">Definition</th><th class="col-use">Use case</th><th class="col-when">When to choose</th><th class="col-fit">Fit</th><th class="col-cost">Cost</th></tr></thead>
+<tbody>
+<tr><td class="svc">Smart Home Cameras</td><td class="def">Wi-Fi cameras for home monitoring with app control and cloud storage.</td><td>Home monitoring</td><td class="when">Residential DIY</td><td><span class="fit"><span class="on">S</span><span>M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Smart Doorbells</td><td class="def">Video doorbells with two-way audio and mobile alerts.</td><td>Home entry</td><td class="when">Residential entry</td><td><span class="fit"><span class="on">S</span><span>M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Smart Locks</td><td class="def">Connected locks with app control, fingerprint, and PIN access.</td><td>Home access</td><td class="when">Residential access</td><td><span class="fit"><span class="on">S</span><span>M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Smart Sensors</td><td class="def">Motion, door/window, and environmental sensors for home automation.</td><td>Home sensing</td><td class="when">Smart home integration</td><td><span class="fit"><span class="on">S</span><span>M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+<tr><td class="svc">Hik-Connect for Home</td><td class="def">Mobile app for managing all smart home devices in one place.</td><td>Home app</td><td class="when">Unified home control</td><td><span class="fit"><span class="on">S</span><span>M</span><span>L</span></span></td><td><span class="cost L">LOW</span></td></tr>
+</tbody>
+</table>
+</section>
+
+</div>
+
+<div class="lower">
+  <div class="panel">
+    <h3>Solution Architect Decision Guide</h3>
+    <div style="font-size:11.5px; line-height:1.7;">
+      <p><b>1. Video Surveillance</b> — DeepinView (AI) · ColorVu (low-light color) · AcuSense (false alarm reduction) · Thermal (perimeter)</p>
+      <p><b>2. Recording &amp; Storage</b> — NVR (IP) · DVR (analog) · CVR (enterprise) · pStor (scalable clustered storage)</p>
+      <p><b>3. Access Control</b> — Face/fingerprint terminals · Card readers · Mobile credentials (Bluetooth/NFC/QR) · Multi-door controllers</p>
+      <p><b>4. Video Intercom</b> — Door stations · Indoor monitors · Multi-tenant systems · Hik-Connect mobile integration</p>
+      <p><b>5. Alarm &amp; Intrusion</b> — AX PRO (wireless) · AX HYBRID · Intrusion panels · PIR/perimeter sensors</p>
+      <p><b>6. Software</b> — HikCentral Professional (enterprise) · iVMS-4200 (local) · Hik-Connect (mobile) · OpenAPI/SDK</p>
+      <p><b>7. AI &amp; Analytics</b> — Guanlan AI models · DeepinView · AcuSense · AcuSeek · ANPR · Face recognition</p>
+      <p><b>8. Specialized</b> — Radar (security/industrial/care) · LiDAR · X-Ray · UVSS · Acoustic sensors</p>
+      <p><b>9. Display</b> — LED video walls · Monitors · Digital signage · Content management</p>
+      <p><b>10. Robotics</b> — Security patrol · Logistics AGV/AMR · Disinfection · Service robots</p>
+    </div>
+  </div>
+
+  <div class="panel arch">
+    <h3>Reference Architecture — Integrated Security System</h3>
+    <div class="flow">Sensors &amp; Devices
+  │
+  ├── IP Cameras (DeepinView/ColorVu/AcuSense)
+  ├── Access Control (Face/Fingerprint/Card)
+  ├── Video Intercom (Door/Indoor Stations)
+  ├── Alarm Sensors (PIR/Perimeter)
+  └── Radar / LiDAR Sensors
+                     │
+                     ▼
+              Network Layer
+         (PoE Switches, NVRs/DVRs)
+                     │
+                     ▼
+         ┌──── HikCentral Professional ────┐
+         │  • Video Management            │
+         │  • Access Control              │
+         │  • Intercom Management         │
+         │  • Alarm Integration           │
+         │  • ANPR / Parking              │
+         │  • People Counting / BI        │
+         └─────────────────────────────────┘
+                     │
+                     ▼
+         Hik-Connect (Mobile) · Web Client · API/SDK
+                     │
+                     ▼
+         Third-party Integration (BACnet, ONVIF, WMS)</div>
+    <p class="arch note"><b>Small/Residential variant:</b> NVR Kit + Hik-Connect app + Smart Home devices (doorbell, locks, sensors).</p>
+    <p class="arch note"><b>Enterprise variant:</b> DeepinView cameras + AcuSeek NVR + HikCentral Professional + Radar perimeter + Access control + Video intercom, all unified.</p>
+  </div>
+
+  <div class="panel why">
+    <h3>How to read this reference</h3>
+    <ul style="font-size:11.5px">
+      <li><b>Definition</b> — plain-language description of what the product line is and does.</li>
+      <li><b>Use case</b> — the shortest tag for the primary application.</li>
+      <li><b>When to choose</b> — trigger conditions that push you toward this product.</li>
+      <li><b>Fit</b> — S/M/L boxes ticked = natural fit at that deployment scale.</li>
+      <li><b>Cost</b> — LOW = entry-level, single-unit; MED = professional, multi-unit; HIGH = enterprise, multi-site or specialized. Actual cost is deployment-dependent.</li>
+      <li>Products marked with <b>*</b> are legacy or being phased out.</li>
+    </ul>
+    <h3 style="margin-top:14px">Why Hikvision?</h3>
+    <ul style="font-size:11.5px">
+      <li>20+ years in video technology, now AIoT leader</li>
+      <li>Full-stack: perception (vision, radar, acoustic) → AI → big data</li>
+      <li>Guanlan large-scale AI models</li>
+      <li>Unified platform: HikCentral Professional</li>
+      <li>Global partner ecosystem (DPP, VASP, TPP)</li>
+      <li>Certifications: HCSA, HCSP</li>
+    </ul>
+  </div>
+</div>
+
+<footer>Hikvision Complete Product &amp; Solution Architect Reference · 2026 edition with Definition, Fit &amp; Cost columns.</footer>
+
+</div>
+</body>
+</html>
